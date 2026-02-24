@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fafaf9;
+    --background-secondary: #f5f5f4;
+    --foreground: #1c1917;
+    --foreground-muted: #78716c;
+    --accent-primary: #0d9488;
+    --accent-secondary: #22d3ee;
+    --border: #e7e5e4;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+/* Glass utility classes */
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-glass border border-white/20 shadow-soft;
+  }
+
+  .glass-lg {
+    @apply bg-white/70 backdrop-blur-glass-lg border border-white/20 shadow-soft-md;
+  }
+}
