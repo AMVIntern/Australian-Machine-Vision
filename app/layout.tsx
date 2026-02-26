@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { AnalyticsPlaceholder } from "@/components/analytics-placeholder";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,8 +18,27 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Australian Machine Vision | Computer Vision AI",
-  description: "B2B Computer Vision AI solutions",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.australianmachinevision.com"),
+  title: {
+    default: "Australian Machine Vision | Computer Vision AI",
+    template: "%s | Australian Machine Vision",
+  },
+  description:
+    "B2B Computer Vision AI for industrial quality inspection. Real-time defect detection, scalable deployment, and measurable ROI.",
+  openGraph: {
+    type: "website",
+    locale: "en_AU",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -35,6 +55,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1 w-full">{children}</main>
         <Footer />
+        <AnalyticsPlaceholder />
       </body>
     </html>
   );

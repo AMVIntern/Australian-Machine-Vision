@@ -1,21 +1,33 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getStoryBySlug, getAllStorySlugs } from "@/lib/customer-stories";
+import { StoryDetailContent } from "@/components/customer-stories/story-detail-content";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export function generateStaticParams() {
+  return getAllStorySlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const story = getStoryBySlug(slug);
+  if (!story) return {};
+  return {
+    title: story.title,
+    description: story.shortDescription,
+    openGraph: {
+      title: `${story.title} | Australian Machine Vision`,
+      description: story.shortDescription,
+      type: "article",
+    },
+  };
+}
+
 export default async function CustomerStoryDetailPage({ params }: Props) {
   const { slug } = await params;
-  if (!slug) notFound();
+  const story = getStoryBySlug(slug);
+  if (!story) notFound();
 
-  return (
-    <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-      <section aria-labelledby="story-title">
-        <h1 id="story-title" className="text-3xl font-bold text-foreground">
-          Customer Story: {decodeURIComponent(slug)}
-        </h1>
-        <p className="mt-2 text-foreground-muted">
-          Detail view for this customer story. Content coming in a future update.
-        </p>
-      </section>
-    </div>
-  );
+  return <StoryDetailContent story={story} />;
 }

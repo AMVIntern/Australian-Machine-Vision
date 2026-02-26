@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,20 +16,21 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const pathname = usePathname();
 
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-soft"
+      className="sticky top-0 z-50 w-full border-b border-border bg-white/95 shadow-soft backdrop-blur-sm supports-[backdrop-filter]:bg-white/90"
       role="banner"
     >
       <nav
-        className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8"
+        className="container mx-auto flex h-[4.25rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center transition-opacity hover:opacity-90"
+          className="flex shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 rounded-md"
           aria-label="Australian Machine Vision - Home"
         >
           <Image
@@ -36,29 +38,45 @@ export function Navbar() {
             alt="Australian Machine Vision"
             width={180}
             height={48}
-            className="h-10 w-auto object-contain sm:h-12"
+            className="h-10 w-auto object-contain sm:h-11"
             priority
           />
         </Link>
 
-        {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-8" role="list">
-          {navLinks.map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+        {/* Desktop nav - centered */}
+        <ul
+          className="hidden md:flex flex-1 items-center justify-center gap-10"
+          role="list"
+        >
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={cn(
+                    "relative text-[15px] font-medium transition-colors py-2",
+                    "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:rounded-full after:bg-accent-primary after:content-[''] after:transition-all after:duration-200",
+                    isActive
+                      ? "text-accent-primary after:w-full"
+                      : "text-foreground hover:text-accent-primary after:w-0 hover:after:w-full"
+                  )}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
-        <div className="hidden md:block">
+        {/* CTA - hidden on mobile (shown in drawer) */}
+        <div className="hidden md:flex shrink-0 items-center">
           <Link
             href="/contact"
-            className={buttonVariants({ variant: "primary", size: "default" })}
+            className={cn(
+              buttonVariants({ variant: "primary", size: "default" }),
+              "rounded-lg px-5 font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
+            )}
           >
             Book Demo
           </Link>
@@ -67,7 +85,7 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-foreground hover:bg-background-secondary focus:outline-none focus:ring-2 focus:ring-accent-primary"
+          className="md:hidden inline-flex items-center justify-center rounded-lg p-2.5 text-foreground hover:bg-background-secondary hover:text-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-colors"
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -84,31 +102,42 @@ export function Navbar() {
       <div
         id="mobile-menu"
         className={cn(
-          "md:hidden border-t border-border bg-background",
+          "md:hidden border-t border-border bg-white",
           mobileOpen ? "block" : "hidden"
         )}
         role="dialog"
         aria-label="Mobile menu"
       >
-        <ul className="container mx-auto flex flex-col py-4 gap-1 px-4" role="list">
-          {navLinks.map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="block py-3 px-4 rounded-md text-foreground hover:bg-background-secondary"
-                onClick={() => setMobileOpen(false)}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-          <li className="pt-2 px-4">
+        <ul
+          className="container mx-auto flex flex-col gap-0.5 py-4 px-4"
+          role="list"
+        >
+          {navLinks.map(({ href, label }) => {
+            const isActive = pathname === href;
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "block py-3 px-4 rounded-lg text-[15px] font-medium transition-colors",
+                    isActive
+                      ? "bg-accent-primary/10 text-accent-primary"
+                      : "text-foreground hover:bg-background-secondary"
+                  )}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
+          <li className="pt-3 px-4">
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}
               className={cn(
                 buttonVariants({ variant: "primary", size: "default" }),
-                "w-full inline-flex"
+                "w-full inline-flex justify-center rounded-lg font-semibold"
               )}
             >
               Book Demo

@@ -145,16 +145,6 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Explore Solutions scroll hint */}
-        <motion.div
-          className="mt-12 flex flex-col items-center gap-1 text-sm text-foreground-muted"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          <span>Explore Solutions</span>
-          <ChevronDown className="h-5 w-5" aria-hidden />
-        </motion.div>
       </div>
     </section>
   );

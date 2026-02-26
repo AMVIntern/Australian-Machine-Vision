@@ -7,7 +7,7 @@ import {
   ChevronDown,
   ChevronRight,
   Car,
-  Package,
+  Apple,
   Box,
   Pill,
   Zap,
@@ -22,6 +22,8 @@ export interface IndustryTabData {
   id: string;
   label: string;
   icon: LucideIcon;
+  /** Tailwind class for icon when tab is inactive (e.g. text-violet-500) */
+  inactiveIconColor: string;
   challenge: string;
   solution: string;
   impactBullets: string[];
@@ -33,6 +35,7 @@ const industryTabsData: IndustryTabData[] = [
     id: "automotive",
     label: "Automotive",
     icon: Car,
+    inactiveIconColor: "text-violet-500",
     challenge:
       "Manual paint defect inspection is slow and inconsistent, leading to high rejection rates and customer complaints.",
     solution:
@@ -47,7 +50,8 @@ const industryTabsData: IndustryTabData[] = [
   {
     id: "fmcg-food",
     label: "FMCG / Food",
-    icon: Package,
+    icon: Apple,
+    inactiveIconColor: "text-red-500",
     challenge:
       "Quality and safety checks at scale are manual and error-prone, risking compliance and waste.",
     solution:
@@ -63,6 +67,7 @@ const industryTabsData: IndustryTabData[] = [
     id: "warehousing-logistics",
     label: "Warehousing & Logistics",
     icon: Box,
+    inactiveIconColor: "text-amber-800",
     challenge:
       "Parcel and inventory verification relies on manual checks, limiting throughput and accuracy.",
     solution:
@@ -78,6 +83,7 @@ const industryTabsData: IndustryTabData[] = [
     id: "pharmaceuticals",
     label: "Pharmaceuticals",
     icon: Pill,
+    inactiveIconColor: "text-rose-500",
     challenge:
       "Regulatory requirements demand consistent, auditable defect detection for tablets, capsules, and packaging.",
     solution:
@@ -93,6 +99,7 @@ const industryTabsData: IndustryTabData[] = [
     id: "electronics",
     label: "Electronics",
     icon: Zap,
+    inactiveIconColor: "text-amber-500",
     challenge:
       "PCB and assembly defects cause rework and failures downstream if not caught early.",
     solution:
@@ -108,6 +115,7 @@ const industryTabsData: IndustryTabData[] = [
     id: "general-manufacturing",
     label: "General Manufacturing",
     icon: Factory,
+    inactiveIconColor: "text-slate-500",
     challenge:
       "Mixed production and changing defect types require flexible, quick-to-deploy inspection.",
     solution:
@@ -163,7 +171,7 @@ export function IndustryTabs() {
 
   return (
     <section
-      className="py-16 sm:py-20"
+      className="bg-white py-16 sm:py-20"
       aria-labelledby="industry-tabs-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -181,7 +189,7 @@ export function IndustryTabs() {
         {/* Desktop: pill tabs + content */}
         <div className="mt-10 hidden lg:block">
           <div
-            className="flex flex-wrap justify-center gap-2"
+            className="flex flex-wrap justify-center gap-3"
             role="tablist"
             aria-label="Industry sectors"
           >
@@ -199,14 +207,20 @@ export function IndustryTabs() {
                   onClick={() => handleTabClick(tab.id)}
                   onKeyDown={(e) => handleKeyDown(e, tab.id, index)}
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                    "inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium shadow-soft transition-colors",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2",
                     isActive
-                      ? "bg-accent-primary text-white"
+                      ? "bg-gradient-to-b from-teal-400 to-teal-600 text-white"
                       : "border border-border bg-white text-foreground hover:bg-background-secondary"
                   )}
                 >
-                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                  <Icon
+                    className={cn(
+                      "h-4 w-4 shrink-0",
+                      isActive ? "text-white" : tab.inactiveIconColor
+                    )}
+                    aria-hidden
+                  />
                   {tab.label}
                 </button>
               );
