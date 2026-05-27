@@ -49,7 +49,7 @@ export function Navbar() {
           role="list"
         >
           {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+            const isActive = pathname === href || pathname.startsWith(`${href}/`);
             return (
               <li key={href}>
                 <Link
