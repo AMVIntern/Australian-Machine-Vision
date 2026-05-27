@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Check, Clock, ChevronDown } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Check, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fadeInUp = {
@@ -33,11 +32,10 @@ export function Hero() {
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-accent-secondary/15 blur-3xl" />
       </div>
 
-      <div className="container relative mx-auto px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
-          {/* Text column */}
+      <div className="container relative mx-auto px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-3xl text-center">
           <motion.div
-            className="flex flex-col"
+            className="flex flex-col items-center"
             variants={stagger}
             initial="initial"
             animate="animate"
@@ -46,33 +44,43 @@ export function Hero() {
               className="inline-flex w-fit rounded-full border border-accent-primary/40 bg-white/60 px-4 py-1.5 text-sm font-medium text-foreground"
               variants={fadeInUp}
             >
-              AI-Powered Visual Inspection
+              AI-Powered Computer Vision
             </motion.span>
+
             <motion.h1
               id="hero-heading"
-              className="mt-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+              className="mt-6 text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl"
               variants={fadeInUp}
             >
-              Detect Defects in{" "}
-              <span className="text-accent-primary">Real-Time</span>
+              Transforming Cameras Into{" "}
+              <span className="text-accent-primary">Decision-Making Systems</span>
             </motion.h1>
+
             <motion.p
-              className="mt-6 max-w-xl text-lg text-foreground-muted"
+              className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl"
               variants={fadeInUp}
             >
-              Transform your quality control with AI vision systems that detect
-              defects, optimize processes, and reduce costs—achieving 99%+
-              accuracy at production speed.
+              Turn raw vision into real-time insights. Our AI turns every frame
+              into actionable decisions—for quality, efficiency, and control.
             </motion.p>
+
+            <motion.p
+              className="mt-10 text-2xl font-medium tracking-tight text-foreground sm:text-3xl"
+              variants={fadeInUp}
+            >
+              From Pixels{" "}
+              <span className="text-accent-primary">to Decisions.</span>
+            </motion.p>
+
             <motion.div
-              className="mt-8 flex flex-wrap gap-4"
+              className="mt-10 flex flex-wrap items-center justify-center gap-4"
               variants={fadeInUp}
             >
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   href="/contact"
                   className={cn(
-                    "inline-flex h-11 items-center justify-center rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 font-medium text-white shadow-soft transition-shadow hover:opacity-90 hover:shadow-soft-md",
+                    "inline-flex h-12 items-center justify-center rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 font-semibold text-white shadow-soft transition hover:opacity-90 hover:shadow-soft-md",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                   )}
                 >
@@ -83,16 +91,18 @@ export function Hero() {
                 <Link
                   href="/about"
                   className={cn(
-                    buttonVariants({ variant: "secondary", size: "lg" }),
-                    "rounded-lg border border-border bg-white"
+                    "inline-flex h-12 items-center justify-center rounded-lg border-2 border-border bg-white px-6 font-semibold text-foreground",
+                    "hover:bg-background-secondary",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                   )}
                 >
                   Learn More
                 </Link>
               </motion.div>
             </motion.div>
+
             <motion.div
-              className="mt-8 flex flex-wrap gap-6 text-sm text-foreground-muted"
+              className="mt-10 flex flex-wrap items-center justify-center gap-8 text-sm text-foreground-muted"
               variants={fadeInUp}
             >
               <span className="flex items-center gap-2">
@@ -109,42 +119,7 @@ export function Hero() {
               </span>
             </motion.div>
           </motion.div>
-
-          {/* Visual column – image placeholder + overlay badges */}
-          <motion.div
-            className="relative flex justify-center lg:justify-end"
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <motion.div
-              className="relative aspect-[4/3] w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-background-secondary shadow-soft-lg"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            >
-              {/* Image placeholder – CV inspection visual */}
-              <div
-                className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200/80"
-                aria-hidden
-              >
-                <div className="flex h-48 w-48 items-center justify-center rounded-full border-2 border-slate-300/60 bg-slate-200/50">
-                  <div className="h-16 w-16 rounded-full bg-cyan-400/80 shadow-lg" />
-                </div>
-              </div>
-              {/* Overlay badges – defect / confidence / processing */}
-              <div className="absolute left-4 top-4 rounded-full border border-green-500/30 bg-green-500/90 px-3 py-1.5 text-xs font-medium text-white shadow-soft">
-                ✓ Defect Detected
-              </div>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full border border-green-500/30 bg-green-500/90 px-3 py-1.5 text-xs font-medium text-white shadow-soft">
-                Confidence: 98.7%
-              </div>
-              <div className="absolute bottom-4 left-4 rounded-full border border-border bg-white/90 px-3 py-1.5 text-xs font-medium text-foreground shadow-soft">
-                Processing: 32ms
-              </div>
-            </motion.div>
-          </motion.div>
         </div>
-
       </div>
     </section>
   );

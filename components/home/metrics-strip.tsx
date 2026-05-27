@@ -66,7 +66,7 @@ const item = {
 export function MetricsStrip() {
   return (
     <section
-      className="border-y border-border bg-white py-12 sm:py-16"
+      className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16"
       aria-labelledby="metrics-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

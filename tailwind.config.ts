@@ -79,6 +79,15 @@ const config: Config = {
         glass: "12px",
         "glass-lg": "16px",
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 35s linear infinite",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

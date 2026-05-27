@@ -13,7 +13,7 @@ const container = {
 
 export default function CustomerStoriesPage() {
   return (
-    <div className="bg-white">
+    <div>
       <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <section aria-labelledby="customer-stories-heading">
           <h1

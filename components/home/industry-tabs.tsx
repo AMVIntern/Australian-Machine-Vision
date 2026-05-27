@@ -171,7 +171,7 @@ export function IndustryTabs() {
 
   return (
     <section
-      className="bg-white py-16 sm:py-20"
+      className="bg-white/80 backdrop-blur-sm py-16 sm:py-20"
       aria-labelledby="industry-tabs-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

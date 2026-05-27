@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="bg-background">
+    <div>
       <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <header className="mx-auto max-w-2xl text-center">
           <h1

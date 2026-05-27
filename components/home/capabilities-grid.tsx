@@ -8,7 +8,7 @@ import {
   Video,
   Plug,
   BarChart3,
-  Code2,
+  Tags,
   RefreshCw,
   type LucideIcon,
 } from "lucide-react";
@@ -65,11 +65,11 @@ const capabilities: CapabilityItem[] = [
     icon: BarChart3,
   },
   {
-    id: "api",
-    title: "API integrations",
+    id: "annotation",
+    title: "Data annotation & dataset management",
     description:
-      "REST and webhook APIs to integrate with MES, ERP, and quality systems.",
-    icon: Code2,
+      "Streamline dataset labeling, versioning, and curation for continuous model improvement.",
+    icon: Tags,
   },
   {
     id: "learning",
@@ -123,7 +123,7 @@ function CapabilityCard({ capability }: { capability: CapabilityItem }) {
 export function CapabilitiesGrid() {
   return (
     <section
-      className="border-y border-border bg-background-secondary py-16 sm:py-20"
+      className="border-y border-border bg-white/80 backdrop-blur-sm py-16 sm:py-20"
       aria-labelledby="capabilities-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

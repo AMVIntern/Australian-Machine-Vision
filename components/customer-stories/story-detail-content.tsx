@@ -20,10 +20,10 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
   };
 
   return (
-    <div className="bg-white">
+    <div>
       {/* Hero */}
       <section
-        className="relative overflow-hidden bg-gradient-to-br from-teal-50 via-cyan-50/60 to-background py-16 sm:py-20"
+        className="relative overflow-hidden bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-16 sm:py-20"
         aria-labelledby="story-hero-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,7 +55,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
 
       {/* Problem & Context */}
       <section
-        className="py-12 sm:py-16"
+        className="bg-white/80 backdrop-blur-sm py-12 sm:py-16"
         aria-labelledby="problem-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,7 +91,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
 
       {/* Solution */}
       <section
-        className="border-y border-border bg-background-secondary py-12 sm:py-16"
+        className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16"
         aria-labelledby="solution-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,7 +136,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
 
       {/* Implementation Timeline */}
       <section
-        className="py-12 sm:py-16"
+        className="bg-white/80 backdrop-blur-sm py-12 sm:py-16"
         aria-labelledby="implementation-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -180,7 +180,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
 
       {/* Visual Proof */}
       <section
-        className="border-y border-border bg-background-secondary py-12 sm:py-16"
+        className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16"
         aria-labelledby="visual-proof-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -199,7 +199,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
 
       {/* Results & Impact */}
       <section
-        className="py-12 sm:py-16"
+        className="bg-white/80 backdrop-blur-sm py-12 sm:py-16"
         aria-labelledby="results-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -255,7 +255,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
 
       {/* Final CTA */}
       <section
-        className="py-16 sm:py-20"
+        className="bg-white/80 backdrop-blur-sm py-16 sm:py-20"
         aria-labelledby="story-cta-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -129,7 +129,7 @@ function VisualProofCard({ item }: { item: VisualProofItem }) {
 export function VisualProof() {
   return (
     <section
-      className="py-16 sm:py-20"
+      className="bg-white/80 backdrop-blur-sm py-16 sm:py-20"
       aria-labelledby="visual-proof-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

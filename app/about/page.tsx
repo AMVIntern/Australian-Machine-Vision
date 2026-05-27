@@ -24,9 +24,9 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-white">
+    <div>
       {/* Hero - Transforming Manufacturing with AI Vision */}
-      <section className="border-b border-border bg-white py-12 sm:py-16">
+      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mx-auto max-w-3xl text-center">
             <h1
@@ -46,7 +46,7 @@ export default function AboutPage() {
       </section>
 
       {/* Two-column: Our Mission + Our Vision */}
-      <section className="py-12 sm:py-16">
+      <section className="bg-white/80 backdrop-blur-sm py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
@@ -99,7 +99,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team / collaboration image placeholder */}
-      <section className="border-y border-border bg-background-secondary/30 py-12 sm:py-16">
+      <section className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
             <div className="aspect-video w-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
@@ -112,14 +112,14 @@ export default function AboutPage() {
       </section>
 
       {/* Our Core Values - 3x2 grid */}
-      <section className="border-y border-border bg-background-secondary/30 py-12 sm:py-16">
+      <section className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <AboutValuesSection />
         </div>
       </section>
 
       {/* Statistics */}
-      <section className="py-12 sm:py-16" aria-labelledby="about-stats-heading">
+      <section className="bg-white/80 backdrop-blur-sm py-12 sm:py-16" aria-labelledby="about-stats-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 id="about-stats-heading" className="sr-only">
             Key statistics

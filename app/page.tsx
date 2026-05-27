@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
+import { LogoCarousel } from "@/components/home/logo-carousel";
 import { MetricsStrip } from "@/components/home/metrics-strip";
 import { IndustryTabs } from "@/components/home/industry-tabs";
 import { Pipeline } from "@/components/home/pipeline";
@@ -30,6 +31,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <LogoCarousel />
       <MetricsStrip />
       <IndustryTabs />
       <Pipeline />

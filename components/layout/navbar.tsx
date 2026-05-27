@@ -24,7 +24,7 @@ export function Navbar() {
       role="banner"
     >
       <nav
-        className="container mx-auto flex h-[4.25rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
+        className="container mx-auto flex h-[5rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
         {/* Logo */}
@@ -38,7 +38,7 @@ export function Navbar() {
             alt="Australian Machine Vision"
             width={180}
             height={48}
-            className="h-10 w-auto object-contain sm:h-11"
+            className="h-11 w-auto object-contain sm:h-12"
             priority
           />
         </Link>
@@ -75,7 +75,7 @@ export function Navbar() {
             href="/contact"
             className={cn(
               buttonVariants({ variant: "primary", size: "default" }),
-              "rounded-lg px-5 font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
+              "h-12 min-w-[8.5rem] rounded-lg px-6 text-base font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
             )}
           >
             Book Demo

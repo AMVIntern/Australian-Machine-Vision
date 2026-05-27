@@ -6,6 +6,8 @@
   :root {
     --background: #fafaf9;
     --background-secondary: #f5f5f4;
+    /* Subtle teal tint for page background - consistent but not overwhelming */
+    --page-bg: #f4faf9;
     --foreground: #1c1917;
     --foreground-muted: #78716c;
     --accent-primary: #0d9488;
@@ -14,7 +16,8 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
+    background-color: var(--page-bg);
   }
 }
 
