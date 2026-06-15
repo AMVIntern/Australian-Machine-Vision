@@ -68,7 +68,7 @@ export async function submitContactForm(
     return {
       success: true,
       message:
-        "Thanks for getting in touch. We'll respond within 1–2 business days.",
+        "Thanks for getting in touch. We'll respond within 1 to 2 business days.",
     };
   } catch (e) {
     return {

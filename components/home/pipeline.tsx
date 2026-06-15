@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import {
-  Camera,
-  Brain,
-  ScanSearch,
-  AlertCircle,
+  ClipboardList,
+  Layers,
   Network,
+  CheckCircle2,
+  LifeBuoy,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,39 +21,44 @@ export interface PipelineStep {
 
 const pipelineSteps: PipelineStep[] = [
   {
-    id: "capture",
+    id: "understand",
     number: 1,
-    title: "Camera Capture",
-    description: "High-resolution image acquisition at line speed",
-    icon: Camera,
+    title: "Understand",
+    description:
+      "We start with your production environment and quality requirements.",
+    icon: ClipboardList,
   },
   {
-    id: "inference",
+    id: "design",
     number: 2,
-    title: "AI Inference",
-    description: "Deep learning models analyze images in real-time",
-    icon: Brain,
+    title: "Design",
+    description:
+      "We select the imaging and technologies that fit the application.",
+    icon: Layers,
   },
   {
-    id: "detection",
+    id: "integrate",
     number: 3,
-    title: "Detection",
-    description: "Identify defects, classify issues, segment regions",
-    icon: ScanSearch,
-  },
-  {
-    id: "alerts",
-    number: 4,
-    title: "Alerts & Analytics",
-    description: "Instant notifications and trend visualization",
-    icon: AlertCircle,
-  },
-  {
-    id: "integration",
-    number: 5,
-    title: "Integration",
-    description: "Connect to ERP, MES, and quality systems",
+    title: "Integrate",
+    description:
+      "We build and integrate the system with your line and automation.",
     icon: Network,
+  },
+  {
+    id: "validate",
+    number: 4,
+    title: "Validate",
+    description:
+      "We validate accuracy and reliability in real production conditions.",
+    icon: CheckCircle2,
+  },
+  {
+    id: "support",
+    number: 5,
+    title: "Support",
+    description:
+      "We provide ongoing optimisation and remote support.",
+    icon: LifeBuoy,
   },
 ];
 
@@ -113,10 +118,10 @@ export function Pipeline() {
           id="pipeline-heading"
           className="text-center text-3xl font-bold text-foreground sm:text-4xl"
         >
-          How It Works
+          Our Approach
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          End-to-end AI vision pipeline from capture to action
+          How we take a project from requirement to reliable production.
         </p>
 
         {/* Desktop: horizontal flow with single connecting line */}

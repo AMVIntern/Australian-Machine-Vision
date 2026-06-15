@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
-import { LogoCarousel } from "@/components/home/logo-carousel";
-import { MetricsStrip } from "@/components/home/metrics-strip";
+import { IndustriesStrip } from "@/components/home/industries-strip";
 import { IndustryTabs } from "@/components/home/industry-tabs";
 import { Pipeline } from "@/components/home/pipeline";
 import { CapabilitiesGrid } from "@/components/home/capabilities-grid";
-import { VisualProof } from "@/components/home/visual-proof";
 import { Differentiators } from "@/components/home/differentiators";
 import { FinalCTA } from "@/components/home/final-cta";
 
@@ -31,12 +29,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <LogoCarousel />
-      <MetricsStrip />
+      <IndustriesStrip />
       <IndustryTabs />
       <Pipeline />
       <CapabilitiesGrid />
-      <VisualProof />
       <Differentiators />
       <FinalCTA />
     </>

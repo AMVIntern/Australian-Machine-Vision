@@ -2,11 +2,9 @@
 
 import { motion } from "framer-motion";
 import {
-  Camera,
-  Zap,
-  Globe,
+  Award,
   Network,
-  Package,
+  Cpu,
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
@@ -21,45 +19,31 @@ export interface DifferentiatorItem {
 
 const differentiators: DifferentiatorItem[] = [
   {
-    id: "existing-cameras",
-    title: "Works with Existing Cameras",
+    id: "experience",
+    title: "Decades of Experience",
     description:
-      "No need to replace your current camera infrastructure—leverage what you already have.",
-    icon: Camera,
+      "More than 20 years delivering machine vision and automated inspection across food processing, FMCG, packaging and industrial manufacturing, in Australia and global markets.",
+    icon: Award,
   },
   {
-    id: "rapid-deployment",
-    title: "Rapid Deployment",
+    id: "partners",
+    title: "Technology Partners",
     description:
-      "Go from pilot to production in weeks, not months, with our proven methodology.",
-    icon: Zap,
-  },
-  {
-    id: "limited-data",
-    title: "High Accuracy with Limited Data",
-    description:
-      "Advanced techniques achieve >95% accuracy with minimal training samples.",
-    icon: Globe,
-  },
-  {
-    id: "scalable",
-    title: "Scalable Architecture",
-    description:
-      "Start with one line and scale across facilities with centralized management.",
+      "A wide network of trusted partners across the global vision industry, giving access to the best available hardware, imaging platforms and processing technologies.",
     icon: Network,
   },
   {
-    id: "industry-models",
-    title: "Industry-Specific Models",
+    id: "engineering",
+    title: "In-House Engineering and Software",
     description:
-      "Pre-trained on manufacturing defects—customize for your unique needs.",
-    icon: Package,
+      "Our teams design, build and support every system, combining the best available components with custom software and automation integration.",
+    icon: Cpu,
   },
   {
-    id: "continuous-improvement",
-    title: "Continuous Improvement",
+    id: "value",
+    title: "Value for Investment",
     description:
-      "Active learning pipeline ensures models get smarter with every inspection.",
+      "We solve the challenges that off the shelf systems cannot, delivering measurable improvements in accuracy, throughput and consistency.",
     icon: TrendingUp,
   },
 ];
@@ -119,11 +103,11 @@ export function Differentiators() {
           Why Choose AMV
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          The competitive advantages that set us apart
+          What we bring to every inspection project
         </p>
 
         <motion.div
-          className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2"
           variants={container}
           initial="initial"
           whileInView="animate"

@@ -9,7 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/customer-stories", label: "Customer Stories" },
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;
@@ -78,7 +78,7 @@ export function Navbar() {
               "h-12 min-w-[8.5rem] rounded-lg px-6 text-base font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
             )}
           >
-            Book Demo
+            Contact Us
           </Link>
         </div>
 
@@ -140,7 +140,7 @@ export function Navbar() {
                 "w-full inline-flex justify-center rounded-lg font-semibold"
               )}
             >
-              Book Demo
+              Contact Us
             </Link>
           </li>
         </ul>

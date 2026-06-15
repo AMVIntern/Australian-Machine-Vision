@@ -1,16 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MapPin, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, Linkedin } from "lucide-react";
 
 const footerLinks = [
-  { href: "/customer-stories", label: "Customer Stories" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
 const socialLinks = [
-  { href: "#", label: "LinkedIn", icon: Linkedin },
-  { href: "#", label: "Twitter", icon: Twitter },
+  {
+    href: "https://www.linkedin.com/company/australian-machine-vision/",
+    label: "LinkedIn",
+    icon: Linkedin,
+  },
 ] as const;
 
 export function Footer() {
@@ -35,11 +37,16 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-foreground-muted" role="list">
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 shrink-0" aria-hidden />
-                <span>contact@example.com</span>
+                <a
+                  href="mailto:amvsupport@amvco.com.au"
+                  className="hover:text-foreground transition-colors"
+                >
+                  amvsupport@amvco.com.au
+                </a>
               </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 shrink-0" aria-hidden />
-                <span>Australia</span>
+              <li className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 shrink-0 mt-0.5" aria-hidden />
+                <span>9A Sir Laurence Drive, Seaford 3198</span>
               </li>
             </ul>
           </div>
@@ -71,6 +78,8 @@ export function Footer() {
                 <li key={label}>
                   <a
                     href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-foreground-muted hover:text-foreground transition-colors"
                     aria-label={label}
                   >

@@ -40,14 +40,15 @@ export function FinalCTA() {
               className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl"
               variants={fadeIn}
             >
-              Ready to Transform Your Quality Control?
+              Let&apos;s Solve Your Inspection Challenge
             </motion.h2>
             <motion.p
               className="mt-4 text-lg text-white/95 sm:text-xl"
               variants={fadeIn}
             >
-              Join leading manufacturers who have reduced defects by 95% and cut
-              inspection costs by 65% with our AI vision platform.
+              If you are reviewing your inspection capability or planning
+              upgrades across multiple sites, our team can help you identify the
+              right approach.
             </motion.p>
             <motion.div
               className="mt-10 flex flex-wrap items-center justify-center gap-4"
@@ -65,7 +66,7 @@ export function FinalCTA() {
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
                   )}
                 >
-                  Request Pilot
+                  Contact Us
                 </Link>
               </motion.div>
               <motion.div
@@ -80,7 +81,7 @@ export function FinalCTA() {
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
                   )}
                 >
-                  Talk to Expert
+                  Talk to Our Team
                 </Link>
               </motion.div>
             </motion.div>

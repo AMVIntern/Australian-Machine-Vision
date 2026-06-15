@@ -7,25 +7,25 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Australian Machine Vision—our mission, vision, and expertise in industrial AI and computer vision for quality inspection.",
+    "Learn about Australian Machine Vision. Our mission, vision, and expertise in industrial machine vision for quality inspection.",
   openGraph: {
     title: "About | Australian Machine Vision",
     description:
-      "Learn about Australian Machine Vision—our mission, vision, and expertise in industrial AI and computer vision for quality inspection.",
+      "Learn about Australian Machine Vision. Our mission, vision, and expertise in industrial machine vision for quality inspection.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "About | Australian Machine Vision",
     description:
-      "Learn about Australian Machine Vision—our mission, vision, and expertise in industrial AI and computer vision for quality inspection.",
+      "Learn about Australian Machine Vision. Our mission, vision, and expertise in industrial machine vision for quality inspection.",
   },
 };
 
 export default function AboutPage() {
   return (
     <div>
-      {/* Hero - Transforming Manufacturing with AI Vision */}
+      {/* Hero - Our Vision is Your Solution */}
       <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mx-auto max-w-3xl text-center">
@@ -33,13 +33,16 @@ export default function AboutPage() {
               id="about-title"
               className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl"
             >
-              Transforming Manufacturing with{" "}
-              <span className="text-accent-primary">AI Vision</span>
+              Our <span className="text-accent-primary">Vision</span> is Your{" "}
+              <span className="text-accent-primary">Solution</span>
             </h1>
             <p className="mt-4 text-lg text-foreground-muted">
-              Australian Machine Vision is on a mission to make visual quality
-              inspection accessible, accurate, and automated for manufacturers
-              worldwide.
+              AMV delivers high performance machine vision and automated
+              inspection systems designed for accuracy, reliability and
+              repeatability. We support food processing, industrial and general
+              manufacturing across Australia and global markets, integrating
+              advanced imaging and proven engineering to solve inspection
+              challenges that standard systems cannot.
             </p>
           </header>
         </div>
@@ -60,16 +63,15 @@ export default function AboutPage() {
                 Our Mission
               </h2>
               <p className="mt-4 text-foreground-muted leading-relaxed">
-                To empower manufacturers with AI-powered vision technology that
-                eliminates defects, ensures consistent quality standards, and
-                scales inspection without scaling headcount. We believe every
-                production line can benefit from real-time, accurate visual
-                inspection.
+                To deliver machine vision and automated inspection systems that
+                solve real production challenges. We help manufacturers in food,
+                industrial and general manufacturing achieve the accuracy,
+                reliability and repeatability that off the shelf systems cannot.
               </p>
               <p className="mt-4 text-foreground-muted leading-relaxed">
-                We deliver solutions that work with existing cameras and
-                infrastructure—so you can deploy quickly and see measurable ROI
-                from day one.
+                Every project starts with a clear understanding of your
+                production environment and quality requirements, so the
+                solution fits the way your line actually runs.
               </p>
             </div>
             <div>
@@ -83,29 +85,60 @@ export default function AboutPage() {
                 Our Vision
               </h2>
               <p className="mt-4 text-foreground-muted leading-relaxed">
-                A world where zero-defect manufacturing is the norm—enabled by
-                AI-powered quality control that sees what humans miss, runs
-                24/7, and gets smarter over time. We envision factories where
-                visual inspection is fully automated, auditable, and integrated
-                into every critical process.
+                Our vision is your solution. We combine advanced imaging, robust
+                algorithms and a wide network of trusted technology partners to
+                build inspection systems that perform in real world conditions,
+                not just in the lab.
               </p>
               <p className="mt-4 text-foreground-muted leading-relaxed">
-                From automotive to pharma, FMCG to electronics, we&apos;re
-                building the platform that makes this possible.
+                We then select and integrate the technologies that deliver the
+                most reliable, scalable and cost effective outcome for each
+                customer.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team / collaboration image placeholder */}
-      <section className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16">
+      {/* Leadership - Director */}
+      <section
+        className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16"
+        aria-labelledby="leadership-heading"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
-            <div className="aspect-video w-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-              <span className="text-sm text-foreground-muted">
-                Team / collaboration image placeholder
-              </span>
+          <h2
+            id="leadership-heading"
+            className="text-center text-2xl font-bold text-foreground sm:text-3xl"
+          >
+            Leadership
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-center text-foreground-muted">
+            The experience behind every system we deliver.
+          </p>
+
+          <div className="mx-auto mt-10 grid max-w-4xl items-center gap-8 sm:grid-cols-[auto,1fr] sm:gap-12">
+            {/* Photo placeholder - replace with a portrait of Ken at /public/team/ken-razga.jpg */}
+            <div className="mx-auto flex h-44 w-44 items-center justify-center overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-teal-50 to-cyan-50 shadow-soft sm:h-52 sm:w-52">
+              <span className="text-4xl font-bold text-accent-primary">KR</span>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-foreground">Ken Razga</h3>
+              <p className="mt-1 text-sm font-medium text-accent-primary">
+                Director
+              </p>
+              <p className="mt-4 text-foreground-muted leading-relaxed">
+                Ken leads Australian Machine Vision, bringing more than 20 years
+                of hands-on experience in machine vision and industrial
+                automation. He has worked closely with manufacturers across
+                food, industrial and general manufacturing to solve inspection
+                challenges that off the shelf systems cannot.
+              </p>
+              <p className="mt-3 text-foreground-muted leading-relaxed">
+                His focus is practical engineering and measurable results,
+                making sure every system we deliver is reliable, well integrated
+                and built for real production conditions.
+              </p>
             </div>
           </div>
         </div>
@@ -127,34 +160,34 @@ export default function AboutPage() {
           <div className="flex flex-wrap justify-center gap-10 sm:gap-16">
             <div className="text-center">
               <p className="text-3xl font-bold tabular-nums text-accent-primary sm:text-4xl">
-                150+
+                20+
               </p>
               <p className="mt-1 text-sm text-accent-primary">
-                Manufacturing Clients
+                Years of Experience
               </p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold tabular-nums text-accent-primary sm:text-4xl">
-                50M+
+              <p className="text-3xl font-bold text-accent-primary sm:text-4xl">
+                Global
               </p>
               <p className="mt-1 text-sm text-accent-primary">
-                Inspections Per Day
+                Australia and International Markets
               </p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold tabular-nums text-accent-primary sm:text-4xl">
-                99.2%
+              <p className="text-3xl font-bold text-accent-primary sm:text-4xl">
+                In-House
               </p>
               <p className="mt-1 text-sm text-accent-primary">
-                Average Accuracy
+                Engineering and Software
               </p>
             </div>
             <div className="text-center">
-              <p className="text-3xl font-bold tabular-nums text-accent-primary sm:text-4xl">
-                6
+              <p className="text-3xl font-bold text-accent-primary sm:text-4xl">
+                Trusted
               </p>
               <p className="mt-1 text-sm text-accent-primary">
-                Our Team Members
+                Technology Partner Network
               </p>
             </div>
           </div>
@@ -172,11 +205,12 @@ export default function AboutPage() {
               id="about-cta-heading"
               className="text-3xl font-bold text-white sm:text-4xl"
             >
-              Join Us In Transforming Manufacturing
+              Let&apos;s Solve Your Inspection Challenge
             </h2>
             <p className="mt-4 text-lg text-white/95">
-              Whether you&apos;re looking to deploy AI vision or join our team,
-              we&apos;d love to hear from you.
+              If you are reviewing your inspection capability or planning
+              upgrades across multiple sites, our team can help you identify the
+              right approach.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link

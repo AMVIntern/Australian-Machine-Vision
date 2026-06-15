@@ -9,12 +9,15 @@ const initialState: FormState = {};
 
 const INDUSTRY_OPTIONS = [
   { value: "", label: "Select your Industry" },
-  { value: "automotive", label: "Automotive" },
-  { value: "electronics", label: "Electronics" },
-  { value: "fmcg", label: "FMCG / Consumer Goods" },
-  { value: "pharma", label: "Pharmaceutical" },
-  { value: "food-beverage", label: "Food & Beverage" },
-  { value: "metals", label: "Metals & Manufacturing" },
+  { value: "food-processing", label: "Food Processing" },
+  { value: "fmcg", label: "FMCG" },
+  { value: "dairy", label: "Dairy" },
+  { value: "bakery", label: "Bakery" },
+  { value: "healthcare", label: "Healthcare" },
+  { value: "building-products", label: "Building Products" },
+  { value: "transport-logistics", label: "Transport and Logistics" },
+  { value: "industrial-manufacturing", label: "Industrial Manufacturing" },
+  { value: "general-manufacturing", label: "General Manufacturing" },
   { value: "other", label: "Other" },
 ];
 
@@ -233,7 +236,7 @@ export function ContactForm() {
             "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0",
             state?.errors?.message && "border-red-500"
           )}
-          placeholder="Tell us about your quality control challenges and goals."
+          placeholder="Tell us about your inspection or quality control challenge and what you want to achieve."
           aria-invalid={!!state?.errors?.message}
           aria-describedby={state?.errors?.message ? "message-error" : undefined}
         />

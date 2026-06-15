@@ -2,16 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
   ChevronRight,
-  Car,
   Apple,
-  Box,
-  Pill,
-  Zap,
   Factory,
+  Package,
   Check,
   type LucideIcon,
 } from "lucide-react";
@@ -24,108 +22,64 @@ export interface IndustryTabData {
   icon: LucideIcon;
   /** Tailwind class for icon when tab is inactive (e.g. text-violet-500) */
   inactiveIconColor: string;
-  challenge: string;
-  solution: string;
-  impactBullets: string[];
+  intro: string;
+  valueBullets: string[];
+  image: string;
   imageAlt: string;
 }
 
 const industryTabsData: IndustryTabData[] = [
   {
-    id: "automotive",
-    label: "Automotive",
-    icon: Car,
-    inactiveIconColor: "text-violet-500",
-    challenge:
-      "Manual paint defect inspection is slow and inconsistent, leading to high rejection rates and customer complaints.",
-    solution:
-      "AI-powered vision system detects paint defects, scratches, and dents in real-time on the production line.",
-    impactBullets: [
-      "95% defect detection accuracy",
-      "60% reduction in quality control costs",
-      "40% faster inspection throughput",
-    ],
-    imageAlt: "Automotive inspection example",
-  },
-  {
-    id: "fmcg-food",
-    label: "FMCG / Food",
+    id: "food-processing",
+    label: "Food Processing",
     icon: Apple,
     inactiveIconColor: "text-red-500",
-    challenge:
-      "Quality and safety checks at scale are manual and error-prone, risking compliance and waste.",
-    solution:
-      "Vision systems for packaging, labelling, fill-level and foreign body detection with full traceability.",
-    impactBullets: [
-      "Reduced product waste and rework",
-      "Label and fill-level verification",
-      "Allergen and foreign body screening",
+    intro:
+      "Inspection and quality checks that keep food products safe, consistent and compliant at line speed.",
+    valueBullets: [
+      "Foreign material detection",
+      "Portion control and weight verification",
+      "Surface and structural defect detection",
+      "Seal and packaging inspection",
+      "Fill level checks",
+      "Trending analysis for process improvement",
     ],
-    imageAlt: "FMCG and food inspection example",
+    image: "/industries/food-processing.jpg",
+    imageAlt: "Food processing line with produce on inspection conveyors",
   },
   {
-    id: "warehousing-logistics",
-    label: "Warehousing & Logistics",
-    icon: Box,
-    inactiveIconColor: "text-amber-800",
-    challenge:
-      "Parcel and inventory verification relies on manual checks, limiting throughput and accuracy.",
-    solution:
-      "Automated damage detection, sortation, and dimension validation at line speed.",
-    impactBullets: [
-      "Higher sortation accuracy",
-      "Damage and condition checks",
-      "Dimension and barcode validation",
+    id: "industrial-manufacturing",
+    label: "Industrial Manufacturing",
+    icon: Factory,
+    inactiveIconColor: "text-slate-500",
+    intro:
+      "Precision measurement and defect detection that hold tight tolerances across production.",
+    valueBullets: [
+      "Dimensional measurement and tolerance control",
+      "Surface defect detection",
+      "Component presence and orientation",
+      "Assembly verification",
+      "Process stability and trend analysis",
     ],
-    imageAlt: "Warehousing and logistics inspection example",
-  },
-  {
-    id: "pharmaceuticals",
-    label: "Pharmaceuticals",
-    icon: Pill,
-    inactiveIconColor: "text-rose-500",
-    challenge:
-      "Regulatory requirements demand consistent, auditable defect detection for tablets, capsules, and packaging.",
-    solution:
-      "GMP-aligned inspection for defects, contamination, and serialisation with full audit trails.",
-    impactBullets: [
-      "GMP-aligned inspection workflows",
-      "Batch and unit-level traceability",
-      "Contamination and defect detection",
-    ],
-    imageAlt: "Pharmaceutical inspection example",
-  },
-  {
-    id: "electronics",
-    label: "Electronics",
-    icon: Zap,
-    inactiveIconColor: "text-amber-500",
-    challenge:
-      "PCB and assembly defects cause rework and failures downstream if not caught early.",
-    solution:
-      "Solder joint, placement, and defect detection integrated with AOI and test systems.",
-    impactBullets: [
-      "Solder and placement verification",
-      "Short-circuit and defect detection",
-      "Integration with AOI and test systems",
-    ],
-    imageAlt: "Electronics inspection example",
+    image: "/industries/industrial-manufacturing.jpg",
+    imageAlt: "Automated industrial manufacturing production line",
   },
   {
     id: "general-manufacturing",
     label: "General Manufacturing",
-    icon: Factory,
-    inactiveIconColor: "text-slate-500",
-    challenge:
-      "Mixed production and changing defect types require flexible, quick-to-deploy inspection.",
-    solution:
-      "One platform for multiple lines and defect types with configurable rules and fast model updates.",
-    impactBullets: [
-      "Quick model retraining for new products",
-      "Configurable pass/fail rules",
-      "Edge and cloud deployment options",
+    icon: Package,
+    inactiveIconColor: "text-amber-600",
+    intro:
+      "Flexible inspection for packaging, labelling and assembly across mixed production.",
+    valueBullets: [
+      "High speed packaging inspection",
+      "Barcode, label and print verification",
+      "Completeness and assembly checks",
+      "Quality grading and classification",
+      "Automated quality trending",
     ],
-    imageAlt: "General manufacturing inspection example",
+    image: "/industries/general-manufacturing.jpg",
+    imageAlt: "Automated packaging and sortation conveyor system",
   },
 ];
 
@@ -182,8 +136,8 @@ export function IndustryTabs() {
           Industry Solutions
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          Tailored AI vision systems for your specific manufacturing
-          challenges.
+          Where machine vision delivers value across food, industrial and
+          general manufacturing.
         </p>
 
         {/* Desktop: pill tabs + content */}
@@ -246,51 +200,28 @@ export function IndustryTabs() {
               >
                 <CardContent className="p-0">
                   <div className="grid lg:grid-cols-2">
-                    <motion.div
-                      className="relative aspect-video overflow-hidden bg-background-secondary lg:aspect-auto lg:min-h-[320px]"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 24,
-                      }}
-                    >
-                      <div
-                        className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-background-secondary to-border/30"
-                        aria-hidden
-                      >
-                        <div
-                          className="h-20 w-20 rounded-xl border-2 border-dashed border-accent-primary/50 bg-white/60"
-                          title={activeTab.imageAlt}
-                        />
-                      </div>
-                    </motion.div>
+                    <div className="relative aspect-video overflow-hidden bg-background-secondary lg:aspect-auto lg:min-h-[320px]">
+                      <Image
+                        src={activeTab.image}
+                        alt={activeTab.imageAlt}
+                        fill
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                      />
+                    </div>
                     <div className="flex flex-col justify-center p-6 sm:p-8">
                       <h3 className="text-xl font-bold text-foreground">
                         {activeTab.label}
                       </h3>
+                      <p className="mt-3 text-sm text-foreground-muted">
+                        {activeTab.intro}
+                      </p>
                       <div className="mt-4">
                         <p className="text-xs font-semibold uppercase tracking-wider text-accent-primary">
-                          Challenge
-                        </p>
-                        <p className="mt-1 text-sm text-foreground-muted">
-                          {activeTab.challenge}
-                        </p>
-                      </div>
-                      <div className="mt-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-accent-primary">
-                          Solution
-                        </p>
-                        <p className="mt-1 text-sm text-foreground-muted">
-                          {activeTab.solution}
-                        </p>
-                      </div>
-                      <div className="mt-4">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-accent-primary">
-                          Impact
+                          Where we add value
                         </p>
                         <ul className="mt-2 space-y-1.5">
-                          {activeTab.impactBullets.map((bullet, i) => (
+                          {activeTab.valueBullets.map((bullet, i) => (
                             <li
                               key={i}
                               className="flex items-center gap-2 text-sm text-foreground"
@@ -304,10 +235,10 @@ export function IndustryTabs() {
                         </ul>
                       </div>
                       <Link
-                        href="/customer-stories"
+                        href="/contact"
                         className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-accent-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                       >
-                        Learn More
+                        Discuss your application
                         <ChevronRight className="h-4 w-4" aria-hidden />
                       </Link>
                     </div>
@@ -375,31 +306,25 @@ export function IndustryTabs() {
                       >
                         <CardContent className="p-4 pt-0">
                           <div className="relative aspect-video overflow-hidden rounded-lg bg-background-secondary">
-                            <div
-                              className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-background-secondary to-border/30"
-                              aria-hidden
+                            <Image
+                              src={tab.image}
+                              alt={tab.imageAlt}
+                              fill
+                              className="object-cover"
+                              sizes="100vw"
                             />
                           </div>
                           <h3 className="mt-4 text-lg font-bold text-foreground">
                             {tab.label}
                           </h3>
-                          <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent-primary">
-                            Challenge
-                          </p>
-                          <p className="mt-1 text-sm text-foreground-muted">
-                            {tab.challenge}
+                          <p className="mt-2 text-sm text-foreground-muted">
+                            {tab.intro}
                           </p>
                           <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-accent-primary">
-                            Solution
-                          </p>
-                          <p className="mt-1 text-sm text-foreground-muted">
-                            {tab.solution}
-                          </p>
-                          <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-accent-primary">
-                            Impact
+                            Where we add value
                           </p>
                           <ul className="mt-2 space-y-1.5">
-                            {tab.impactBullets.map((bullet, i) => (
+                            {tab.valueBullets.map((bullet, i) => (
                               <li
                                 key={i}
                                 className="flex items-center gap-2 text-sm text-foreground"
@@ -410,10 +335,10 @@ export function IndustryTabs() {
                             ))}
                           </ul>
                           <Link
-                            href="/customer-stories"
+                            href="/contact"
                             className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent-primary hover:underline"
                           >
-                            Learn More
+                            Discuss your application
                             <ChevronRight className="h-4 w-4" />
                           </Link>
                         </CardContent>
