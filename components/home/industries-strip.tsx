@@ -4,6 +4,7 @@ const INDUSTRIES = [
   "Dairy",
   "Bakery",
   "Healthcare",
+  "Defence",
   "Building Products",
   "Transport and Logistics",
   "Industrial Manufacturing",

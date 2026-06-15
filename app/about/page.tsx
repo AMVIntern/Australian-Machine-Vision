@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Australian Machine Vision. Our mission, vision, and expertise in industrial machine vision for quality inspection.",
+    "Learn about Australian Machine Vision. Our mission, vision and 20+ years of experience in machine vision and automated inspection for manufacturing.",
+  alternates: { canonical: "/about" },
   openGraph: {
     title: "About | Australian Machine Vision",
     description:

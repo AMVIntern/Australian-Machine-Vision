@@ -14,6 +14,7 @@ const INDUSTRY_OPTIONS = [
   { value: "dairy", label: "Dairy" },
   { value: "bakery", label: "Bakery" },
   { value: "healthcare", label: "Healthcare" },
+  { value: "defence", label: "Defence" },
   { value: "building-products", label: "Building Products" },
   { value: "transport-logistics", label: "Transport and Logistics" },
   { value: "industrial-manufacturing", label: "Industrial Manufacturing" },

@@ -8,20 +8,23 @@ import { Differentiators } from "@/components/home/differentiators";
 import { FinalCTA } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
-  title: "Australian Machine Vision | Computer Vision AI",
+  title: "Australian Machine Vision | Machine Vision and Automated Inspection",
   description:
-    "AI-powered visual inspection and automation. Real-time defect detection, scalable deployment, and measurable ROI for manufacturing.",
+    "Machine vision and automated inspection systems for food, industrial and general manufacturing. Australian engineered, with 20+ years of experience and in-house engineering and software.",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Australian Machine Vision | Computer Vision AI",
+    title:
+      "Australian Machine Vision | Machine Vision and Automated Inspection",
     description:
-      "AI-powered visual inspection and automation. Real-time defect detection, scalable deployment, and measurable ROI for manufacturing.",
+      "Machine vision and automated inspection systems for food, industrial and general manufacturing across Australia and global markets.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Australian Machine Vision | Computer Vision AI",
+    title:
+      "Australian Machine Vision | Machine Vision and Automated Inspection",
     description:
-      "AI-powered visual inspection and automation. Real-time defect detection, scalable deployment, and measurable ROI for manufacturing.",
+      "Machine vision and automated inspection systems for food, industrial and general manufacturing.",
   },
 };
 

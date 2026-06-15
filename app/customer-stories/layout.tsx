@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Customer Stories",
   description:
-    "Case studies and success stories. See how manufacturers use AI vision for defect detection and quality inspection.",
+    "Customer stories and case studies from Australian Machine Vision are coming soon.",
+  // Thin placeholder page until approved case studies exist: keep it out of the index.
+  robots: { index: false, follow: true },
   openGraph: {
     title: "Customer Stories | Australian Machine Vision",
     description:
-      "Case studies and success stories. See how manufacturers use AI vision for defect detection and quality inspection.",
+      "Customer stories and case studies from Australian Machine Vision are coming soon.",
     type: "website",
   },
 };

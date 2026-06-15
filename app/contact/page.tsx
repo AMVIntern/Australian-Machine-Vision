@@ -5,7 +5,8 @@ import { ContactForm } from "@/components/contact/contact-form";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Australian Machine Vision. Request a demo or ask about AI vision for quality inspection.",
+    "Get in touch with Australian Machine Vision in Seaford, Victoria. Discuss machine vision and automated inspection for your production line.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact | Australian Machine Vision",
     description:
