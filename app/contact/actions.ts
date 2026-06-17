@@ -1,5 +1,8 @@
 "use server";
 
+import { sql } from "@vercel/postgres";
+import nodemailer from "nodemailer";
+
 export type FormState = {
   success?: boolean;
   message?: string;
@@ -7,6 +10,99 @@ export type FormState = {
 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "vikrant@amvco.com.au";
+
+async function storeSubmission(data: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  company: string;
+  phone: string;
+  industry: string;
+  message: string;
+}): Promise<boolean> {
+  if (!process.env.POSTGRES_URL) return false;
+  try {
+    await sql`
+      CREATE TABLE IF NOT EXISTS contact_submissions (
+        id SERIAL PRIMARY KEY,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        company TEXT NOT NULL,
+        phone TEXT,
+        industry TEXT NOT NULL,
+        message TEXT NOT NULL
+      )
+    `;
+    await sql`
+      INSERT INTO contact_submissions
+        (first_name, last_name, email, company, phone, industry, message)
+      VALUES
+        (${data.firstName}, ${data.lastName}, ${data.email}, ${data.company},
+         ${data.phone || null}, ${data.industry}, ${data.message})
+    `;
+    return true;
+  } catch (e) {
+    console.error("contact: database insert failed", e);
+    return false;
+  }
+}
+
+async function notifyByEmail(data: {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  industry: string;
+  message: string;
+}): Promise<boolean> {
+  const host = process.env.SMTP_HOST;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (!host || !user || !pass) return false;
+
+  const port = Number(process.env.SMTP_PORT ?? 587);
+  // Port 465 uses implicit TLS; 587 uses STARTTLS. Allow override via SMTP_SECURE.
+  const secure = process.env.SMTP_SECURE
+    ? process.env.SMTP_SECURE === "true"
+    : port === 465;
+  const from = process.env.CONTACT_FROM_EMAIL ?? user;
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth: { user, pass },
+    });
+
+    await transporter.sendMail({
+      from,
+      to: TO_EMAIL,
+      replyTo: data.email,
+      subject: `New website enquiry from ${data.name}${
+        data.company ? ` (${data.company})` : ""
+      }`,
+      text: [
+        `Name: ${data.name}`,
+        `Email: ${data.email}`,
+        `Company: ${data.company}`,
+        `Phone: ${data.phone || "Not provided"}`,
+        `Industry: ${data.industry}`,
+        "",
+        "Message:",
+        data.message,
+      ].join("\n"),
+    });
+    return true;
+  } catch (e) {
+    console.error("contact: SMTP send failed", e);
+    return false;
+  }
+}
 
 export async function submitContactForm(
   _prevState: FormState | null,
@@ -47,34 +143,36 @@ export async function submitContactForm(
     return { success: false, errors };
   }
 
-  try {
-    const name = [firstName, lastName].filter(Boolean).join(" ");
-    if (process.env.CONTACT_WEBHOOK_URL) {
-      await fetch(process.env.CONTACT_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          firstName,
-          lastName,
-          email,
-          company,
-          phone: phone || undefined,
-          industry,
-          message,
-        }),
-      });
-    }
-    return {
-      success: true,
-      message:
-        "Thanks for getting in touch. We'll respond within 1 to 2 business days.",
-    };
-  } catch (e) {
-    return {
-      success: false,
-      message:
-        "Something went wrong. Please try again or email us directly.",
-    };
+  const name = [firstName, lastName].filter(Boolean).join(" ");
+
+  // Store the submission and send the notification in parallel. Each is
+  // guarded and logs its own failure so one channel failing does not lose
+  // the lead through the other.
+  const [stored, notified] = await Promise.all([
+    storeSubmission({
+      firstName,
+      lastName,
+      email,
+      company,
+      phone,
+      industry,
+      message,
+    }),
+    notifyByEmail({ name, email, company, phone, industry, message }),
+  ]);
+
+  if (!stored && !notified) {
+    console.warn("contact: submission not stored or emailed", {
+      name,
+      email,
+      company,
+      industry,
+    });
   }
+
+  return {
+    success: true,
+    message:
+      "Thanks for getting in touch. We'll respond within 1 to 2 business days.",
+  };
 }

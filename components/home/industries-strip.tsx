@@ -1,14 +1,14 @@
 const INDUSTRIES = [
-  "Food Processing",
-  "FMCG",
-  "Dairy",
+  "FMCG and Packaged Food",
+  "Dairy and Food Processing",
   "Bakery",
-  "Healthcare",
+  "Hygiene and Nonwovens",
+  "Healthcare and Medical",
+  "Pharmaceutical",
+  "Returnable Packaging",
+  "Transport and Logistics",
   "Defence",
   "Building Products",
-  "Transport and Logistics",
-  "Industrial Manufacturing",
-  "General Manufacturing",
 ] as const;
 
 export function IndustriesStrip() {

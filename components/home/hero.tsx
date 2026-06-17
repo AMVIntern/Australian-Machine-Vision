@@ -60,10 +60,10 @@ export function Hero() {
               className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl"
               variants={fadeInUp}
             >
-              AMV designs and integrates high performance machine vision and
-              automated inspection systems for food, industrial and general
-              manufacturing. Accurate, reliable and built for real production
-              lines.
+              AMV designs and builds automated visual inspection systems that
+              check each product as it moves through your line, decide in real
+              time whether it meets specification, and feed the result into your
+              process and control systems.
             </motion.p>
 
             <motion.div

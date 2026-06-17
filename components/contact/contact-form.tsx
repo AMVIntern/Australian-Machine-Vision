@@ -9,16 +9,16 @@ const initialState: FormState = {};
 
 const INDUSTRY_OPTIONS = [
   { value: "", label: "Select your Industry" },
-  { value: "food-processing", label: "Food Processing" },
-  { value: "fmcg", label: "FMCG" },
-  { value: "dairy", label: "Dairy" },
+  { value: "fmcg-packaged-food", label: "FMCG and Packaged Food" },
+  { value: "dairy-food-processing", label: "Dairy and Food Processing" },
   { value: "bakery", label: "Bakery" },
-  { value: "healthcare", label: "Healthcare" },
+  { value: "hygiene-nonwovens", label: "Hygiene and Nonwovens" },
+  { value: "healthcare-medical", label: "Healthcare and Medical" },
+  { value: "pharmaceutical", label: "Pharmaceutical" },
+  { value: "returnable-packaging", label: "Returnable Packaging" },
+  { value: "transport-logistics", label: "Transport and Logistics" },
   { value: "defence", label: "Defence" },
   { value: "building-products", label: "Building Products" },
-  { value: "transport-logistics", label: "Transport and Logistics" },
-  { value: "industrial-manufacturing", label: "Industrial Manufacturing" },
-  { value: "general-manufacturing", label: "General Manufacturing" },
   { value: "other", label: "Other" },
 ];
 

@@ -1,95 +1,66 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Box,
-  Camera,
-  Cpu,
-  ScanLine,
-  Thermometer,
-  SlidersHorizontal,
-  Brain,
-  Lightbulb,
-  ScanBarcode,
-  Check,
-  type LucideIcon,
-} from "lucide-react";
+import { Camera, Ruler, Brain, Check, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export interface CapabilityItem {
+interface CapabilityFamily {
   id: string;
   title: string;
-  description: string;
+  intro: string;
+  items: string[];
   icon: LucideIcon;
 }
 
-const technologies: CapabilityItem[] = [
+const families: CapabilityFamily[] = [
   {
-    id: "3d",
-    title: "3D vision and depth sensing",
-    description: "Capture shape and depth for volume, position and form checks.",
-    icon: Box,
-  },
-  {
-    id: "2d",
-    title: "High resolution 2D imaging",
-    description: "Sharp imaging for fine detail and surface inspection.",
+    id: "sensing",
+    title: "Image acquisition and sensing",
+    intro: "Choosing and engineering the right imaging for the application.",
+    items: [
+      "2D area-scan imaging",
+      "Line-scan imaging",
+      "3D laser profiling",
+      "Lighting, triggering and calibration",
+    ],
     icon: Camera,
   },
   {
-    id: "smart-cameras",
-    title: "Smart cameras and embedded vision",
-    description: "Self-contained inspection at the point of capture.",
-    icon: Cpu,
+    id: "classical",
+    title: "Classical and rule-based vision",
+    intro: "Precise, deterministic inspection where geometry and rules fit best.",
+    items: [
+      "Dimensional measurement and metrology",
+      "Alignment and pattern matching",
+      "Geometric gauging and tolerancing",
+      "Rule-based defect and presence checks",
+    ],
+    icon: Ruler,
   },
   {
-    id: "scan",
-    title: "Line scan and area scan imaging",
-    description: "Continuous or framed capture to suit your line.",
-    icon: ScanLine,
-  },
-  {
-    id: "spectral",
-    title: "Multispectral, hyperspectral and thermal",
-    description: "See beyond visible light for material and heat analysis.",
-    icon: Thermometer,
-  },
-  {
-    id: "lighting",
-    title: "Lighting and optics design",
-    description: "Application-specific lighting and optics for reliable imaging.",
-    icon: Lightbulb,
-  },
-  {
-    id: "image-processing",
-    title: "Advanced image processing",
-    description: "Proven algorithms for measurement and defect detection.",
-    icon: SlidersHorizontal,
-  },
-  {
-    id: "code-reading",
-    title: "Code and character reading",
-    description: "Read barcodes, text and labels for verification and traceability.",
-    icon: ScanBarcode,
-  },
-  {
-    id: "deep-learning",
-    title: "Deep learning detection",
-    description: "Trained models for complex and variable defects.",
+    id: "ml",
+    title: "Machine learning and deep learning",
+    intro: "Trained models for complex, variable and hard to define defects.",
+    items: [
+      "Object and defect detection",
+      "Semantic and instance segmentation",
+      "Anomaly and contamination detection",
+      "Classification and grading",
+      "Custom model development",
+    ],
     icon: Brain,
   },
 ];
 
-const applications: string[] = [
-  "Quality control, in and out of specification",
-  "Dimensional measurement and tolerance verification",
-  "Foreign material detection",
-  "Surface and structural defect detection",
-  "Packaging and label inspection",
-  "Fill level and completeness checks",
-  "Assembly verification",
-  "Automated trending and process analytics",
-  "Real time decision support for operators",
+const problems: string[] = [
+  "Defect detection",
+  "Contamination and foreign object detection",
+  "Presence, absence and component verification",
+  "Label and print verification",
+  "Dimensional measurement and metrology",
+  "Fill level estimation",
+  "Surface and structural damage assessment",
+  "Orientation and placement checks",
 ];
 
 const container = {
@@ -104,31 +75,42 @@ const cardItem = {
   transition: { duration: 0.35 },
 };
 
-function TechnologyCard({ item }: { item: CapabilityItem }) {
-  const Icon = item.icon;
+function FamilyCard({ family }: { family: CapabilityFamily }) {
+  const Icon = family.icon;
   return (
     <motion.article
       variants={cardItem}
       className={cn(
-        "group flex w-full flex-col rounded-2xl border border-border bg-white p-6 shadow-soft",
-        "transition-all hover:-translate-y-1 hover:border-accent-primary/40 hover:shadow-soft-lg",
-        "sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.875rem)]"
+        "flex flex-col rounded-2xl border border-border bg-white p-6 shadow-soft",
+        "transition-all hover:-translate-y-1 hover:border-accent-primary/40 hover:shadow-soft-lg"
       )}
     >
       <span
-        className={cn(
-          "flex h-12 w-12 items-center justify-center rounded-xl",
-          "bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-soft",
-          "transition-transform group-hover:scale-105"
-        )}
+        className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-soft"
         aria-hidden
       >
         <Icon className="h-6 w-6" strokeWidth={2} />
       </span>
-      <h4 className="mt-4 text-base font-bold text-foreground">{item.title}</h4>
+      <h3 className="mt-4 text-base font-bold text-foreground">
+        {family.title}
+      </h3>
       <p className="mt-1.5 text-sm leading-relaxed text-foreground-muted">
-        {item.description}
+        {family.intro}
       </p>
+      <ul className="mt-4 space-y-2 border-t border-border pt-4">
+        {family.items.map((item) => (
+          <li
+            key={item}
+            className="flex items-start gap-2.5 text-sm text-foreground"
+          >
+            <span
+              className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-primary"
+              aria-hidden
+            />
+            {item}
+          </li>
+        ))}
+      </ul>
     </motion.article>
   );
 }
@@ -147,35 +129,28 @@ export function CapabilitiesGrid() {
           Capabilities
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          A broad range of vision technologies, applied to the inspection
-          challenges that matter most.
+          We own the full pipeline, from sensor and lighting to the inspection
+          algorithm, and choose the right combination for each problem.
         </p>
 
-        {/* Vision technologies */}
-        <div className="mt-12 flex items-center justify-center gap-3">
-          <span className="h-px w-8 bg-border" aria-hidden />
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-accent-primary">
-            Vision technologies
-          </h3>
-          <span className="h-px w-8 bg-border" aria-hidden />
-        </div>
+        {/* Capability families */}
         <motion.div
-          className="mx-auto mt-8 flex max-w-5xl flex-wrap justify-center gap-4"
+          className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 lg:grid-cols-3"
           variants={container}
           initial="initial"
           whileInView="animate"
           viewport={{ once: true, margin: "-60px" }}
         >
-          {technologies.map((item) => (
-            <TechnologyCard key={item.id} item={item} />
+          {families.map((family) => (
+            <FamilyCard key={family.id} family={family} />
           ))}
         </motion.div>
 
-        {/* Key applications */}
+        {/* Problems we solve */}
         <div className="mt-16 flex items-center justify-center gap-3">
           <span className="h-px w-8 bg-border" aria-hidden />
           <h3 className="text-sm font-semibold uppercase tracking-wider text-accent-primary">
-            Key applications
+            Problems we solve
           </h3>
           <span className="h-px w-8 bg-border" aria-hidden />
         </div>
@@ -186,12 +161,12 @@ export function CapabilitiesGrid() {
           whileInView="animate"
           viewport={{ once: true, margin: "-60px" }}
         >
-          <ul className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-            {applications.map((app) => (
+          <ul className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
+            {problems.map((problem) => (
               <motion.li
-                key={app}
+                key={problem}
                 variants={cardItem}
-                className="flex items-start gap-3 rounded-lg p-1 transition-colors"
+                className="flex items-start gap-3"
               >
                 <span
                   className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-primary text-white"
@@ -200,7 +175,7 @@ export function CapabilitiesGrid() {
                   <Check className="h-3.5 w-3.5" strokeWidth={3} />
                 </span>
                 <span className="text-sm font-medium leading-snug text-foreground">
-                  {app}
+                  {problem}
                 </span>
               </motion.li>
             ))}

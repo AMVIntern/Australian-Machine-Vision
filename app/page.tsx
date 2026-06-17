@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
 import { IndustriesStrip } from "@/components/home/industries-strip";
-import { IndustryTabs } from "@/components/home/industry-tabs";
+import { IndustriesServed } from "@/components/home/industries-served";
 import { Pipeline } from "@/components/home/pipeline";
 import { CapabilitiesGrid } from "@/components/home/capabilities-grid";
 import { Differentiators } from "@/components/home/differentiators";
+import { ProductionStrip } from "@/components/home/production-strip";
 import { FinalCTA } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
@@ -33,10 +34,11 @@ export default function HomePage() {
     <>
       <Hero />
       <IndustriesStrip />
-      <IndustryTabs />
+      <IndustriesServed />
       <Pipeline />
       <CapabilitiesGrid />
       <Differentiators />
+      <ProductionStrip />
       <FinalCTA />
     </>
   );

@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 import {
-  ClipboardList,
-  Layers,
-  Network,
-  CheckCircle2,
+  FlaskConical,
+  Code2,
+  Plug,
+  ClipboardCheck,
   LifeBuoy,
   type LucideIcon,
 } from "lucide-react";
@@ -21,43 +21,43 @@ export interface PipelineStep {
 
 const pipelineSteps: PipelineStep[] = [
   {
-    id: "understand",
+    id: "feasibility",
     number: 1,
-    title: "Understand",
+    title: "Feasibility and POC",
     description:
-      "We start with your production environment and quality requirements.",
-    icon: ClipboardList,
+      "Assess the problem, trial sensing and algorithm options, and prove it on real product.",
+    icon: FlaskConical,
   },
   {
-    id: "design",
+    id: "development",
     number: 2,
-    title: "Design",
+    title: "Custom development",
     description:
-      "We select the imaging and technologies that fit the application.",
-    icon: Layers,
+      "Build the production system: sensing, vision and ML pipeline, software and integration, tailored to your line.",
+    icon: Code2,
   },
   {
-    id: "integrate",
+    id: "deployment",
     number: 3,
-    title: "Integrate",
+    title: "Deployment and commissioning",
     description:
-      "We build and integrate the system with your line and automation.",
-    icon: Network,
+      "Install on-site, integrate with line controls, calibrate and tune against live production.",
+    icon: Plug,
   },
   {
-    id: "validate",
+    id: "validation",
     number: 4,
-    title: "Validate",
+    title: "Validation",
     description:
-      "We validate accuracy and reliability in real production conditions.",
-    icon: CheckCircle2,
+      "Establish ground truth, quantify accuracy, and document performance and limitations.",
+    icon: ClipboardCheck,
   },
   {
     id: "support",
     number: 5,
-    title: "Support",
+    title: "Support and refinement",
     description:
-      "We provide ongoing optimisation and remote support.",
+      "Train operators, provide ongoing support, and refine models and thresholds in service.",
     icon: LifeBuoy,
   },
 ];
@@ -121,7 +121,8 @@ export function Pipeline() {
           Our Approach
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          How we take a project from requirement to reliable production.
+          We take responsibility for the whole journey from problem to
+          production system, and can enter at whatever stage suits you.
         </p>
 
         {/* Desktop: horizontal flow with single connecting line */}

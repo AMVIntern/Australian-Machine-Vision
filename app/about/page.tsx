@@ -38,12 +38,12 @@ export default function AboutPage() {
               <span className="text-accent-primary">Solution</span>
             </h1>
             <p className="mt-4 text-lg text-foreground-muted">
-              AMV delivers high performance machine vision and automated
-              inspection systems designed for accuracy, reliability and
-              repeatability. We support food processing, industrial and general
-              manufacturing across Australia and global markets, integrating
-              advanced imaging and proven engineering to solve inspection
-              challenges that standard systems cannot.
+              AMV delivers end-to-end machine vision and automated inspection,
+              from feasibility and proof of concept through custom build,
+              on-site commissioning and ongoing support. We work across food,
+              packaging, healthcare, hygiene and logistics, in Australia and
+              global markets, combining advanced imaging and proven engineering
+              to solve inspection challenges that standard systems cannot.
             </p>
           </header>
         </div>
@@ -65,9 +65,10 @@ export default function AboutPage() {
               </h2>
               <p className="mt-4 text-foreground-muted leading-relaxed">
                 To deliver machine vision and automated inspection systems that
-                solve real production challenges. We help manufacturers in food,
-                industrial and general manufacturing achieve the accuracy,
-                reliability and repeatability that off the shelf systems cannot.
+                solve real production challenges. We help manufacturers across
+                food, packaging, healthcare, hygiene and logistics achieve the
+                accuracy, reliability and repeatability that off the shelf
+                systems cannot.
               </p>
               <p className="mt-4 text-foreground-muted leading-relaxed">
                 Every project starts with a clear understanding of your
