@@ -5,7 +5,8 @@ import { ContactForm } from "@/components/contact/contact-form";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Australian Machine Vision. Request a demo or ask about AI vision for quality inspection.",
+    "Get in touch with Australian Machine Vision in Seaford, Victoria. Discuss machine vision and automated inspection for your production line.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact | Australian Machine Vision",
     description:
@@ -32,8 +33,8 @@ export default function ContactPage() {
             Contact Us
           </h1>
           <p className="mt-3 text-lg text-foreground-muted">
-            Ready to transform your quality control? Let&apos;s discuss how AI
-            vision can help your manufacturing operations.
+            Reviewing your inspection capability or planning an upgrade? Let&apos;s
+            discuss how machine vision can help your operation.
           </p>
         </header>
 
@@ -120,7 +121,7 @@ export default function ContactPage() {
                     <Clock className="h-4 w-4" />
                   </span>
                   <span className="text-sm text-foreground-muted leading-tight">
-                    Mon–Friday 9am–5pm
+                    Monday to Friday, 9am to 5pm
                   </span>
                 </li>
               </ul>

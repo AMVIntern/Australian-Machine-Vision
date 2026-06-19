@@ -24,7 +24,7 @@ const values = [
     icon: Lightbulb,
     title: "Innovation",
     description:
-      "Continuous R&D in computer vision and edge AI keeps our solutions at the cutting edge.",
+      "We invest in imaging, algorithms and automation so our systems keep solving harder inspection problems.",
   },
   {
     id: "partnership",
@@ -36,9 +36,9 @@ const values = [
   {
     id: "accessibility",
     icon: Accessibility,
-    title: "Accessibility",
+    title: "Integration",
     description:
-      "AI vision that works with your existing cameras and infrastructure—no rip-and-replace.",
+      "Systems that fit your operation, integrating with your existing line and infrastructure where it makes sense.",
   },
   {
     id: "impact",

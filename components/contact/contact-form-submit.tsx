@@ -1,11 +1,12 @@
 "use client";
 
-import { useFormStatus } from "react-dom";
 import { Send } from "lucide-react";
 
-export function ContactFormSubmitButton() {
-  const { pending } = useFormStatus();
-
+export function ContactFormSubmitButton({
+  pending = false,
+}: {
+  pending?: boolean;
+}) {
   return (
     <button
       type="submit"

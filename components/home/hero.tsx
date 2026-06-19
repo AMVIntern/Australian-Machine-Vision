@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Check, Clock } from "lucide-react";
+import { Award, Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fadeInUp = {
@@ -44,7 +44,7 @@ export function Hero() {
               className="inline-flex w-fit rounded-full border border-accent-primary/40 bg-white/60 px-4 py-1.5 text-sm font-medium text-foreground"
               variants={fadeInUp}
             >
-              AI-Powered Computer Vision
+              Machine Vision and Industrial Automation
             </motion.span>
 
             <motion.h1
@@ -60,16 +60,10 @@ export function Hero() {
               className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl"
               variants={fadeInUp}
             >
-              Turn raw vision into real-time insights. Our AI turns every frame
-              into actionable decisions—for quality, efficiency, and control.
-            </motion.p>
-
-            <motion.p
-              className="mt-10 text-2xl font-medium tracking-tight text-foreground sm:text-3xl"
-              variants={fadeInUp}
-            >
-              From Pixels{" "}
-              <span className="text-accent-primary">to Decisions.</span>
+              AMV designs and builds automated visual inspection systems that
+              check each product as it moves through your line, decide in real
+              time whether it meets specification, and feed the result into your
+              process and control systems.
             </motion.p>
 
             <motion.div
@@ -84,7 +78,7 @@ export function Hero() {
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                   )}
                 >
-                  Book Demo
+                  Contact Us
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
@@ -107,15 +101,15 @@ export function Hero() {
             >
               <span className="flex items-center gap-2">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary/10 text-accent-primary">
-                  <Check className="h-4 w-4" aria-hidden />
+                  <Award className="h-4 w-4" aria-hidden />
                 </span>
-                No hardware replacement
+                20+ years of experience
               </span>
               <span className="flex items-center gap-2">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary/10 text-accent-primary">
-                  <Clock className="h-4 w-4" aria-hidden />
+                  <Cpu className="h-4 w-4" aria-hidden />
                 </span>
-                Deploy in weeks
+                In-house engineering and software
               </span>
             </motion.div>
           </motion.div>

@@ -24,7 +24,7 @@ const sections = [
     icon: Target,
     title: "Our mission",
     content:
-      "To make industrial quality inspection faster, more accurate, and accessible—so every manufacturer can deploy AI vision without replacing existing infrastructure.",
+      "To make industrial quality inspection faster, more accurate, and accessible, so every manufacturer can deploy reliable vision systems that fit their existing infrastructure.",
   },
   {
     id: "vision",
@@ -38,7 +38,7 @@ const sections = [
     icon: Users,
     title: "Our story",
     content:
-      "Founded by engineers who saw the gap between research and production, Australian Machine Vision brings cutting-edge computer vision to the factory floor. Our team has deep experience in manufacturing and ML—placeholder for expanded founder story.",
+      "Founded by engineers who saw the gap between research and production, Australian Machine Vision brings proven computer vision to the factory floor. Our team has deep experience in manufacturing and machine learning. Placeholder for expanded founder story.",
   },
   {
     id: "expertise",
