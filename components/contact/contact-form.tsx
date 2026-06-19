@@ -1,13 +1,11 @@
 "use client";
 
-import { type FormEvent } from "react";
-import { useFormState } from "react-dom";
+import { type FormEvent, useState } from "react";
 import { submitContactForm, type FormState } from "@/app/contact/actions";
-import { sendContactEmail } from "@/lib/send-contact-email";
 import { ContactFormSubmitButton } from "./contact-form-submit";
 import { cn } from "@/lib/utils";
 
-const initialState: FormState = {};
+const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
 const INDUSTRY_OPTIONS = [
   { value: "", label: "Select your Industry" },
@@ -25,34 +23,102 @@ const INDUSTRY_OPTIONS = [
 ];
 
 export function ContactForm() {
-  const [state, formAction] = useFormState(submitContactForm, initialState);
+  const [state, setState] = useState<FormState>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    setIsSubmitting(true);
+    setState({});
 
-    // Web3Forms only accepts browser-side requests (not Server Actions).
-    await sendContactEmail({
-      firstName: (formData.get("firstName") as string)?.trim() ?? "",
-      lastName: (formData.get("lastName") as string)?.trim() ?? "",
-      email: (formData.get("email") as string)?.trim() ?? "",
-      company: (formData.get("company") as string)?.trim() ?? "",
-      phone: (formData.get("phone") as string)?.trim() ?? "",
-      industry: (formData.get("industry") as string)?.trim() ?? "",
-      message: (formData.get("message") as string)?.trim() ?? "",
-    });
+    if (!ACCESS_KEY) {
+      setState({
+        success: false,
+        message:
+          "Email is not configured on this deployment. Please contact us by phone or email.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
-    formAction(formData);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const firstName = (formData.get("firstName") as string)?.trim() ?? "";
+    const lastName = (formData.get("lastName") as string)?.trim() ?? "";
+    const name = [firstName, lastName].filter(Boolean).join(" ");
+    const email = (formData.get("email") as string)?.trim() ?? "";
+    const company = (formData.get("company") as string)?.trim() ?? "";
+
+    // Web3Forms Vercel pattern: append access_key, then JSON submit
+    formData.append("access_key", ACCESS_KEY);
+    formData.append("name", name);
+    formData.append("subject", `New website enquiry from ${name}${company ? ` (${company})` : ""}`);
+    formData.append("from_name", "AMV Website");
+    formData.append("replyto", email);
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        setState({
+          success: false,
+          message:
+            result.message ??
+            "Could not send your message. Please try again or contact us directly.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+    } catch {
+      setState({
+        success: false,
+        message:
+          "Could not send your message. Please try again or contact us directly.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Also store in Vercel Postgres via server action
+    const dbResult = await submitContactForm(null, formData);
+    setState(dbResult);
+    setIsSubmitting(false);
+
+    if (dbResult.success) {
+      form.reset();
+    }
   }
 
   return (
     <form
       onSubmit={handleSubmit}
       className="flex flex-col gap-5"
-      aria-describedby={
-        state?.message ? "form-status" : undefined
-      }
+      aria-describedby={state?.message ? "form-status" : undefined}
     >
+      {/* Honeypot spam field (Web3Forms) */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        className="hidden"
+        style={{ display: "none" }}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+      />
+
       {state?.message && (
         <div
           id="form-status"
@@ -268,7 +334,7 @@ export function ContactForm() {
         )}
       </div>
 
-      <ContactFormSubmitButton />
+      <ContactFormSubmitButton pending={isSubmitting} />
     </form>
   );
 }

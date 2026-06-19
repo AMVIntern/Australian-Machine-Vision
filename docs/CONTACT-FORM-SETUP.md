@@ -22,27 +22,27 @@ on. Code lives in `app/contact/actions.ts`.
 
 ## B. Email notification - Web3Forms
 
-Notifications are sent through Web3Forms (form-to-email API). No DNS, no SMTP, no domain
-verification. The recipient address is the one the access key was created for.
+Notifications use the [official Web3Forms Vercel pattern](https://web3forms.com/platforms/vercel-contact-form):
+browser-side `FormData` → append `access_key` → `fetch` as JSON → check `result.success`.
 
 1. Get a free access key at **web3forms.com** (enter vikrant@amvco.com.au, the key is
    emailed back). Free tier covers 250 submissions per month.
 2. Add the env var in Vercel (project -> Settings -> Environment Variables), for
-   Production, Preview and Development:
+   **Production, Preview and Development**:
    - `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` = the access key
+3. **Redeploy** after adding the variable (`NEXT_PUBLIC_` values are baked in at build time).
 
-   Important: Web3Forms must be called from the **browser**, not from a Server
-   Action. The key is public by design (Web3Forms documents this). The old
-   `WEB3FORMS_ACCESS_KEY` server-side variable will not work.
-3. Redeploy. Submit the form on `/contact` and the email arrives at the recipient address
-   on the key (vikrant@amvco.com.au), with the submitter's address set as reply-to so you
-   can reply directly.
+### Preview / `*.vercel.app` domains
 
-Notes:
-- The "from" address on the email is a generic Web3Forms sender, not literally
-  `@amvco.com.au`. Reply-to is the submitter, so replies still go to the right person.
-- To change the recipient later, either reissue the access key for a different address,
-  or set `CONTACT_TO_EMAIL`.
+Web3Forms may **block free platform subdomains** (including Vercel Preview URLs) by default.
+If submissions work locally but not on `something.vercel.app`, contact Web3Forms support
+with your domain to request approval, or test on your **custom production domain**.
+
+### Verify in the browser
+
+After submit, open DevTools -> **Network** and confirm a request to `api.web3forms.com/submit`
+returns **200** with `{ "success": true }`. If the key is missing, the form shows an error
+instead of a fake success message.
 
 ## Environment variables
 
