@@ -1,7 +1,9 @@
 "use client";
 
+import { type FormEvent } from "react";
 import { useFormState } from "react-dom";
 import { submitContactForm, type FormState } from "@/app/contact/actions";
+import { sendContactEmail } from "@/lib/send-contact-email";
 import { ContactFormSubmitButton } from "./contact-form-submit";
 import { cn } from "@/lib/utils";
 
@@ -25,9 +27,27 @@ const INDUSTRY_OPTIONS = [
 export function ContactForm() {
   const [state, formAction] = useFormState(submitContactForm, initialState);
 
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    // Web3Forms only accepts browser-side requests (not Server Actions).
+    await sendContactEmail({
+      firstName: (formData.get("firstName") as string)?.trim() ?? "",
+      lastName: (formData.get("lastName") as string)?.trim() ?? "",
+      email: (formData.get("email") as string)?.trim() ?? "",
+      company: (formData.get("company") as string)?.trim() ?? "",
+      phone: (formData.get("phone") as string)?.trim() ?? "",
+      industry: (formData.get("industry") as string)?.trim() ?? "",
+      message: (formData.get("message") as string)?.trim() ?? "",
+    });
+
+    formAction(formData);
+  }
+
   return (
     <form
-      action={formAction}
+      onSubmit={handleSubmit}
       className="flex flex-col gap-5"
       aria-describedby={
         state?.message ? "form-status" : undefined

@@ -29,7 +29,11 @@ verification. The recipient address is the one the access key was created for.
    emailed back). Free tier covers 250 submissions per month.
 2. Add the env var in Vercel (project -> Settings -> Environment Variables), for
    Production, Preview and Development:
-   - `WEB3FORMS_ACCESS_KEY` = the access key
+   - `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` = the access key
+
+   Important: Web3Forms must be called from the **browser**, not from a Server
+   Action. The key is public by design (Web3Forms documents this). The old
+   `WEB3FORMS_ACCESS_KEY` server-side variable will not work.
 3. Redeploy. Submit the form on `/contact` and the email arrives at the recipient address
    on the key (vikrant@amvco.com.au), with the submitter's address set as reply-to so you
    can reply directly.
@@ -45,8 +49,7 @@ Notes:
 | Variable | Purpose | Required |
 |---|---|---|
 | `POSTGRES_URL` | Vercel Postgres connection (auto-injected) | For storage |
-| `WEB3FORMS_ACCESS_KEY` | Web3Forms access key | For email |
-| `CONTACT_TO_EMAIL` | Recipient override (defaults to vikrant@amvco.com.au) | Optional |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Web3Forms access key (browser-side) | For email |
 
 ## Testing locally
 

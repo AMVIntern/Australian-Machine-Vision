@@ -10,8 +10,6 @@ export type FormState = {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "vikrant@amvco.com.au";
-
 async function storeSubmission(data: {
   firstName: string;
   lastName: string;
@@ -46,59 +44,6 @@ async function storeSubmission(data: {
     return true;
   } catch (e) {
     console.error("contact: database insert failed", e);
-    return false;
-  }
-}
-
-async function notifyByEmail(data: {
-  name: string;
-  email: string;
-  company: string;
-  phone: string;
-  industry: string;
-  message: string;
-}): Promise<boolean> {
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
-  if (!accessKey) return false;
-
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        access_key: accessKey,
-        // Recipient (Web3Forms uses the verified address on the access key by
-        // default, but we set it explicitly to be unambiguous).
-        to: TO_EMAIL,
-        from_name: "AMV Website",
-        subject: `New website enquiry from ${data.name}${
-          data.company ? ` (${data.company})` : ""
-        }`,
-        replyto: data.email,
-        // Submission fields (Web3Forms includes all keys in the email body).
-        name: data.name,
-        email: data.email,
-        company: data.company,
-        phone: data.phone || "Not provided",
-        industry: data.industry,
-        message: data.message,
-      }),
-    });
-
-    const result = await response.json().catch(() => null);
-    if (!response.ok || !result?.success) {
-      console.error("contact: Web3Forms send failed", {
-        status: response.status,
-        result,
-      });
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error("contact: Web3Forms request failed", e);
     return false;
   }
 }
@@ -142,27 +87,18 @@ export async function submitContactForm(
     return { success: false, errors };
   }
 
-  const name = [firstName, lastName].filter(Boolean).join(" ");
+  const stored = await storeSubmission({
+    firstName,
+    lastName,
+    email,
+    company,
+    phone,
+    industry,
+    message,
+  });
 
-  // Store the submission and send the notification in parallel. Each is
-  // guarded and logs its own failure so one channel failing does not lose
-  // the lead through the other.
-  const [stored, notified] = await Promise.all([
-    storeSubmission({
-      firstName,
-      lastName,
-      email,
-      company,
-      phone,
-      industry,
-      message,
-    }),
-    notifyByEmail({ name, email, company, phone, industry, message }),
-  ]);
-
-  if (!stored && !notified) {
-    console.warn("contact: submission not stored or emailed", {
-      name,
+  if (!stored) {
+    console.warn("contact: submission not stored in database", {
       email,
       company,
       industry,
