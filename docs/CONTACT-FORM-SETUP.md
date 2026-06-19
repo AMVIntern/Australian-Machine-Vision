@@ -20,44 +20,33 @@ on. Code lives in `app/contact/actions.ts`.
    ```
    You can export the result to CSV from there.
 
-## B. Email notification - SMTP (Microsoft 365)
+## B. Email notification - Web3Forms
 
-The notification is sent over SMTP using Nodemailer, through the AMV Microsoft 365 mailbox.
-No DNS or domain verification is required, but the mailbox must allow authenticated SMTP.
+Notifications are sent through Web3Forms (form-to-email API). No DNS, no SMTP, no domain
+verification. The recipient address is the one the access key was created for.
 
-1. **Enable authenticated SMTP** for the sending mailbox (M365 disables it by default):
-   - Microsoft 365 admin -> Users -> the mailbox -> Mail -> Manage email apps ->
-     tick **Authenticated SMTP**.
-   - If the account uses MFA, create an **app password** to use as `SMTP_PASS`.
-2. Add these environment variables in Vercel (project -> Settings -> Environment
-   Variables), for Production, Preview and Development:
-   - `SMTP_HOST` = `smtp.office365.com`
-   - `SMTP_PORT` = `587`
-   - `SMTP_USER` = the mailbox address (for example `noreply@amvco.com.au`)
-   - `SMTP_PASS` = the mailbox password or app password
-   - `CONTACT_FROM_EMAIL` = optional, defaults to `SMTP_USER`. For M365 this should be the
-     authenticated mailbox or an address it is allowed to send as.
-3. The notification goes to vikrant@amvco.com.au by default. To change it, set
-   `CONTACT_TO_EMAIL`. The email uses the submitter's address as reply-to, so you can
-   reply directly.
+1. Get a free access key at **web3forms.com** (enter vikrant@amvco.com.au, the key is
+   emailed back). Free tier covers 250 submissions per month.
+2. Add the env var in Vercel (project -> Settings -> Environment Variables), for
+   Production, Preview and Development:
+   - `WEB3FORMS_ACCESS_KEY` = the access key
+3. Redeploy. Submit the form on `/contact` and the email arrives at the recipient address
+   on the key (vikrant@amvco.com.au), with the submitter's address set as reply-to so you
+   can reply directly.
 
 Notes:
-- Port 587 uses STARTTLS (the default here). Use 465 with `SMTP_SECURE=true` only if your
-  provider requires implicit TLS.
-- M365 requires the `from` address to be the authenticated mailbox, or one it has
-  send-as permission for. If sends are rejected, set `CONTACT_FROM_EMAIL` to `SMTP_USER`.
+- The "from" address on the email is a generic Web3Forms sender, not literally
+  `@amvco.com.au`. Reply-to is the submitter, so replies still go to the right person.
+- To change the recipient later, either reissue the access key for a different address,
+  or set `CONTACT_TO_EMAIL`.
 
 ## Environment variables
 
 | Variable | Purpose | Required |
 |---|---|---|
 | `POSTGRES_URL` | Vercel Postgres connection (auto-injected) | For storage |
-| `SMTP_HOST` | SMTP server, e.g. `smtp.office365.com` | For email |
-| `SMTP_PORT` | SMTP port, usually `587` | For email |
-| `SMTP_USER` | Mailbox address used to authenticate and send | For email |
-| `SMTP_PASS` | Mailbox password or app password | For email |
-| `CONTACT_FROM_EMAIL` | Sender address (defaults to `SMTP_USER`) | Optional |
-| `CONTACT_TO_EMAIL` | Recipient (defaults to vikrant@amvco.com.au) | Optional |
+| `WEB3FORMS_ACCESS_KEY` | Web3Forms access key | For email |
+| `CONTACT_TO_EMAIL` | Recipient override (defaults to vikrant@amvco.com.au) | Optional |
 
 ## Testing locally
 
@@ -71,4 +60,5 @@ Submit the form, then check the Vercel Postgres data view and the inbox.
 
 - Storage and email run in parallel and each fails independently, so one provider issue
   does not lose the lead through the other channel.
-- Dependencies used: `@vercel/postgres` (storage) and `nodemailer` (SMTP email).
+- Dependencies used: `@vercel/postgres` (storage). Email uses Web3Forms via a plain
+  `fetch` call, no extra dependency.

@@ -1,7 +1,6 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
-import nodemailer from "nodemailer";
 
 export type FormState = {
   success?: boolean;
@@ -59,47 +58,47 @@ async function notifyByEmail(data: {
   industry: string;
   message: string;
 }): Promise<boolean> {
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  if (!host || !user || !pass) return false;
-
-  const port = Number(process.env.SMTP_PORT ?? 587);
-  // Port 465 uses implicit TLS; 587 uses STARTTLS. Allow override via SMTP_SECURE.
-  const secure = process.env.SMTP_SECURE
-    ? process.env.SMTP_SECURE === "true"
-    : port === 465;
-  const from = process.env.CONTACT_FROM_EMAIL ?? user;
+  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
+  if (!accessKey) return false;
 
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth: { user, pass },
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: accessKey,
+        // Recipient (Web3Forms uses the verified address on the access key by
+        // default, but we set it explicitly to be unambiguous).
+        to: TO_EMAIL,
+        from_name: "AMV Website",
+        subject: `New website enquiry from ${data.name}${
+          data.company ? ` (${data.company})` : ""
+        }`,
+        replyto: data.email,
+        // Submission fields (Web3Forms includes all keys in the email body).
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        phone: data.phone || "Not provided",
+        industry: data.industry,
+        message: data.message,
+      }),
     });
 
-    await transporter.sendMail({
-      from,
-      to: TO_EMAIL,
-      replyTo: data.email,
-      subject: `New website enquiry from ${data.name}${
-        data.company ? ` (${data.company})` : ""
-      }`,
-      text: [
-        `Name: ${data.name}`,
-        `Email: ${data.email}`,
-        `Company: ${data.company}`,
-        `Phone: ${data.phone || "Not provided"}`,
-        `Industry: ${data.industry}`,
-        "",
-        "Message:",
-        data.message,
-      ].join("\n"),
-    });
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result?.success) {
+      console.error("contact: Web3Forms send failed", {
+        status: response.status,
+        result,
+      });
+      return false;
+    }
     return true;
   } catch (e) {
-    console.error("contact: SMTP send failed", e);
+    console.error("contact: Web3Forms request failed", e);
     return false;
   }
 }
