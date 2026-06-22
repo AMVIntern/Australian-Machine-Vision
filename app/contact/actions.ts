@@ -2,14 +2,17 @@
 
 import { sql } from "@vercel/postgres";
 import { getIndustryLabel } from "@/lib/contact-industries";
+import { validateContactFields } from "@/lib/contact-validation";
 
 export type FormState = {
   success?: boolean;
   message?: string;
   errors?: Record<string, string[]>;
+  channels?: {
+    db: boolean;
+    sheet: boolean;
+  };
 };
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function storeSubmission(data: {
   firstName: string;
@@ -49,9 +52,6 @@ async function storeSubmission(data: {
   }
 }
 
-// Appends the submission as a new row to a Google Sheet via a deployed Apps
-// Script web app. The sheet is the human-friendly, append-only copy of every
-// enquiry. Postgres remains the source of truth, so this is best-effort.
 async function appendToSheet(data: {
   name: string;
   email: string;
@@ -87,6 +87,26 @@ async function appendToSheet(data: {
   }
 }
 
+function logStorageFailure(payload: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  company: string;
+  phone: string;
+  industry: string;
+  message: string;
+}) {
+  console.error("contact: all storage channels failed — full submission payload", {
+    firstName: payload.firstName,
+    lastName: payload.lastName,
+    email: payload.email,
+    company: payload.company,
+    phone: payload.phone,
+    industry: payload.industry,
+    message: payload.message,
+  });
+}
+
 export async function submitContactForm(
   _prevState: FormState | null,
   formData: FormData
@@ -100,61 +120,44 @@ export async function submitContactForm(
   const message = (formData.get("message") as string)?.trim() ?? "";
   const industry = getIndustryLabel(industryValue);
 
-  const errors: Record<string, string[]> = {};
-
-  if (!firstName || firstName.length < 2) {
-    errors.firstName = ["Please enter your first name (at least 2 characters)."];
-  }
-  if (!lastName || lastName.length < 2) {
-    errors.lastName = ["Please enter your last name (at least 2 characters)."];
-  }
-  if (!email) {
-    errors.email = ["Email is required."];
-  } else if (!EMAIL_REGEX.test(email)) {
-    errors.email = ["Please enter a valid email address."];
-  }
-  if (!company || company.length < 2) {
-    errors.company = ["Please enter your company name."];
-  }
-  if (!industryValue) {
-    errors.industry = ["Please select your industry."];
-  }
-  if (!message || message.length < 10) {
-    errors.message = ["Please enter a message (at least 10 characters)."];
-  }
+  const errors = validateContactFields({
+    firstName,
+    lastName,
+    email,
+    company,
+    industryValue,
+    message,
+  });
 
   if (Object.keys(errors).length > 0) {
     return { success: false, errors };
   }
 
   const name = [firstName, lastName].filter(Boolean).join(" ");
+  const payload = {
+    firstName,
+    lastName,
+    email,
+    company,
+    phone,
+    industry,
+    message,
+  };
 
-  // Store in Postgres (source of truth) and append to the Google Sheet
-  // (append-only copy) in parallel. Each is guarded and logs its own failure.
-  const [stored] = await Promise.all([
-    storeSubmission({
-      firstName,
-      lastName,
-      email,
-      company,
-      phone,
-      industry,
-      message,
-    }),
+  const [dbOk, sheetOk] = await Promise.all([
+    storeSubmission(payload),
     appendToSheet({ name, email, company, phone, industry, message }),
   ]);
 
-  if (!stored) {
-    console.warn("contact: submission not stored in database", {
-      email,
-      company,
-      industry,
-    });
+  if (!dbOk && !sheetOk) {
+    logStorageFailure(payload);
   }
 
   return {
-    success: true,
-    message:
-      "Thanks for getting in touch. We'll respond within 1 to 2 business days.",
+    success: dbOk || sheetOk,
+    channels: { db: dbOk, sheet: sheetOk },
+    message: dbOk || sheetOk
+      ? "Thanks for getting in touch. We'll respond within 1 to 2 business days."
+      : undefined,
   };
 }
