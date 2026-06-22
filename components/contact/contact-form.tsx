@@ -8,6 +8,7 @@ import {
   CONTACT_INDUSTRY_OPTIONS,
   getIndustryLabel,
 } from "@/lib/contact-industries";
+import { validateContactFields } from "@/lib/contact-validation";
 
 const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
@@ -15,6 +16,56 @@ const INDUSTRY_OPTIONS = [
   { value: "", label: "Select your Industry" },
   ...CONTACT_INDUSTRY_OPTIONS,
 ];
+
+const SUCCESS_MESSAGE =
+  "Thanks for getting in touch. We'll respond within 1 to 2 business days.";
+
+const FAILURE_MESSAGE =
+  "Could not send your message. Please try again or contact us directly.";
+
+async function submitWeb3Forms(formData: FormData): Promise<boolean> {
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(Object.fromEntries(formData)),
+    });
+    const result = await response.json();
+    return result.success === true;
+  } catch (e) {
+    console.error("contact: Web3Forms submit failed", e);
+    return false;
+  }
+}
+
+function buildStorageFormData(form: HTMLFormElement, industryLabel: string) {
+  const formData = new FormData(form);
+  formData.set("industry", industryLabel);
+  return formData;
+}
+
+function buildEmailFormData(
+  form: HTMLFormElement,
+  industryLabel: string,
+  name: string,
+  email: string,
+  company: string
+) {
+  const formData = new FormData(form);
+  formData.set("industry", industryLabel);
+  formData.append("access_key", ACCESS_KEY!);
+  formData.append("name", name);
+  formData.append(
+    "subject",
+    `New website enquiry from ${name}${company ? ` (${company})` : ""}`
+  );
+  formData.append("from_name", "AMV Website");
+  formData.append("replyto", email);
+  return formData;
+}
 
 export function ContactForm() {
   const [state, setState] = useState<FormState>({});
@@ -25,80 +76,76 @@ export function ContactForm() {
     setIsSubmitting(true);
     setState({});
 
-    if (!ACCESS_KEY) {
-      setState({
-        success: false,
-        message:
-          "Email is not configured on this deployment. Please contact us by phone or email.",
-      });
-      setIsSubmitting(false);
-      return;
-    }
-
     const form = event.currentTarget;
-    const formData = new FormData(form);
+    const rawFormData = new FormData(form);
 
-    const firstName = (formData.get("firstName") as string)?.trim() ?? "";
-    const lastName = (formData.get("lastName") as string)?.trim() ?? "";
-    const name = [firstName, lastName].filter(Boolean).join(" ");
-    const email = (formData.get("email") as string)?.trim() ?? "";
-    const company = (formData.get("company") as string)?.trim() ?? "";
-    const industryValue = (formData.get("industry") as string)?.trim() ?? "";
+    const firstName = (rawFormData.get("firstName") as string)?.trim() ?? "";
+    const lastName = (rawFormData.get("lastName") as string)?.trim() ?? "";
+    const email = (rawFormData.get("email") as string)?.trim() ?? "";
+    const company = (rawFormData.get("company") as string)?.trim() ?? "";
+    const phone = (rawFormData.get("phone") as string)?.trim() ?? "";
+    const industryValue = (rawFormData.get("industry") as string)?.trim() ?? "";
+    const message = (rawFormData.get("message") as string)?.trim() ?? "";
     const industryLabel = getIndustryLabel(industryValue);
+    const name = [firstName, lastName].filter(Boolean).join(" ");
 
-    // Store human-readable industry label (not the select slug) everywhere
-    formData.set("industry", industryLabel);
+    const errors = validateContactFields({
+      firstName,
+      lastName,
+      email,
+      company,
+      industryValue,
+      message,
+    });
 
-    // Web3Forms Vercel pattern: append access_key, then JSON submit
-    formData.append("access_key", ACCESS_KEY);
-    formData.append("name", name);
-    formData.append("subject", `New website enquiry from ${name}${company ? ` (${company})` : ""}`);
-    formData.append("from_name", "AMV Website");
-    formData.append("replyto", email);
-
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: json,
-      });
-
-      const result = await response.json();
-
-      if (!result.success) {
-        setState({
-          success: false,
-          message:
-            result.message ??
-            "Could not send your message. Please try again or contact us directly.",
-        });
-        setIsSubmitting(false);
-        return;
-      }
-    } catch {
-      setState({
-        success: false,
-        message:
-          "Could not send your message. Please try again or contact us directly.",
-      });
+    if (Object.keys(errors).length > 0) {
+      setState({ success: false, errors });
       setIsSubmitting(false);
       return;
     }
 
-    // Also store in Vercel Postgres via server action
-    const dbResult = await submitContactForm(null, formData);
-    setState(dbResult);
-    setIsSubmitting(false);
+    const storageFormData = buildStorageFormData(form, industryLabel);
 
-    if (dbResult.success) {
+    const [emailSettled, storageSettled] = await Promise.allSettled([
+      ACCESS_KEY
+        ? submitWeb3Forms(
+            buildEmailFormData(form, industryLabel, name, email, company)
+          )
+        : Promise.resolve(false),
+      submitContactForm(null, storageFormData).then((result) => {
+        if (result.errors) return false;
+        return (result.channels?.db ?? false) || (result.channels?.sheet ?? false);
+      }),
+    ]);
+
+    const emailOk =
+      emailSettled.status === "fulfilled" && emailSettled.value === true;
+    const storageOk =
+      storageSettled.status === "fulfilled" && storageSettled.value === true;
+
+    const anyOk = emailOk || storageOk;
+
+    if (anyOk) {
+      setState({ success: true, message: SUCCESS_MESSAGE });
       form.reset();
+    } else {
+      console.error("contact: all channels failed — full submission payload", {
+        firstName,
+        lastName,
+        email,
+        company,
+        phone,
+        industry: industryLabel,
+        message,
+        channels: {
+          email: ACCESS_KEY ? emailOk : "not configured",
+          storage: storageOk,
+        },
+      });
+      setState({ success: false, message: FAILURE_MESSAGE });
     }
+
+    setIsSubmitting(false);
   }
 
   return (
