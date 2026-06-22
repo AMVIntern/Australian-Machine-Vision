@@ -48,6 +48,44 @@ async function storeSubmission(data: {
   }
 }
 
+// Appends the submission as a new row to a Google Sheet via a deployed Apps
+// Script web app. The sheet is the human-friendly, append-only copy of every
+// enquiry. Postgres remains the source of truth, so this is best-effort.
+async function appendToSheet(data: {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  industry: string;
+  message: string;
+}): Promise<boolean> {
+  const url = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+  if (!url) return false;
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        submittedAt: new Date().toISOString(),
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        phone: data.phone || "",
+        industry: data.industry,
+        message: data.message,
+      }),
+    });
+    if (!response.ok) {
+      console.error("contact: Google Sheet append returned", response.status);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("contact: Google Sheet append failed", e);
+    return false;
+  }
+}
+
 export async function submitContactForm(
   _prevState: FormState | null,
   formData: FormData
@@ -87,15 +125,22 @@ export async function submitContactForm(
     return { success: false, errors };
   }
 
-  const stored = await storeSubmission({
-    firstName,
-    lastName,
-    email,
-    company,
-    phone,
-    industry,
-    message,
-  });
+  const name = [firstName, lastName].filter(Boolean).join(" ");
+
+  // Store in Postgres (source of truth) and append to the Google Sheet
+  // (append-only copy) in parallel. Each is guarded and logs its own failure.
+  const [stored] = await Promise.all([
+    storeSubmission({
+      firstName,
+      lastName,
+      email,
+      company,
+      phone,
+      industry,
+      message,
+    }),
+    appendToSheet({ name, email, company, phone, industry, message }),
+  ]);
 
   if (!stored) {
     console.warn("contact: submission not stored in database", {
