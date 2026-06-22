@@ -1,6 +1,7 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
+import { getIndustryLabel } from "@/lib/contact-industries";
 
 export type FormState = {
   success?: boolean;
@@ -95,8 +96,9 @@ export async function submitContactForm(
   const email = (formData.get("email") as string)?.trim() ?? "";
   const company = (formData.get("company") as string)?.trim() ?? "";
   const phone = (formData.get("phone") as string)?.trim() ?? "";
-  const industry = (formData.get("industry") as string)?.trim() ?? "";
+  const industryValue = (formData.get("industry") as string)?.trim() ?? "";
   const message = (formData.get("message") as string)?.trim() ?? "";
+  const industry = getIndustryLabel(industryValue);
 
   const errors: Record<string, string[]> = {};
 
@@ -114,7 +116,7 @@ export async function submitContactForm(
   if (!company || company.length < 2) {
     errors.company = ["Please enter your company name."];
   }
-  if (!industry) {
+  if (!industryValue) {
     errors.industry = ["Please select your industry."];
   }
   if (!message || message.length < 10) {

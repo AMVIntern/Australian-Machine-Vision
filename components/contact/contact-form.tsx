@@ -4,22 +4,16 @@ import { type FormEvent, useState } from "react";
 import { submitContactForm, type FormState } from "@/app/contact/actions";
 import { ContactFormSubmitButton } from "./contact-form-submit";
 import { cn } from "@/lib/utils";
+import {
+  CONTACT_INDUSTRY_OPTIONS,
+  getIndustryLabel,
+} from "@/lib/contact-industries";
 
 const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
 const INDUSTRY_OPTIONS = [
   { value: "", label: "Select your Industry" },
-  { value: "fmcg-packaged-food", label: "FMCG and Packaged Food" },
-  { value: "dairy-food-processing", label: "Dairy and Food Processing" },
-  { value: "bakery", label: "Bakery" },
-  { value: "hygiene-nonwovens", label: "Hygiene and Nonwovens" },
-  { value: "healthcare-medical", label: "Healthcare and Medical" },
-  { value: "pharmaceutical", label: "Pharmaceutical" },
-  { value: "returnable-packaging", label: "Returnable Packaging" },
-  { value: "transport-logistics", label: "Transport and Logistics" },
-  { value: "defence", label: "Defence" },
-  { value: "building-products", label: "Building Products" },
-  { value: "other", label: "Other" },
+  ...CONTACT_INDUSTRY_OPTIONS,
 ];
 
 export function ContactForm() {
@@ -49,6 +43,11 @@ export function ContactForm() {
     const name = [firstName, lastName].filter(Boolean).join(" ");
     const email = (formData.get("email") as string)?.trim() ?? "";
     const company = (formData.get("company") as string)?.trim() ?? "";
+    const industryValue = (formData.get("industry") as string)?.trim() ?? "";
+    const industryLabel = getIndustryLabel(industryValue);
+
+    // Store human-readable industry label (not the select slug) everywhere
+    formData.set("industry", industryLabel);
 
     // Web3Forms Vercel pattern: append access_key, then JSON submit
     formData.append("access_key", ACCESS_KEY);
