@@ -19,7 +19,7 @@ export function IndustriesTeaser() {
               Built for your industry
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-foreground-muted">
-              AMV systems are deployed across more than 20 industries. We work
+              AMV systems are deployed across more than 10 industries. We work
               wherever automated inspection adds value, and our systems are built
               to the specific demands of each production environment.
             </p>

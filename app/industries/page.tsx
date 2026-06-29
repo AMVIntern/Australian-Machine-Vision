@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { INDUSTRIES, INDUSTRY_GROUPS, getIndustriesByGroup } from "@/lib/industries-data";
 
@@ -55,10 +55,18 @@ export default function IndustriesPage() {
               across more than 20 industries, wherever automated inspection adds
               value on the production line.
             </p>
-            <p className="mt-3 text-sm text-foreground-muted">
-              If your industry is not listed below, contact us. We take on
-              inspection challenges that do not fit neatly into a category.
-            </p>
+            <Link
+              href="/contact"
+              className="mt-6 inline-flex items-center gap-3 rounded-full border border-accent-primary/30 bg-white/70 px-5 py-2.5 transition-colors hover:bg-white"
+            >
+              <MessageCircle className="h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
+              <span className="text-sm text-foreground-muted">
+                Industry not listed?{" "}
+                <span className="font-semibold text-accent-primary">Contact us</span>
+                {" "}— we take on challenges that don&apos;t fit a category.
+              </span>
+              <ArrowRight className="h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
+            </Link>
           </header>
         </div>
       </section>
@@ -88,8 +96,9 @@ export default function IndustriesPage() {
                           src={industry.imagePlaceholder}
                           alt={`${industry.name} inspection`}
                           fill
-                          className="object-cover"
+                          className={industry.imageContain ? "object-contain" : "object-cover"}
                           sizes="(max-width: 640px) 100vw, 50vw"
+                          style={industry.imagePosition ? { objectPosition: industry.imagePosition } : undefined}
                         />
                       </div>
 

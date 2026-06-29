@@ -12,6 +12,8 @@ export interface Industry {
   headline: string;
   capabilities: string[];
   imagePlaceholder: string;
+  imageContain?: boolean;
+  imagePosition?: string;
 }
 
 export const INDUSTRY_GROUPS: IndustryGroup[] = [
@@ -50,7 +52,8 @@ export const INDUSTRIES: Industry[] = [
       "Label and date code validation",
       "Packaging surface and defect inspection",
     ],
-    imagePlaceholder: "/industries/dairy-food-processing.jpg",
+    imagePlaceholder: "/industries/dairy.jpg",
+    imagePosition: "left center",
   },
   {
     id: "bakery-packaged-goods",
@@ -108,21 +111,7 @@ export const INDUSTRIES: Industry[] = [
       "Dimensional measurement and tolerance checks",
       "Foreign body detection in trays and blister packs",
     ],
-    imagePlaceholder: "/industries/healthcare-medical.jpg",
-  },
-  {
-    id: "medical-devices",
-    name: "Medical Devices",
-    group: "Health, Hygiene and Life Sciences",
-    headline: "Assembly verification, dimensional inspection and cosmetic quality for manufactured medical devices.",
-    capabilities: [
-      "Sub-assembly and component presence verification",
-      "Dimensional measurement and tolerance validation",
-      "Surface finish and cosmetic defect detection",
-      "Engraving and marking legibility checks",
-      "Sterile packaging integrity inspection",
-    ],
-    imagePlaceholder: "/industries/medical-devices.jpg",
+    imagePlaceholder: "/industries/medical.png",
   },
   {
     id: "pharmaceutical",
@@ -208,7 +197,7 @@ export const INDUSTRIES: Industry[] = [
       "Dimensional and cut quality inspection",
       "Label and care instruction verification",
     ],
-    imagePlaceholder: "/industries/textiles-apparel.jpg",
+    imagePlaceholder: "/industries/textile.jpg",
   },
   {
     id: "building-products",
@@ -296,7 +285,7 @@ export const INDUSTRIES: Industry[] = [
       "Label and packaging type recognition",
       "Count and throughput measurement",
     ],
-    imagePlaceholder: "/industries/recycling-waste-sorting.jpg",
+    imagePlaceholder: "/industries/plastic-recycling.webp",
   },
   {
     id: "defence",

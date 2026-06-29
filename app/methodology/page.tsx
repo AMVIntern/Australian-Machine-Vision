@@ -44,7 +44,7 @@ const METHODS = [
     what: "Deep learning is a type of artificial intelligence where the software learns to recognise defects, objects and features by studying labelled examples, rather than being told rigid rules. AMV builds and trains custom models for each application.",
     why: "Real production lines produce defects that are hard to describe with fixed rules: subtle surface blemishes, inconsistent contamination, colour variation that shifts across a batch. A trained model can catch these reliably where rule-based systems would either miss them or raise too many false alarms.",
     extra:
-      "We use object detection models (to find and locate things in the image), segmentation models (to map out exactly which pixels belong to a defect), anomaly detection (to flag anything that deviates from normal product), and optical character recognition (OCR) for reading text, date codes and barcodes. Each model type is selected to match the inspection task.",
+      "We select and train the AI model type that fits your specific inspection task. Every application is different, and the right AI model is chosen based on what your line produces and what needs to be detected.",
   },
   {
     id: "classical",
@@ -124,49 +124,58 @@ export default function MethodologyPage() {
 
         {/* How it comes together */}
         <div className="mx-auto mt-20 max-w-4xl">
-          <div className="rounded-2xl border border-border bg-background-secondary/60 px-8 py-10">
-            <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-              How it comes together
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-foreground-muted">
-              Because AMV owns the full pipeline, from camera selection and
-              lighting design through software development to on-site
-              commissioning, we choose the combination of tools that fits your
-              specific problem. We are not committed to any single vendor or
-              technique. A system might use HALCON for dimensional gauging, a
-              custom deep learning model for surface defect detection, and
-              classical edge detection for label placement checks, all running
-              in parallel at line speed.
-            </p>
-            <p className="mt-4 text-sm leading-relaxed text-foreground-muted">
-              This is what custom-built means in practice: not just a product
-              with your logo on it, but a system designed around the physics of
-              your product, the constraints of your line, and the defect types
-              that matter to your quality team.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/industries"
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-lg border-2 border-accent-primary px-5 py-2.5 text-sm font-semibold text-accent-primary",
-                  "hover:bg-accent-primary hover:text-white transition-colors duration-200",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
-                )}
-              >
-                See the industries we work in
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
-              <Link
-                href="/contact"
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-5 py-2.5 text-sm font-semibold text-white shadow-soft",
-                  "hover:opacity-90 transition-opacity",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
-                )}
-              >
-                Discuss your inspection challenge
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+          <div className="overflow-hidden rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-700 shadow-soft-lg">
+            <div className="px-8 py-10">
+              <p className="text-xs font-semibold uppercase tracking-widest text-teal-100/70">
+                The full picture
+              </p>
+              <h2 className="mt-2 text-xl font-bold text-white sm:text-2xl">
+                How it comes together
+              </h2>
+
+              <p className="mt-6 text-sm leading-relaxed text-teal-50/90">
+                AMV owns the full pipeline. Camera selection, lighting design,
+                software development, on-site commissioning. Because we control
+                every stage, we choose the right tool for each part of the
+                problem rather than forcing one approach across the whole system.
+              </p>
+              <p className="mt-4 text-sm leading-relaxed text-teal-50/90">
+                In practice that means a single system might run HALCON for
+                precise dimensional gauging, a custom AI model for surface defect
+                detection, and classical edge detection for label placement, all
+                in parallel at full line speed.
+              </p>
+
+              <div className="mt-6 border-t border-white/15 pt-6">
+                <p className="text-base font-semibold text-white">
+                  Custom-built means built around your product, your line, and your defect types. Not a standard product with your logo on it.
+                </p>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/industries"
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-2.5 text-sm font-semibold text-white",
+                    "hover:border-white hover:bg-white/10 transition-colors duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
+                  )}
+                >
+                  See the industries we work in
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+                <Link
+                  href="/contact"
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-accent-primary shadow-soft",
+                    "hover:bg-white/90 transition-opacity",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
+                  )}
+                >
+                  Discuss your inspection challenge
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

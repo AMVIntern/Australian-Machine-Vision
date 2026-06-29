@@ -47,7 +47,7 @@ const STAGES = [
     number: "05",
     icon: Zap,
     label: "Line Action",
-    short: "Act",
+    short: "Action",
     explanation:
       "The system acts on the decision: reject, divert, alert the operator, or log the result. Every result is logged with a timestamp and image for traceability, feeding the cloud dashboard for remote monitoring.",
   },

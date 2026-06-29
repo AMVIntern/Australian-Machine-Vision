@@ -93,9 +93,11 @@ export function MethodsAccordion({ methods }: { methods: Method[] }) {
                 )}
 
                 {method.extra && (
-                  <p className="mt-4 text-sm leading-relaxed text-foreground-muted">
-                    {method.extra}
-                  </p>
+                  <div className="mt-4 rounded-xl border border-teal-200/80 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-700 p-6 shadow-soft-lg">
+                    <p className="text-sm leading-relaxed text-teal-50/95">
+                      {method.extra}
+                    </p>
+                  </div>
                 )}
               </div>
             )}

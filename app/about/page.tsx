@@ -40,10 +40,10 @@ export default function AboutPage() {
             <p className="mt-4 text-lg text-foreground-muted">
               AMV delivers end-to-end machine vision and automated inspection,
               from feasibility and proof of concept through custom build,
-              on-site commissioning and ongoing support. We work across food,
-              packaging, healthcare, hygiene and logistics, in Australia and
-              global markets, combining advanced imaging and proven engineering
-              to solve inspection challenges that standard systems cannot.
+              on-site commissioning and ongoing support. We work across any
+              industry, in Australia and global markets, applying AI and
+              classical vision techniques to solve the inspection challenges
+              that standard systems cannot.
             </p>
           </header>
         </div>
@@ -66,9 +66,8 @@ export default function AboutPage() {
               <p className="mt-4 text-foreground-muted leading-relaxed">
                 To deliver machine vision and automated inspection systems that
                 solve real production challenges. We help manufacturers across
-                food, packaging, healthcare, hygiene and logistics achieve the
-                accuracy, reliability and repeatability that off the shelf
-                systems cannot.
+                any industry achieve the accuracy, reliability and repeatability
+                that off-the-shelf systems cannot.
               </p>
               <p className="mt-4 text-foreground-muted leading-relaxed">
                 Every project starts with a clear understanding of your
@@ -104,7 +103,7 @@ export default function AboutPage() {
 
       {/* Leadership - Director */}
       <section
-        className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16"
+        className="border-y border-border bg-background-secondary/40 py-12 sm:py-16"
         aria-labelledby="leadership-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,8 +132,8 @@ export default function AboutPage() {
                 Ken leads Australian Machine Vision, bringing more than 20 years
                 of hands-on experience in machine vision and industrial
                 automation. He has worked closely with manufacturers across
-                food, industrial and general manufacturing to solve inspection
-                challenges that off the shelf systems cannot.
+                any industry to solve the inspection challenges that
+                off-the-shelf systems cannot.
               </p>
               <p className="mt-3 text-foreground-muted leading-relaxed">
                 His focus is practical engineering and measurable results,
@@ -154,7 +153,7 @@ export default function AboutPage() {
       </section>
 
       {/* Statistics */}
-      <section className="bg-white/80 backdrop-blur-sm py-12 sm:py-16" aria-labelledby="about-stats-heading">
+      <section className="border-y border-border bg-background-secondary/40 py-12 sm:py-16" aria-labelledby="about-stats-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 id="about-stats-heading" className="sr-only">
             Key statistics
