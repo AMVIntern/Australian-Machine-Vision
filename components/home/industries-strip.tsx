@@ -1,14 +1,24 @@
 const INDUSTRIES = [
   "FMCG and Packaged Food",
   "Dairy and Food Processing",
-  "Bakery",
+  "Bakery and Packaged Goods",
+  "Beverage",
   "Hygiene and Nonwovens",
   "Healthcare and Medical",
-  "Pharmaceutical",
-  "Returnable Packaging",
-  "Transport and Logistics",
-  "Defence",
+  "Medical Devices",
+  "Pharmaceutical and Distribution",
+  "Blood, Biologics and Labelling",
+  "Automotive Parts and Components",
+  "Electronics and PCB Assembly",
+  "Plastics and Rubber",
+  "Textiles and Apparel",
   "Building Products",
+  "Returnable Transit Packaging",
+  "Logistics and Warehousing",
+  "Transport and Logistics",
+  "Agriculture and Primary Produce",
+  "Recycling and Waste Sorting",
+  "Defence",
 ] as const;
 
 export function IndustriesStrip() {
@@ -28,11 +38,11 @@ export function IndustriesStrip() {
         <div className="relative mt-8 overflow-hidden">
           {/* Gradient masks for fade at edges */}
           <div
-            className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-teal-700 to-transparent sm:w-20"
+            className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-teal-700 to-transparent sm:w-40"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-teal-400 to-transparent sm:w-20"
+            className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-teal-400 to-transparent sm:w-40"
             aria-hidden
           />
 

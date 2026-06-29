@@ -70,15 +70,15 @@ const families: CapabilityFamily[] = [
   },
   {
     id: "ml",
-    shortTitle: "ML / deep learning",
-    title: "Machine learning and deep learning",
-    intro: "Trained models for complex, variable and hard to define defects.",
+    shortTitle: "AI and deep learning",
+    title: "AI and deep learning inspection",
+    intro: "Custom AI models trained on examples of your product, to recognise defects, anomalies and features that rigid rules miss.",
     items: [
-      "Object and defect detection",
-      "Semantic and instance segmentation",
-      "Anomaly and contamination detection",
+      "Object and defect detection (finds and locates problems in the image)",
+      "Segmentation (maps exactly which pixels belong to a defect or feature)",
+      "Anomaly detection (flags anything that deviates from normal product)",
       "Classification and grading",
-      "OCR and text verification",
+      "OCR and text verification (reads date codes, lot numbers and print)",
       "Custom model development",
     ],
     icon: Brain,
@@ -403,8 +403,9 @@ export function CapabilitiesGrid() {
           Capabilities
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          We own the full pipeline, from sensor and lighting to the inspection
-          algorithm, and choose the right combination for each problem.
+          We combine AI and deep learning with classical vision and precision
+          sensing, applying each where it performs best for your inspection
+          problem.
         </p>
 
         <div className="mx-auto mt-12 max-w-5xl space-y-6">

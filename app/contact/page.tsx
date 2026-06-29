@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Lock } from "lucide-react";
 import { ContactForm } from "@/components/contact/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Australian Machine Vision in Seaford, Victoria. Discuss machine vision and automated inspection for your production line.",
+    "Get in touch with Australian Machine Vision. Discuss a machine vision or automated inspection challenge for any industry, anywhere in Australia or globally.",
   alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact | Australian Machine Vision",
@@ -125,6 +125,21 @@ export default function ContactPage() {
                   </span>
                 </li>
               </ul>
+            </div>
+
+            <div className="mt-5 flex items-start gap-3 rounded-xl border border-teal-200/80 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-700 p-5">
+              <span
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15 text-white"
+                aria-hidden
+              >
+                <Lock className="h-4 w-4" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-white">Your work stays confidential</p>
+                <p className="mt-1 text-xs leading-relaxed text-teal-50/90">
+                  We do not publish client names, line details or project outcomes without permission. Every engagement is treated as commercially sensitive.
+                </p>
+              </div>
             </div>
           </aside>
         </div>

@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Mail, MapPin, Linkedin } from "lucide-react";
 
 const footerLinks = [
+  { href: "/industries", label: "Industries" },
+  { href: "/methodology", label: "Methodology" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;

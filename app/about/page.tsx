@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Australian Machine Vision. Our mission, vision and 20+ years of experience in machine vision and automated inspection for manufacturing.",
+    "Learn about Australian Machine Vision. 20+ years of experience building custom machine vision and automated inspection systems for any industry, anywhere.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About | Australian Machine Vision",
@@ -192,6 +192,54 @@ export default function AboutPage() {
                 Technology Partner Network
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cross-links to Industries and Methodology */}
+      <section className="bg-white/80 backdrop-blur-sm py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-4xl gap-5 sm:grid-cols-2">
+            <Link
+              href="/industries"
+              className={cn(
+                "group flex flex-col rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft-lg",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              )}
+            >
+              <h2 className="text-base font-bold text-foreground">
+                Industries we work in
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                AMV works across food, healthcare, packaging, industrial
+                manufacturing, logistics and beyond. See the full list with
+                capability examples for each sector.
+              </p>
+              <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+                Explore industries
+                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </span>
+            </Link>
+            <Link
+              href="/methodology"
+              className={cn(
+                "group flex flex-col rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft-lg",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              )}
+            >
+              <h2 className="text-base font-bold text-foreground">
+                How we build solutions
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                We combine HALCON industrial software, custom-trained AI models
+                and classical vision algorithms. Each technique is applied where
+                it performs best.
+              </p>
+              <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+                See our methodology
+                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </span>
+            </Link>
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const fadeIn = {
@@ -84,6 +85,16 @@ export function FinalCTA() {
                   Talk to Our Team
                 </Link>
               </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-5 py-2.5"
+              variants={fadeIn}
+            >
+              <Lock className="h-4 w-4 shrink-0 text-white" aria-hidden />
+              <p className="text-sm font-medium text-white">
+                Your work stays confidential. We do not publish client names or project details without permission.
+              </p>
             </motion.div>
           </div>
         </div>

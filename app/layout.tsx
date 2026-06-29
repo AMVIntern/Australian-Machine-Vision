@@ -28,16 +28,19 @@ export const metadata: Metadata = {
     template: "%s | Australian Machine Vision",
   },
   description:
-    "Australian Machine Vision designs and integrates machine vision and automated inspection systems for food, industrial and general manufacturing across Australia and global markets.",
+    "Australian Machine Vision builds custom machine vision and automated inspection systems for manufacturers across any industry. HALCON, AI deep learning and classical vision combined. 20+ years of experience.",
   keywords: [
     "machine vision",
     "machine vision Australia",
     "automated inspection",
     "quality inspection",
     "vision systems integration",
-    "industrial automation",
+    "AI inspection",
+    "deep learning inspection",
+    "HALCON machine vision",
     "defect detection",
-    "food manufacturing inspection",
+    "custom inspection systems",
+    "industrial automation",
   ],
   applicationName: "Australian Machine Vision",
   authors: [{ name: "Australian Machine Vision" }],
@@ -82,7 +85,7 @@ const organizationJsonLd = {
   url: siteUrl,
   logo: `${siteUrl}/amv-logo.png`,
   description:
-    "Machine vision and automated inspection systems for food, industrial and general manufacturing.",
+    "Custom machine vision and automated inspection systems for manufacturers across any industry. HALCON, AI deep learning and classical vision combined.",
   email: "amvsupport@amvco.com.au",
   telephone: "+61 499 990 117",
   address: {
@@ -93,7 +96,7 @@ const organizationJsonLd = {
     postalCode: "3198",
     addressCountry: "AU",
   },
-  areaServed: "AU",
+  areaServed: ["AU", "Worldwide"],
   sameAs: ["https://www.linkedin.com/company/australian-machine-vision/"],
 };
 
