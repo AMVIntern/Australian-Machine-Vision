@@ -1,24 +1,13 @@
-const INDUSTRIES = [
-  "FMCG and Packaged Food",
-  "Dairy and Food Processing",
-  "Bakery and Packaged Goods",
-  "Beverage",
-  "Hygiene and Nonwovens",
-  "Healthcare and Medical",
-  "Medical Devices",
-  "Pharmaceutical and Distribution",
-  "Blood, Biologics and Labelling",
-  "Automotive Parts and Components",
-  "Electronics and PCB Assembly",
-  "Plastics and Rubber",
-  "Textiles and Apparel",
-  "Building Products",
-  "Returnable Transit Packaging",
-  "Logistics and Warehousing",
-  "Transport and Logistics",
-  "Agriculture and Primary Produce",
-  "Recycling and Waste Sorting",
-  "Defence",
+const APPLICATIONS = [
+  "Foreign Material Detection",
+  "Surface and Structural Defect Detection",
+  "Dimensional Measurement and Tolerance Verification",
+  "Packaging and Label Inspection",
+  "Fill Level and Completeness Checks",
+  "Assembly Verification",
+  "Quality Control, In and Out of Specification",
+  "Automated Trending and Process Analytics",
+  "Real Time Decision Support for Operators",
 ] as const;
 
 export function IndustriesStrip() {
@@ -32,7 +21,7 @@ export function IndustriesStrip() {
           id="industries-strip-heading"
           className="text-center text-xs font-medium uppercase tracking-widest text-white/85 sm:text-sm"
         >
-          Industries we serve across Australia and global markets
+          Core inspection applications across food, industrial and general manufacturing
         </p>
 
         <div className="relative mt-8 overflow-hidden">
@@ -47,12 +36,12 @@ export function IndustriesStrip() {
           />
 
           <div className="flex animate-marquee items-center gap-10 sm:gap-14">
-            {[...INDUSTRIES, ...INDUSTRIES].map((industry, i) => (
+            {[...APPLICATIONS, ...APPLICATIONS].map((app, i) => (
               <span
-                key={`${industry}-${i}`}
+                key={`${app}-${i}`}
                 className="whitespace-nowrap text-lg font-semibold text-white/90 sm:text-xl"
               >
-                {industry}
+                {app}
               </span>
             ))}
           </div>

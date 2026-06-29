@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Globe2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { INDUSTRY_GROUPS } from "@/lib/industries-data";
+import { INDUSTRIES } from "@/lib/industries-data";
 
 export function IndustriesTeaser() {
   return (
@@ -19,16 +19,16 @@ export function IndustriesTeaser() {
               Built for your industry
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-foreground-muted">
-              AMV systems are deployed across more than 10 industries. We work
-              wherever automated inspection adds value, and our systems are built
-              to the specific demands of each production environment.
+              AMV systems are deployed across food processing, industrial and
+              general manufacturing environments. Our systems are built to the
+              specific demands of each production line.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {INDUSTRY_GROUPS.map((group) => (
+          <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            {INDUSTRIES.map((industry) => (
               <div
-                key={group}
+                key={industry.id}
                 className="flex items-center gap-3 rounded-xl border border-border/60 bg-white px-5 py-4 shadow-soft"
               >
                 <span
@@ -36,19 +36,10 @@ export function IndustriesTeaser() {
                   aria-hidden
                 />
                 <span className="text-sm font-medium text-foreground">
-                  {group}
+                  {industry.name}
                 </span>
               </div>
             ))}
-            <div className="flex items-center gap-3 rounded-xl border border-dashed border-border px-5 py-4">
-              <span
-                className="h-2 w-2 shrink-0 rounded-full bg-foreground-muted/40"
-                aria-hidden
-              />
-              <span className="text-sm text-foreground-muted">
-                And many more
-              </span>
-            </div>
           </div>
 
           <div className="mt-8 text-center">
@@ -60,7 +51,7 @@ export function IndustriesTeaser() {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               )}
             >
-              See all industries
+              See industries and key applications
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
