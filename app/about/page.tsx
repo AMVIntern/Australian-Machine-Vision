@@ -150,7 +150,7 @@ export default function AboutPage() {
             <div className="mt-10 border-t border-border" />
 
             {/* Team expansion */}
-            <p className="mt-10 max-w-3xl text-foreground-muted leading-relaxed">
+            <p className="mt-10 text-foreground-muted leading-relaxed">
               AMV has expanded its engineering capability significantly, building a team that blends deep industry experience with fresh technical strength from RMIT Masters graduates in Mechatronics and Computer Science. This growth has strengthened our ability to deliver reliable, production-ready inspection systems across food, industrial and manufacturing environments.
             </p>
 
