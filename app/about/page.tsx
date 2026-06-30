@@ -190,7 +190,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <p className="mt-8 max-w-3xl text-foreground-muted leading-relaxed">
+            <p className="mt-8 text-foreground-muted leading-relaxed">
               This expanded capability means AMV can support customers with greater depth, faster problem-solving and more confidence in tackling complex inspection challenges. The team&apos;s growth directly translates into stronger outcomes: better system design, more resilient performance, and a partner who can support you from concept through to deployment and ongoing optimisation.
             </p>
           </div>
