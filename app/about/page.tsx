@@ -179,7 +179,7 @@ export default function AboutPage() {
                   Modern software and AI development
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
-                  Custom models, multi-sensor fusion and scalable architectures that integrate cleanly into customer operations.
+                  Custom models, advanced imaging pipelines and scalable architectures that integrate cleanly into customer operations.
                 </p>
               </div>
             </div>

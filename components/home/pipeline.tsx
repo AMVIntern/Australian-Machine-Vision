@@ -26,7 +26,7 @@ const pipelineSteps: PipelineStep[] = [
     number: 1,
     title: "Feasibility and POC",
     description:
-      "Assess the problem, trial sensing and algorithm options, and prove it on real product.",
+      "Assess the problem, trial imaging and algorithm options, and prove it on real product.",
     icon: FlaskConical,
   },
   {
@@ -34,7 +34,7 @@ const pipelineSteps: PipelineStep[] = [
     number: 2,
     title: "Custom development",
     description:
-      "Build the production system: sensing, vision and ML pipeline, software and integration, tailored to your line.",
+      "Build the production system: imaging, vision and ML pipeline, software and integration, tailored to your line.",
     icon: Code2,
   },
   {

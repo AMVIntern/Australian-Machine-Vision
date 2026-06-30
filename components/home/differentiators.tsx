@@ -34,7 +34,7 @@ const differentiators: DifferentiatorItem[] = [
     id: "whole-stack",
     title: "Whole-stack capability",
     description:
-      "We own the full pipeline, from sensor and lighting to the inspection algorithm, operator software and line integration. We are not tied to a single vendor or technique.",
+      "We own the full pipeline, from imaging and lighting to the inspection algorithm, operator software and line integration. We are not tied to a single vendor or technique.",
     icon: Layers,
     gridClass: "lg:col-span-1",
   },

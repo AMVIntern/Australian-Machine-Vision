@@ -50,7 +50,7 @@ export const INDUSTRIES: Industry[] = [
     id: "general-manufacturing",
     name: "General Manufacturing",
     headline: "Automated quality inspection for high-speed packaging lines, labelling, and general production environments.",
-    imagePlaceholder: "/industries/building-products.jpg",
+    imagePlaceholder: "/industries/general-manufacturing.jpg",
     capabilities: [
       "High speed packaging inspection",
       "Barcode, label and print verification",
