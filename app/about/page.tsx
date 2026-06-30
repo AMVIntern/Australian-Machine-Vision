@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Target, Eye } from "lucide-react";
+import { Target, Eye, ScanLine, Settings2, Code2 } from "lucide-react";
 import { AboutValuesSection } from "@/components/about/about-values-section";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Australian Machine Vision. Our mission, vision and 20+ years of experience in machine vision and automated inspection for manufacturing.",
+    "Learn about Australian Machine Vision. 20+ years of experience building custom machine vision and automated inspection systems for any industry, anywhere.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About | Australian Machine Vision",
@@ -40,10 +40,10 @@ export default function AboutPage() {
             <p className="mt-4 text-lg text-foreground-muted">
               AMV delivers end-to-end machine vision and automated inspection,
               from feasibility and proof of concept through custom build,
-              on-site commissioning and ongoing support. We work across food,
-              packaging, healthcare, hygiene and logistics, in Australia and
-              global markets, combining advanced imaging and proven engineering
-              to solve inspection challenges that standard systems cannot.
+              on-site commissioning and ongoing support. We work across any
+              industry, in Australia and global markets, applying AI and
+              classical vision techniques to solve the inspection challenges
+              that standard systems cannot.
             </p>
           </header>
         </div>
@@ -66,9 +66,8 @@ export default function AboutPage() {
               <p className="mt-4 text-foreground-muted leading-relaxed">
                 To deliver machine vision and automated inspection systems that
                 solve real production challenges. We help manufacturers across
-                food, packaging, healthcare, hygiene and logistics achieve the
-                accuracy, reliability and repeatability that off the shelf
-                systems cannot.
+                any industry achieve the accuracy, reliability and repeatability
+                that off-the-shelf systems cannot.
               </p>
               <p className="mt-4 text-foreground-muted leading-relaxed">
                 Every project starts with a clear understanding of your
@@ -102,46 +101,92 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership - Director */}
+      {/* Our Team — Ken + broader team capability */}
       <section
-        className="border-y border-border bg-white/80 backdrop-blur-sm py-12 sm:py-16"
-        aria-labelledby="leadership-heading"
+        className="border-y border-border bg-background-secondary/40 py-12 sm:py-16"
+        aria-labelledby="team-heading"
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2
-            id="leadership-heading"
-            className="text-center text-2xl font-bold text-foreground sm:text-3xl"
-          >
-            Leadership
-          </h2>
-          <p className="mx-auto mt-2 max-w-2xl text-center text-foreground-muted">
-            The experience behind every system we deliver.
-          </p>
+          <div className="mx-auto max-w-4xl">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
+              Our team
+            </p>
+            <h2
+              id="team-heading"
+              className="mt-1 text-2xl font-bold text-foreground sm:text-3xl"
+            >
+              About the AMV Team
+            </h2>
 
-          <div className="mx-auto mt-10 grid max-w-4xl items-center gap-8 sm:grid-cols-[auto,1fr] sm:gap-12">
-            {/* Photo placeholder - replace with a portrait of Ken at /public/team/ken-razga.jpg */}
-            <div className="mx-auto flex h-44 w-44 items-center justify-center overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-teal-50 to-cyan-50 shadow-soft sm:h-52 sm:w-52">
-              <span className="text-4xl font-bold text-accent-primary">KR</span>
+            {/* Ken's profile */}
+            <div className="mt-8 grid items-center gap-8 sm:grid-cols-[auto,1fr] sm:gap-10">
+              {/* Photo placeholder - replace with /public/team/ken-razga.jpg */}
+              <div className="mx-auto flex h-36 w-36 items-center justify-center overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-teal-50 to-cyan-50 shadow-soft sm:h-44 sm:w-44">
+                <span className="text-3xl font-bold text-accent-primary">KR</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-foreground">Ken Razga</h3>
+                <p className="mt-1 text-sm font-medium text-accent-primary">Director</p>
+                <p className="mt-4 text-foreground-muted leading-relaxed">
+                  Ken leads Australian Machine Vision, bringing more than 20 years
+                  of hands-on experience in machine vision and industrial automation.
+                  He has worked closely with manufacturers across any industry to
+                  solve the inspection challenges that off-the-shelf systems cannot.
+                </p>
+                <p className="mt-3 text-foreground-muted leading-relaxed">
+                  His focus is practical engineering and measurable results, making
+                  sure every system we deliver is reliable, well integrated and built
+                  for real production conditions.
+                </p>
+              </div>
             </div>
 
-            <div>
-              <h3 className="text-xl font-bold text-foreground">Ken Razga</h3>
-              <p className="mt-1 text-sm font-medium text-accent-primary">
-                Director
-              </p>
-              <p className="mt-4 text-foreground-muted leading-relaxed">
-                Ken leads Australian Machine Vision, bringing more than 20 years
-                of hands-on experience in machine vision and industrial
-                automation. He has worked closely with manufacturers across
-                food, industrial and general manufacturing to solve inspection
-                challenges that off the shelf systems cannot.
-              </p>
-              <p className="mt-3 text-foreground-muted leading-relaxed">
-                His focus is practical engineering and measurable results,
-                making sure every system we deliver is reliable, well integrated
-                and built for real production conditions.
-              </p>
+            <div className="mt-10 border-t border-border" />
+
+            {/* Team expansion */}
+            <p className="mt-10 max-w-3xl text-foreground-muted leading-relaxed">
+              AMV has expanded its engineering capability significantly, building a team that blends deep industry experience with fresh technical strength from RMIT Masters graduates in Mechatronics and Computer Science. This growth has strengthened our ability to deliver reliable, production-ready inspection systems across food, industrial and manufacturing environments.
+            </p>
+
+            <div className="mt-6 grid gap-5 sm:grid-cols-3">
+              <div className="rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+                  <ScanLine className="h-5 w-5" aria-hidden />
+                </span>
+                <h3 className="mt-4 text-sm font-bold text-foreground">
+                  Advanced machine vision engineering
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  Expertise across 2D, line-scan and 3D imaging, classical vision pipelines and applied deep learning.
+                </p>
+              </div>
+              <div className="rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+                  <Settings2 className="h-5 w-5" aria-hidden />
+                </span>
+                <h3 className="mt-4 text-sm font-bold text-foreground">
+                  Robust automation and mechatronics
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  Every system is designed for real-world reliability, line-speed performance and long-term stability.
+                </p>
+              </div>
+              <div className="rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft">
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+                  <Code2 className="h-5 w-5" aria-hidden />
+                </span>
+                <h3 className="mt-4 text-sm font-bold text-foreground">
+                  Modern software and AI development
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  Custom models, advanced imaging pipelines and scalable architectures that integrate cleanly into customer operations.
+                </p>
+              </div>
             </div>
+
+            <p className="mt-8 max-w-3xl text-foreground-muted leading-relaxed">
+              This expanded capability means AMV can support customers with greater depth, faster problem-solving and more confidence in tackling complex inspection challenges. The team&apos;s growth directly translates into stronger outcomes: better system design, more resilient performance, and a partner who can support you from concept through to deployment and ongoing optimisation.
+            </p>
           </div>
         </div>
       </section>
@@ -154,7 +199,7 @@ export default function AboutPage() {
       </section>
 
       {/* Statistics */}
-      <section className="bg-white/80 backdrop-blur-sm py-12 sm:py-16" aria-labelledby="about-stats-heading">
+      <section className="border-y border-border bg-background-secondary/40 py-12 sm:py-16" aria-labelledby="about-stats-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 id="about-stats-heading" className="sr-only">
             Key statistics
@@ -192,6 +237,54 @@ export default function AboutPage() {
                 Technology Partner Network
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cross-links to Industries and Methodology */}
+      <section className="bg-white/80 backdrop-blur-sm py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-4xl gap-5 sm:grid-cols-2">
+            <Link
+              href="/industries"
+              className={cn(
+                "group flex flex-col rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft-lg",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              )}
+            >
+              <h2 className="text-base font-bold text-foreground">
+                Industries we work in
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                AMV works across food, healthcare, packaging, industrial
+                manufacturing, logistics and beyond. See the full list with
+                capability examples for each sector.
+              </p>
+              <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+                Explore industries
+                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </span>
+            </Link>
+            <Link
+              href="/methodology"
+              className={cn(
+                "group flex flex-col rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft-lg",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              )}
+            >
+              <h2 className="text-base font-bold text-foreground">
+                How we build solutions
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                We combine HALCON industrial software, custom-trained AI models
+                and classical vision algorithms. Each technique is applied where
+                it performs best.
+              </p>
+              <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+                See our methodology
+                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </span>
+            </Link>
           </div>
         </div>
       </section>

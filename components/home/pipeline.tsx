@@ -26,7 +26,7 @@ const pipelineSteps: PipelineStep[] = [
     number: 1,
     title: "Feasibility and POC",
     description:
-      "Assess the problem, trial sensing and algorithm options, and prove it on real product.",
+      "Assess the problem, trial imaging and algorithm options, and prove it on real product.",
     icon: FlaskConical,
   },
   {
@@ -34,7 +34,7 @@ const pipelineSteps: PipelineStep[] = [
     number: 2,
     title: "Custom development",
     description:
-      "Build the production system: sensing, vision and ML pipeline, software and integration, tailored to your line.",
+      "Build the production system: imaging, vision and ML pipeline, software and integration, tailored to your line.",
     icon: Code2,
   },
   {
@@ -222,7 +222,7 @@ export function Pipeline() {
 
   return (
     <section
-      className="bg-white/80 backdrop-blur-sm py-16 sm:py-20"
+      className="border-y border-border bg-background-secondary/40 py-16 sm:py-20"
       aria-labelledby="pipeline-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

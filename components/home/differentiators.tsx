@@ -23,9 +23,9 @@ export interface DifferentiatorItem {
 const differentiators: DifferentiatorItem[] = [
   {
     id: "customised",
-    title: "Built to be customised",
+    title: "Built for the problems others won't take on",
     description:
-      "Every application is deeply configurable and tailored to your exact line, product mix and process. This adaptability is our core strength.",
+      "Standard inspection products are designed for common cases. We build systems from the ground up for your product, your line and your defect type, including the non-standard and high-difficulty inspection challenges that off-the-shelf tools cannot solve.",
     icon: SlidersHorizontal,
     featured: true,
     gridClass: "lg:col-span-2 lg:row-span-2",
@@ -34,7 +34,7 @@ const differentiators: DifferentiatorItem[] = [
     id: "whole-stack",
     title: "Whole-stack capability",
     description:
-      "We own the full pipeline, from sensor and lighting to the inspection algorithm, operator software and line-control integration. We are not tied to a single vendor or technique.",
+      "We own the full pipeline, from imaging and lighting to the inspection algorithm, operator software and line integration. We are not tied to a single vendor or technique.",
     icon: Layers,
     gridClass: "lg:col-span-1",
   },
@@ -48,9 +48,9 @@ const differentiators: DifferentiatorItem[] = [
   },
   {
     id: "right-tool",
-    title: "Right tool for the job",
+    title: "AI and classical vision combined",
     description:
-      "Some defects suit precise geometric measurement, others need a trained model. We combine both in one system, using each where it is strongest.",
+      "We use HALCON and custom-trained deep learning models together, applying each technique where it performs best. One system, the right algorithm for each task.",
     icon: Wrench,
     gridClass: "lg:col-span-1",
   },
@@ -58,7 +58,7 @@ const differentiators: DifferentiatorItem[] = [
     id: "supported",
     title: "Customer oriented and globally supported",
     description:
-      "We work closely with you through the life of the system, with deployments operating overseas and tiered support where it is needed.",
+      "We work closely with you through the life of the system, with deployments operating across Australia and international markets and tiered support where it is needed.",
     icon: Globe,
     gridClass: "lg:col-span-1",
   },
@@ -165,7 +165,7 @@ export function Differentiators() {
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
           Why manufacturers choose AMV for inspection that has to work in
-          production.
+          real production conditions, not just in the lab.
         </p>
 
         <motion.div

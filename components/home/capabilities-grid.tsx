@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Ruler, Brain, Check, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type FamilyId = "sensing" | "classical" | "ml";
+type FamilyId = "imaging" | "classical" | "ml";
 
 interface CapabilityFamily {
   id: FamilyId;
@@ -31,9 +31,9 @@ interface Problem {
 
 const families: CapabilityFamily[] = [
   {
-    id: "sensing",
-    shortTitle: "Sensing",
-    title: "Image acquisition and sensing",
+    id: "imaging",
+    shortTitle: "Imaging",
+    title: "Image acquisition and imaging",
     intro: "Choosing and engineering the right imaging for the application.",
     items: [
       "2D area-scan imaging",
@@ -70,15 +70,15 @@ const families: CapabilityFamily[] = [
   },
   {
     id: "ml",
-    shortTitle: "ML / deep learning",
-    title: "Machine learning and deep learning",
-    intro: "Trained models for complex, variable and hard to define defects.",
+    shortTitle: "AI and deep learning",
+    title: "AI and deep learning inspection",
+    intro: "Custom AI models trained on examples of your product, to recognise defects, anomalies and features that rigid rules miss.",
     items: [
-      "Object and defect detection",
-      "Semantic and instance segmentation",
-      "Anomaly and contamination detection",
+      "Object and defect detection (finds and locates problems in the image)",
+      "Segmentation (maps exactly which pixels belong to a defect or feature)",
+      "Anomaly detection (flags anything that deviates from normal product)",
       "Classification and grading",
-      "OCR and text verification",
+      "OCR and text verification (reads date codes, lot numbers and print)",
       "Custom model development",
     ],
     icon: Brain,
@@ -102,35 +102,35 @@ const problems: Problem[] = [
   {
     id: "contamination",
     label: "Contamination and foreign object detection",
-    families: ["sensing", "ml"],
+    families: ["imaging", "ml"],
     summary:
       "Imaging tuned for contrast and sensitivity, paired with anomaly or detection models.",
   },
   {
     id: "presence",
     label: "Presence, absence and component verification",
-    families: ["sensing", "classical"],
+    families: ["imaging", "classical"],
     summary:
       "Reliable triggering and lighting, with deterministic presence and pattern checks.",
   },
   {
     id: "label",
     label: "Label and print verification",
-    families: ["sensing", "ml"],
+    families: ["imaging", "ml"],
     summary:
       "OCR models for text, date codes and print quality, with imaging tuned for reliable reads on the line.",
   },
   {
     id: "dimensional",
     label: "Dimensional measurement and metrology",
-    families: ["sensing", "classical"],
+    families: ["imaging", "classical"],
     summary:
       "Calibrated imaging with geometric measurement and gauging algorithms.",
   },
   {
     id: "fill",
     label: "Fill level estimation",
-    families: ["sensing", "classical", "ml"],
+    families: ["imaging", "classical", "ml"],
     summary:
       "Calibrated imaging, classical measurement routines, and segmentation models such as SAM to define the product region and estimate fill level.",
   },
@@ -144,7 +144,7 @@ const problems: Problem[] = [
   {
     id: "orientation",
     label: "Orientation and placement checks",
-    families: ["sensing", "classical"],
+    families: ["imaging", "classical"],
     summary:
       "Consistent acquisition and alignment algorithms to verify position and pose.",
   },
@@ -371,7 +371,7 @@ function ProblemPanel({ problem }: { problem: Problem }) {
 export function CapabilitiesGrid() {
   const [selection, setSelection] = React.useState<Selection>({
     type: "family",
-    id: "sensing",
+    id: "imaging",
   });
 
   const highlightedFamilies = React.useMemo(() => {
@@ -403,8 +403,9 @@ export function CapabilitiesGrid() {
           Capabilities
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          We own the full pipeline, from sensor and lighting to the inspection
-          algorithm, and choose the right combination for each problem.
+          We combine AI and deep learning with classical vision and precision
+          imaging, applying each where it performs best for your inspection
+          problem.
         </p>
 
         <div className="mx-auto mt-12 max-w-5xl space-y-6">

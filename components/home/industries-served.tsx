@@ -292,7 +292,7 @@ export function IndustriesServed() {
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
           The same underlying capability adapts to very different products and
-          environments. The sensing, lighting and algorithm are tuned to each
+          environments. The imaging, lighting and algorithm are tuned to each
           task.
         </p>
 
