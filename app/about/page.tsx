@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Target, Eye, ScanLine, Settings2, Code2 } from "lucide-react";
 import { AboutValuesSection } from "@/components/about/about-values-section";
 import { cn } from "@/lib/utils";
@@ -120,9 +121,14 @@ export default function AboutPage() {
 
             {/* Ken's profile */}
             <div className="mt-8 grid items-center gap-8 sm:grid-cols-[auto,1fr] sm:gap-10">
-              {/* Photo placeholder - replace with /public/team/ken-razga.jpg */}
-              <div className="mx-auto flex h-36 w-36 items-center justify-center overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-teal-50 to-cyan-50 shadow-soft sm:h-44 sm:w-44">
-                <span className="text-3xl font-bold text-accent-primary">KR</span>
+              <div className="mx-auto h-36 w-36 overflow-hidden rounded-2xl border border-border shadow-soft sm:h-44 sm:w-44">
+                <Image
+                  src="/team/ken-razga.jpg"
+                  alt="Ken Razga, Director at Australian Machine Vision"
+                  width={176}
+                  height={176}
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground">Ken Razga</h3>
