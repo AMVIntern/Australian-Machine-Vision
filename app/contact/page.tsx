@@ -104,13 +104,6 @@ export default function ContactPage() {
                     >
                       amvsupport@amvco.com.au
                     </a>
-                    {" / "}
-                    <a
-                      href="mailto:krazga@amvco.com.au"
-                      className="hover:text-foreground"
-                    >
-                      krazga@amvco.com.au
-                    </a>
                   </span>
                 </li>
                 <li className="flex items-center gap-3">
