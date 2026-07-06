@@ -23,7 +23,7 @@ export function ClientLogos() {
         <p className="text-center text-xs font-medium uppercase tracking-widest text-white/85 sm:text-sm">
           Trusted by leading manufacturers
         </p>
-        <div className="relative mt-8 overflow-hidden">
+        <div className="relative mt-4 overflow-hidden">
           <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-teal-700 to-transparent sm:w-40" aria-hidden />
           <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-teal-400 to-transparent sm:w-40" aria-hidden />
           <div className="flex animate-marquee items-center gap-16 sm:gap-20">
