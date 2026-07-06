@@ -43,7 +43,7 @@ export function Hero() {
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-accent-secondary/15 blur-3xl" />
       </div>
 
-      <div className="container relative mx-auto px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="container relative mx-auto px-4 pb-4 pt-10 sm:px-6 sm:pb-4 sm:pt-12 lg:px-8 lg:pb-6 lg:pt-16">
         <div className="mx-auto max-w-3xl text-center">
           <motion.div
             className="flex flex-col items-center"

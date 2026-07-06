@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
+import { ClientLogos } from "@/components/home/client-logos";
 import { AgnosticBand } from "@/components/home/agnostic-band";
 import { MethodologyTeaser } from "@/components/home/methodology-teaser";
 import { IndustriesTeaser } from "@/components/home/industries-teaser";
@@ -7,7 +8,6 @@ import { Pipeline } from "@/components/home/pipeline";
 import { CapabilitiesGrid } from "@/components/home/capabilities-grid";
 import { Differentiators } from "@/components/home/differentiators";
 import { ProductionStrip } from "@/components/home/production-strip";
-import { IndustriesStrip } from "@/components/home/industries-strip";
 import { FinalCTA } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <IndustriesStrip />
+      <ClientLogos />
       <Differentiators />
       <CapabilitiesGrid />
       <MethodologyTeaser />
