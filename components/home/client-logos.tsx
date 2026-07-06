@@ -3,14 +3,14 @@
 import Image from "next/image";
 
 const clients = [
-  { name: "CHEP", src: "/logos/ChepLogo.png", width: 80, height: 48 },
-  { name: "Nestle", src: "/logos/NestleLogo.png", width: 88, height: 48 },
-  { name: "Saputo", src: "/logos/SaputoLogo.png", width: 124, height: 48 },
-  { name: "Textor", src: "/logos/TextorLogo.png", width: 96, height: 48 },
-  { name: "Tip Top Bakery", src: "/logos/TipTopBakeryLogo.png", width: 96, height: 48 },
-  { name: "Daniels Health", src: "/logos/DanielsHealthLogo.png", width: 104, height: 48 },
-  { name: "Symbion", src: "/logos/SymbionLogo.png", width: 104, height: 48 },
   { name: "Timberlink", src: "/logos/TimberLinkLogo.png", width: 104, height: 48 },
+  { name: "Symbion", src: "/logos/SymbionLogo.png", width: 104, height: 48 },
+  { name: "Daniels Health", src: "/logos/DanielsHealthLogo.png", width: 104, height: 48 },
+  { name: "Tip Top Bakery", src: "/logos/TipTopBakeryLogo.png", width: 96, height: 48 },
+  { name: "Textor", src: "/logos/TextorLogo.png", width: 96, height: 48 },
+  { name: "Saputo", src: "/logos/SaputoLogo.png", width: 124, height: 48 },
+  { name: "Nestle", src: "/logos/NestleLogo.png", width: 88, height: 48 },
+  { name: "CHEP", src: "/logos/ChepLogo.png", width: 80, height: 48 },
 ];
 
 export function ClientLogos() {
