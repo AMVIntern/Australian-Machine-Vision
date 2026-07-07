@@ -4,6 +4,7 @@ import Image from "next/image";
 
 const clients = [
   { name: "Timberlink", src: "/logos/TimberLinkLogo.png", width: 140, height: 64 },
+  { name: "Australian Red Cross", src: "/logos/AustralianRedCross.png", width: 150, height: 75 },
   { name: "Symbion", src: "/logos/SymbionLogo.png", width: 140, height: 64 },
   { name: "Daniels Health", src: "/logos/DanielsHealthLogo.png", width: 104, height: 48 },
   { name: "Tip Top Bakery", src: "/logos/TipTopBakeryLogo.png", width: 96, height: 48 },
@@ -19,7 +20,7 @@ export function ClientLogos() {
     <section className="bg-teal-50 py-6" aria-label="Clients">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-foreground-muted">
-          Trusted by leading manufacturers
+          Trusted by leading organisations
         </p>
 
         <div className="relative overflow-hidden">
