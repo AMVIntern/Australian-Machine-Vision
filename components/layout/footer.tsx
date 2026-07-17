@@ -97,8 +97,8 @@ export function Footer() {
 
         <div className="mt-10 pt-8 border-t border-border">
           <p className="text-center text-sm text-foreground-muted">
-            © {new Date().getFullYear()} Australian Machine Vision. All rights
-            reserved.
+            © {new Date().getFullYear()} Australian Machine Vision Pty Ltd.
+            All rights reserved.
           </p>
         </div>
       </div>
