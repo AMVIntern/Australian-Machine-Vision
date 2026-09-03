@@ -15,11 +15,11 @@ export function validateContactFields(data: {
 }): ContactFieldErrors {
   const errors: ContactFieldErrors = {};
 
-  if (!data.firstName || data.firstName.length < 2) {
-    errors.firstName = ["Please enter your first name (at least 2 characters)."];
+  if (!data.firstName) {
+    errors.firstName = ["Please enter your first name."];
   }
-  if (!data.lastName || data.lastName.length < 2) {
-    errors.lastName = ["Please enter your last name (at least 2 characters)."];
+  if (!data.lastName) {
+    errors.lastName = ["Please enter your last name."];
   }
   if (!data.email) {
     errors.email = ["Email is required."];
