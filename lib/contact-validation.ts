@@ -9,6 +9,9 @@ export function validateContactFields(data: {
   company: string;
   industryValue: string;
   message: string;
+  country?: string;
+  state?: string;
+  city?: string;
 }): ContactFieldErrors {
   const errors: ContactFieldErrors = {};
 
@@ -28,6 +31,15 @@ export function validateContactFields(data: {
   }
   if (!data.industryValue) {
     errors.industry = ["Please select your industry."];
+  }
+  if (!data.country) {
+    errors.country = ["Please select your country."];
+  }
+  if (!data.state) {
+    errors.state = ["Please select your state / province."];
+  }
+  if (!data.city || data.city.trim().length < 2) {
+    errors.city = ["Please enter your city."];
   }
   if (!data.message || data.message.length < 10) {
     errors.message = ["Please enter a message (at least 10 characters)."];

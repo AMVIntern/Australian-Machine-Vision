@@ -1,6 +1,7 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useMemo, useState } from "react";
+import { Country, State } from "country-state-city";
 import { submitContactForm, type FormState } from "@/app/contact/actions";
 import { ContactFormSubmitButton } from "./contact-form-submit";
 import { cn } from "@/lib/utils";
@@ -9,6 +10,21 @@ import {
   getIndustryLabel,
 } from "@/lib/contact-industries";
 import { validateContactFields } from "@/lib/contact-validation";
+
+const SELECT_CLASSNAME = cn(
+  "mt-1 w-full appearance-none rounded-lg border border-border bg-white px-4 py-2.5 text-foreground",
+  "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0",
+  "bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 24 24%27 stroke=%27%2378716c%27%3E%3Cpath stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27m19 9-7 7-7-7%27/%3E%3C/svg%3E')] bg-[length:1.25rem] bg-[right_0.5rem_center] bg-no-repeat pr-10"
+);
+
+// Australia first, then the rest alphabetically — most leads are local.
+const ALL_COUNTRIES = Country.getAllCountries();
+const COUNTRY_OPTIONS = [
+  ...ALL_COUNTRIES.filter((c) => c.isoCode === "AU"),
+  ...ALL_COUNTRIES.filter((c) => c.isoCode !== "AU").sort((a, b) =>
+    a.name.localeCompare(b.name)
+  ),
+];
 
 const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
@@ -41,21 +57,32 @@ async function submitWeb3Forms(formData: FormData): Promise<boolean> {
   }
 }
 
-function buildStorageFormData(form: HTMLFormElement, industryLabel: string) {
+function buildStorageFormData(
+  form: HTMLFormElement,
+  industryLabel: string,
+  countryLabel: string,
+  stateLabel: string
+) {
   const formData = new FormData(form);
   formData.set("industry", industryLabel);
+  formData.set("country", countryLabel);
+  formData.set("state", stateLabel);
   return formData;
 }
 
 function buildEmailFormData(
   form: HTMLFormElement,
   industryLabel: string,
+  countryLabel: string,
+  stateLabel: string,
   name: string,
   email: string,
   company: string
 ) {
   const formData = new FormData(form);
   formData.set("industry", industryLabel);
+  formData.set("country", countryLabel);
+  formData.set("state", stateLabel);
   formData.append("access_key", ACCESS_KEY!);
   formData.append("name", name);
   formData.append(
@@ -70,6 +97,12 @@ function buildEmailFormData(
 export function ContactForm() {
   const [state, setState] = useState<FormState>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [countryCode, setCountryCode] = useState("AU");
+
+  const stateOptions = useMemo(
+    () => State.getStatesOfCountry(countryCode),
+    [countryCode]
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -84,9 +117,16 @@ export function ContactForm() {
     const email = (rawFormData.get("email") as string)?.trim() ?? "";
     const company = (rawFormData.get("company") as string)?.trim() ?? "";
     const phone = (rawFormData.get("phone") as string)?.trim() ?? "";
+    const countryValue = (rawFormData.get("country") as string)?.trim() ?? "";
+    const stateValue = (rawFormData.get("state") as string)?.trim() ?? "";
+    const city = (rawFormData.get("city") as string)?.trim() ?? "";
     const industryValue = (rawFormData.get("industry") as string)?.trim() ?? "";
     const message = (rawFormData.get("message") as string)?.trim() ?? "";
     const industryLabel = getIndustryLabel(industryValue);
+    const countryLabel =
+      COUNTRY_OPTIONS.find((c) => c.isoCode === countryValue)?.name ?? countryValue;
+    const stateLabel =
+      stateOptions.find((s) => s.isoCode === stateValue)?.name ?? stateValue;
     const name = [firstName, lastName].filter(Boolean).join(" ");
 
     const errors = validateContactFields({
@@ -96,6 +136,9 @@ export function ContactForm() {
       company,
       industryValue,
       message,
+      country: countryValue,
+      state: stateValue,
+      city,
     });
 
     if (Object.keys(errors).length > 0) {
@@ -104,12 +147,25 @@ export function ContactForm() {
       return;
     }
 
-    const storageFormData = buildStorageFormData(form, industryLabel);
+    const storageFormData = buildStorageFormData(
+      form,
+      industryLabel,
+      countryLabel,
+      stateLabel
+    );
 
     const [emailSettled, storageSettled] = await Promise.allSettled([
       ACCESS_KEY
         ? submitWeb3Forms(
-            buildEmailFormData(form, industryLabel, name, email, company)
+            buildEmailFormData(
+              form,
+              industryLabel,
+              countryLabel,
+              stateLabel,
+              name,
+              email,
+              company
+            )
           )
         : Promise.resolve(false),
       submitContactForm(null, storageFormData).then((result) => {
@@ -316,6 +372,99 @@ export function ContactForm() {
             "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0"
           )}
         />
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label
+            htmlFor="contact-country"
+            className="block text-sm font-medium text-foreground"
+          >
+            Country <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="contact-country"
+            name="country"
+            required
+            value={countryCode}
+            onChange={(e) => setCountryCode(e.target.value)}
+            className={cn(SELECT_CLASSNAME, state?.errors?.country && "border-red-500")}
+            aria-invalid={!!state?.errors?.country}
+            aria-describedby={state?.errors?.country ? "country-error" : undefined}
+          >
+            {COUNTRY_OPTIONS.map((c) => (
+              <option key={c.isoCode} value={c.isoCode}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          {state?.errors?.country && (
+            <p id="country-error" className="mt-1 text-sm text-red-600">
+              {state.errors.country[0]}
+            </p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="contact-state"
+            className="block text-sm font-medium text-foreground"
+          >
+            State / Province <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="contact-state"
+            name="state"
+            required
+            defaultValue=""
+            className={cn(SELECT_CLASSNAME, state?.errors?.state && "border-red-500")}
+            aria-invalid={!!state?.errors?.state}
+            aria-describedby={state?.errors?.state ? "state-error" : undefined}
+          >
+            <option value="" disabled>
+              {stateOptions.length ? "Select State / Province" : "No states available"}
+            </option>
+            {stateOptions.map((s) => (
+              <option key={s.isoCode} value={s.isoCode}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+          {state?.errors?.state && (
+            <p id="state-error" className="mt-1 text-sm text-red-600">
+              {state.errors.state[0]}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="contact-city"
+          className="block text-sm font-medium text-foreground"
+        >
+          City <span className="text-red-500">*</span>
+        </label>
+        <input
+          id="contact-city"
+          name="city"
+          type="text"
+          autoComplete="address-level2"
+          required
+          className={cn(
+            "mt-1 w-full rounded-lg border border-border bg-white px-4 py-2.5 text-foreground",
+            "placeholder:text-foreground-muted",
+            "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0",
+            state?.errors?.city && "border-red-500"
+          )}
+          placeholder="e.g. Melbourne"
+          aria-invalid={!!state?.errors?.city}
+          aria-describedby={state?.errors?.city ? "city-error" : undefined}
+        />
+        {state?.errors?.city && (
+          <p id="city-error" className="mt-1 text-sm text-red-600">
+            {state.errors.city[0]}
+          </p>
+        )}
       </div>
 
       <div>
