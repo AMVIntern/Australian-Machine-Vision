@@ -20,6 +20,9 @@ async function storeSubmission(data: {
   email: string;
   company: string;
   phone: string;
+  country: string;
+  state: string;
+  city: string;
   industry: string;
   message: string;
 }): Promise<boolean> {
@@ -39,11 +42,21 @@ async function storeSubmission(data: {
       )
     `;
     await sql`
+      ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS country TEXT
+    `;
+    await sql`
+      ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS state TEXT
+    `;
+    await sql`
+      ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS city TEXT
+    `;
+    await sql`
       INSERT INTO contact_submissions
-        (first_name, last_name, email, company, phone, industry, message)
+        (first_name, last_name, email, company, phone, industry, message, country, state, city)
       VALUES
         (${data.firstName}, ${data.lastName}, ${data.email}, ${data.company},
-         ${data.phone || null}, ${data.industry}, ${data.message})
+         ${data.phone || null}, ${data.industry}, ${data.message},
+         ${data.country}, ${data.state}, ${data.city})
     `;
     return true;
   } catch (e) {
@@ -57,6 +70,9 @@ async function appendToSheet(data: {
   email: string;
   company: string;
   phone: string;
+  country: string;
+  state: string;
+  city: string;
   industry: string;
   message: string;
 }): Promise<boolean> {
@@ -72,6 +88,9 @@ async function appendToSheet(data: {
         email: data.email,
         company: data.company,
         phone: data.phone || "",
+        country: data.country,
+        state: data.state,
+        city: data.city,
         industry: data.industry,
         message: data.message,
       }),
@@ -93,6 +112,9 @@ function logStorageFailure(payload: {
   email: string;
   company: string;
   phone: string;
+  country: string;
+  state: string;
+  city: string;
   industry: string;
   message: string;
 }) {
@@ -102,6 +124,9 @@ function logStorageFailure(payload: {
     email: payload.email,
     company: payload.company,
     phone: payload.phone,
+    country: payload.country,
+    state: payload.state,
+    city: payload.city,
     industry: payload.industry,
     message: payload.message,
   });
@@ -116,6 +141,9 @@ export async function submitContactForm(
   const email = (formData.get("email") as string)?.trim() ?? "";
   const company = (formData.get("company") as string)?.trim() ?? "";
   const phone = (formData.get("phone") as string)?.trim() ?? "";
+  const country = (formData.get("country") as string)?.trim() ?? "";
+  const state = (formData.get("state") as string)?.trim() ?? "";
+  const city = (formData.get("city") as string)?.trim() ?? "";
   const industryValue = (formData.get("industry") as string)?.trim() ?? "";
   const message = (formData.get("message") as string)?.trim() ?? "";
   const industry = getIndustryLabel(industryValue);
@@ -127,6 +155,9 @@ export async function submitContactForm(
     company,
     industryValue,
     message,
+    country,
+    state,
+    city,
   });
 
   if (Object.keys(errors).length > 0) {
@@ -140,13 +171,16 @@ export async function submitContactForm(
     email,
     company,
     phone,
+    country,
+    state,
+    city,
     industry,
     message,
   };
 
   const [dbOk, sheetOk] = await Promise.all([
     storeSubmission(payload),
-    appendToSheet({ name, email, company, phone, industry, message }),
+    appendToSheet({ name, email, company, phone, country, state, city, industry, message }),
   ]);
 
   if (!dbOk && !sheetOk) {

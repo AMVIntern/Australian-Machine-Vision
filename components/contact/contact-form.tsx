@@ -1,14 +1,47 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { Country, State } from "country-state-city";
 import { submitContactForm, type FormState } from "@/app/contact/actions";
 import { ContactFormSubmitButton } from "./contact-form-submit";
+import { SearchableSelect } from "./searchable-select";
 import { cn } from "@/lib/utils";
 import {
   CONTACT_INDUSTRY_OPTIONS,
   getIndustryLabel,
 } from "@/lib/contact-industries";
 import { validateContactFields } from "@/lib/contact-validation";
+
+// Australia first, then the rest alphabetically — most leads are local.
+const ALL_COUNTRIES = Country.getAllCountries();
+const COUNTRY_OPTIONS = [
+  ...ALL_COUNTRIES.filter((c) => c.isoCode === "AU"),
+  ...ALL_COUNTRIES.filter((c) => c.isoCode !== "AU").sort((a, b) =>
+    a.name.localeCompare(b.name)
+  ),
+];
+
+// Phone extension options — Australia first, deduped by dial code, then alphabetical by country name.
+const PHONE_CODE_OPTIONS = (() => {
+  const seen = new Set<string>();
+  const withCode = ALL_COUNTRIES.filter((c) => c.phonecode && !seen.has(`${c.isoCode}`));
+  const au = withCode.find((c) => c.isoCode === "AU");
+  const rest = withCode
+    .filter((c) => c.isoCode !== "AU")
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return au ? [au, ...rest] : rest;
+})();
+
+// Combobox-ready option lists (full country name, searchable)
+const COUNTRY_COMBOBOX_OPTIONS = COUNTRY_OPTIONS.map((c) => ({
+  value: c.isoCode,
+  label: c.name,
+}));
+
+const PHONE_COMBOBOX_OPTIONS = PHONE_CODE_OPTIONS.map((c) => ({
+  value: c.isoCode,
+  label: `${c.name} +${c.phonecode.replace(/\+/g, "")}`,
+}));
 
 const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
@@ -41,21 +74,36 @@ async function submitWeb3Forms(formData: FormData): Promise<boolean> {
   }
 }
 
-function buildStorageFormData(form: HTMLFormElement, industryLabel: string) {
+function buildStorageFormData(
+  form: HTMLFormElement,
+  industryLabel: string,
+  countryLabel: string,
+  stateLabel: string,
+  phone: string
+) {
   const formData = new FormData(form);
   formData.set("industry", industryLabel);
+  formData.set("country", countryLabel);
+  formData.set("state", stateLabel);
+  formData.set("phone", phone);
   return formData;
 }
 
 function buildEmailFormData(
   form: HTMLFormElement,
   industryLabel: string,
+  countryLabel: string,
+  stateLabel: string,
+  phone: string,
   name: string,
   email: string,
   company: string
 ) {
   const formData = new FormData(form);
   formData.set("industry", industryLabel);
+  formData.set("country", countryLabel);
+  formData.set("state", stateLabel);
+  formData.set("phone", phone);
   formData.append("access_key", ACCESS_KEY!);
   formData.append("name", name);
   formData.append(
@@ -70,6 +118,25 @@ function buildEmailFormData(
 export function ContactForm() {
   const [state, setState] = useState<FormState>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [countryCode, setCountryCode] = useState("AU");
+  const [phoneCountry, setPhoneCountry] = useState("AU");
+  const [stateCode, setStateCode] = useState("");
+
+  const stateOptions = useMemo(
+    () => State.getStatesOfCountry(countryCode),
+    [countryCode]
+  );
+
+  const stateComboboxOptions = useMemo(
+    () => stateOptions.map((s) => ({ value: s.isoCode, label: s.name })),
+    [stateOptions]
+  );
+
+  // Reset the selected state whenever the country changes, since the previous
+  // selection may not exist in the new country's state list.
+  useEffect(() => {
+    setStateCode("");
+  }, [countryCode]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -83,10 +150,23 @@ export function ContactForm() {
     const lastName = (rawFormData.get("lastName") as string)?.trim() ?? "";
     const email = (rawFormData.get("email") as string)?.trim() ?? "";
     const company = (rawFormData.get("company") as string)?.trim() ?? "";
-    const phone = (rawFormData.get("phone") as string)?.trim() ?? "";
+    const phoneNumber = (rawFormData.get("phone") as string)?.trim() ?? "";
+    const phoneDialCode = (
+      PHONE_CODE_OPTIONS.find((c) => c.isoCode === phoneCountry)?.phonecode ?? ""
+    ).replace(/\+/g, "");
+    const phone = phoneNumber
+      ? `+${phoneDialCode} ${phoneNumber}`
+      : "";
+    const countryValue = (rawFormData.get("country") as string)?.trim() ?? "";
+    const stateValue = (rawFormData.get("state") as string)?.trim() ?? "";
+    const city = (rawFormData.get("city") as string)?.trim() ?? "";
     const industryValue = (rawFormData.get("industry") as string)?.trim() ?? "";
     const message = (rawFormData.get("message") as string)?.trim() ?? "";
     const industryLabel = getIndustryLabel(industryValue);
+    const countryLabel =
+      COUNTRY_OPTIONS.find((c) => c.isoCode === countryValue)?.name ?? countryValue;
+    const stateLabel =
+      stateOptions.find((s) => s.isoCode === stateValue)?.name ?? stateValue;
     const name = [firstName, lastName].filter(Boolean).join(" ");
 
     const errors = validateContactFields({
@@ -96,6 +176,9 @@ export function ContactForm() {
       company,
       industryValue,
       message,
+      country: countryValue,
+      state: stateValue,
+      city,
     });
 
     if (Object.keys(errors).length > 0) {
@@ -104,12 +187,27 @@ export function ContactForm() {
       return;
     }
 
-    const storageFormData = buildStorageFormData(form, industryLabel);
+    const storageFormData = buildStorageFormData(
+      form,
+      industryLabel,
+      countryLabel,
+      stateLabel,
+      phone
+    );
 
     const [emailSettled, storageSettled] = await Promise.allSettled([
       ACCESS_KEY
         ? submitWeb3Forms(
-            buildEmailFormData(form, industryLabel, name, email, company)
+            buildEmailFormData(
+              form,
+              industryLabel,
+              countryLabel,
+              stateLabel,
+              phone,
+              name,
+              email,
+              company
+            )
           )
         : Promise.resolve(false),
       submitContactForm(null, storageFormData).then((result) => {
@@ -305,17 +403,119 @@ export function ContactForm() {
         >
           Phone Number
         </label>
+        <div className="mt-1 flex gap-2">
+          <div className="w-56 shrink-0">
+            <SearchableSelect
+              id="contact-phone-code"
+              name="phoneCountry"
+              options={PHONE_COMBOBOX_OPTIONS}
+              value={phoneCountry}
+              onChange={(v) => {
+                setPhoneCountry(v);
+                setCountryCode(v);
+              }}
+              placeholder="Search country..."
+            />
+          </div>
+          <input
+            id="contact-phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            className={cn(
+              "w-full rounded-lg border border-border bg-white px-4 py-2.5 text-foreground",
+              "placeholder:text-foreground-muted",
+              "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0"
+            )}
+            placeholder="e.g. 412 345 678"
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label
+            htmlFor="contact-country"
+            className="block text-sm font-medium text-foreground"
+          >
+            Country <span className="text-red-500">*</span>
+          </label>
+          <div className="mt-1">
+            <SearchableSelect
+              id="contact-country"
+              name="country"
+              options={COUNTRY_COMBOBOX_OPTIONS}
+              value={countryCode}
+              onChange={(v) => setCountryCode(v)}
+              placeholder="Search country..."
+              error={!!state?.errors?.country}
+            />
+          </div>
+          {state?.errors?.country && (
+            <p id="country-error" className="mt-1 text-sm text-red-600">
+              {state.errors.country[0]}
+            </p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="contact-state"
+            className="block text-sm font-medium text-foreground"
+          >
+            State / Province <span className="text-red-500">*</span>
+          </label>
+          <div className="mt-1">
+            <SearchableSelect
+              id="contact-state"
+              name="state"
+              options={stateComboboxOptions}
+              value={stateCode}
+              onChange={(v) => setStateCode(v)}
+              placeholder={
+                stateComboboxOptions.length
+                  ? "Search state / province..."
+                  : "No states available"
+              }
+              disabled={stateComboboxOptions.length === 0}
+              error={!!state?.errors?.state}
+            />
+          </div>
+          {state?.errors?.state && (
+            <p id="state-error" className="mt-1 text-sm text-red-600">
+              {state.errors.state[0]}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="contact-city"
+          className="block text-sm font-medium text-foreground"
+        >
+          City <span className="text-red-500">*</span>
+        </label>
         <input
-          id="contact-phone"
-          name="phone"
-          type="tel"
-          autoComplete="tel"
+          id="contact-city"
+          name="city"
+          type="text"
+          autoComplete="address-level2"
+          required
           className={cn(
             "mt-1 w-full rounded-lg border border-border bg-white px-4 py-2.5 text-foreground",
             "placeholder:text-foreground-muted",
-            "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0"
+            "focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-0",
+            state?.errors?.city && "border-red-500"
           )}
+          placeholder="e.g. Melbourne"
+          aria-invalid={!!state?.errors?.city}
+          aria-describedby={state?.errors?.city ? "city-error" : undefined}
         />
+        {state?.errors?.city && (
+          <p id="city-error" className="mt-1 text-sm text-red-600">
+            {state.errors.city[0]}
+          </p>
+        )}
       </div>
 
       <div>
