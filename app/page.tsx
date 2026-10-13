@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/home/hero";
+import { ScanHero } from "@/components/home/scan-hero";
 import { ClientLogos } from "@/components/home/client-logos";
-import { AgnosticBand } from "@/components/home/agnostic-band";
 import { MethodologyTeaser } from "@/components/home/methodology-teaser";
 import { IndustriesTeaser } from "@/components/home/industries-teaser";
 import { Pipeline } from "@/components/home/pipeline";
@@ -34,7 +33,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Hero />
+      <ScanHero />
       <ClientLogos />
       <Differentiators />
       <CapabilitiesGrid />

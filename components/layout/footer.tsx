@@ -21,50 +21,58 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer
-      className="mt-auto border-t border-border bg-background-secondary"
+      className="relative mt-auto overflow-hidden bg-ink text-white"
       role="contentinfo"
+      data-nav="dark"
     >
-      <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Brand / Contact */}
-          <div className="space-y-4">
-            <Link href="/" className="inline-block transition-opacity hover:opacity-90" aria-label="Australian Machine Vision - Home">
+      <div className="ink-dots pointer-events-none absolute inset-0" aria-hidden />
+      <div className="container relative mx-auto px-4 pb-10 pt-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 border-b border-ink-line pb-12 sm:grid-cols-2 lg:grid-cols-12">
+          {/* Brand / contact */}
+          <div className="space-y-5 lg:col-span-5">
+            <Link
+              href="/"
+              className="inline-block rounded-sm transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-logo"
+              aria-label="Australian Machine Vision - Home"
+            >
               <Image
                 src="/amv-logo.png"
                 alt="Australian Machine Vision"
                 width={160}
                 height={42}
-                className="h-9 w-auto object-contain"
+                className="h-9 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <ul className="space-y-2 text-sm text-foreground-muted" role="list">
-              <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0" aria-hidden />
+            <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
+              Custom machine vision and automated inspection systems,
+              engineered in Australia for production lines anywhere.
+            </p>
+            <ul className="space-y-2.5 text-sm text-ink-soft" role="list">
+              <li className="flex items-center gap-2.5">
+                <Mail className="h-4 w-4 shrink-0 text-accent-logo" aria-hidden />
                 <a
                   href="mailto:amvsupport@amvco.com.au"
-                  className="hover:text-foreground transition-colors"
+                  className="transition-colors hover:text-white"
                 >
                   amvsupport@amvco.com.au
                 </a>
               </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 shrink-0 mt-0.5" aria-hidden />
+              <li className="flex items-start gap-2.5">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-logo" aria-hidden />
                 <span>9A Sir Laurence Drive, Seaford 3198</span>
               </li>
             </ul>
           </div>
 
           {/* Quick navigation */}
-          <div>
-            <p className="text-sm font-semibold text-foreground mb-4">
-              Quick links
-            </p>
-            <ul className="space-y-2" role="list">
+          <div className="lg:col-span-4">
+            <p className="annot text-ink-soft">Quick links</p>
+            <ul className="mt-5 space-y-2.5" role="list">
               {footerLinks.map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-sm text-foreground-muted hover:text-foreground transition-colors"
+                    className="text-sm text-white/80 transition-colors hover:text-accent-logo"
                   >
                     {label}
                   </Link>
@@ -73,33 +81,33 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Social placeholder */}
-          <div>
-            <p className="text-sm font-semibold text-foreground mb-4">Follow us</p>
-            <ul className="flex gap-4" role="list">
+          {/* Social */}
+          <div className="lg:col-span-3">
+            <p className="annot text-ink-soft">Follow us</p>
+            <ul className="mt-5 flex gap-3" role="list">
               {socialLinks.map(({ href, label, icon: Icon }) => (
                 <li key={label}>
                   <a
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground-muted hover:text-foreground transition-colors"
+                    className="flex h-10 w-10 items-center justify-center rounded-sm border border-ink-line text-ink-soft transition-colors hover:border-accent-logo hover:text-white"
                     aria-label={label}
                   >
-                    <Icon className="h-5 w-5" aria-hidden />
+                    <Icon className="h-4 w-4" aria-hidden />
                   </a>
                 </li>
               ))}
             </ul>
           </div>
-
         </div>
 
-        <div className="mt-10 pt-8 border-t border-border">
-          <p className="text-center text-sm text-foreground-muted">
-            © {new Date().getFullYear()} Australian Machine Vision Pty Ltd.
-            All rights reserved.
+        <div className="flex flex-col items-start justify-between gap-3 pt-8 sm:flex-row sm:items-center">
+          <p className="text-sm text-ink-soft">
+            © {new Date().getFullYear()} Australian Machine Vision Pty Ltd. All
+            rights reserved.
           </p>
+          <p className="annot text-ink-soft/80">Seaford VIC / AU + global</p>
         </div>
       </div>
     </footer>

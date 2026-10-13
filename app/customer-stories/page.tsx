@@ -1,57 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { customerStories } from "@/lib/customer-stories";
 import { StoryCard } from "@/components/customer-stories/story-card";
-
-const container = {
-  initial: {},
-  animate: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
+import { PageHeader } from "@/components/layout/page-header";
 
 export default function CustomerStoriesPage() {
   return (
     <div>
-      <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <section aria-labelledby="customer-stories-heading">
-          <h1
-            id="customer-stories-heading"
-            className="text-center text-3xl font-bold text-foreground sm:text-4xl"
-          >
-            Customer Stories
-          </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
+      <PageHeader
+        titleId="customer-stories-heading"
+        title="Customer Stories"
+        intro={
+          <p>
             See how manufacturers across food, industrial and general
             manufacturing are improving accuracy, throughput and consistency
             with machine vision.
           </p>
+        }
+      />
 
+      <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <section aria-labelledby="customer-stories-heading">
           {customerStories.length > 0 ? (
-            <motion.div
-              className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-              variants={container}
-              initial="initial"
-              animate="animate"
-            >
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {customerStories.map((story, index) => (
                 <StoryCard key={story.slug} story={story} index={index} />
               ))}
-            </motion.div>
+            </div>
           ) : (
-            <div className="mx-auto mt-12 max-w-xl rounded-xl border border-border bg-white p-8 text-center shadow-soft">
-              <p className="text-lg font-semibold text-foreground">
+            <div className="reg-marks mx-auto max-w-xl border border-border bg-white p-10 text-center">
+              <p className="font-display text-xl font-bold text-foreground">
                 Customer stories coming soon
               </p>
-              <p className="mt-2 text-sm text-foreground-muted">
+              <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
                 We are preparing detailed case studies. To discuss results we
                 have delivered for businesses like yours, please get in touch.
               </p>
               <Link
                 href="/contact"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-accent-primary px-6 text-sm font-semibold text-white shadow-soft transition hover:opacity-90"
+                className="mt-7 inline-flex h-11 items-center justify-center rounded-sm bg-ink px-6 text-sm font-semibold text-white transition-colors hover:bg-accent-primary"
               >
                 Contact Us
               </Link>

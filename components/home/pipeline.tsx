@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import {
   FlaskConical,
   Code2,
@@ -10,9 +9,11 @@ import {
   LifeBuoy,
   type LucideIcon,
 } from "lucide-react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { ScanHeading, Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 
-export interface PipelineStep {
+interface PipelineStep {
   id: string;
   number: number;
   title: string;
@@ -63,214 +64,153 @@ const pipelineSteps: PipelineStep[] = [
   },
 ];
 
-type StepStatus = "upcoming" | "active" | "completed";
-
-function getStepStatus(index: number, activeIndex: number): StepStatus {
-  if (index < activeIndex) return "completed";
-  if (index === activeIndex) return "active";
-  return "upcoming";
+function StepsList({
+  ghost,
+  className,
+}: {
+  ghost?: boolean;
+  className?: string;
+}) {
+  return (
+    <ol className={cn("divide-y divide-border", className)} role="list" aria-hidden={ghost || undefined}>
+      {pipelineSteps.map((step) => {
+        const Icon = step.icon;
+        return (
+          <li
+            key={step.id}
+            className="grid items-start gap-3 py-6 lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-7"
+          >
+            <span
+              className={cn(
+                "annot lg:col-span-1",
+                ghost ? "text-foreground/20" : "text-accent-deep"
+              )}
+              aria-hidden
+            >
+              {String(step.number).padStart(2, "0")}
+            </span>
+            <span
+              className={cn("hidden lg:col-span-1 lg:flex", ghost ? "text-foreground/15" : "text-accent-primary")}
+              aria-hidden
+            >
+              <Icon className="h-6 w-6" strokeWidth={1.6} />
+            </span>
+            <h3
+              className={cn(
+                "font-display text-2xl font-bold leading-tight lg:col-span-4",
+                ghost ? "text-foreground/20" : "text-foreground"
+              )}
+            >
+              {step.title}
+            </h3>
+            <p
+              className={cn(
+                "leading-relaxed lg:col-span-6",
+                ghost ? "text-foreground/15" : "text-foreground-muted"
+              )}
+            >
+              {step.description}
+            </p>
+          </li>
+        );
+      })}
+    </ol>
+  );
 }
 
-function useActiveStepIndex(
-  stepRefs: React.MutableRefObject<(HTMLDivElement | null)[]>
-) {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    const updateActiveStep = () => {
-      const viewportCenter = window.innerHeight * 0.42;
-      let closestIndex = 0;
-      let closestDistance = Number.POSITIVE_INFINITY;
-
-      stepRefs.current.forEach((element, index) => {
-        if (!element) return;
-
-        const rect = element.getBoundingClientRect();
-        const stepCenter = rect.top + rect.height / 2;
-        const distance = Math.abs(stepCenter - viewportCenter);
-
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      setActiveIndex(closestIndex);
-    };
-
-    updateActiveStep();
-    window.addEventListener("scroll", updateActiveStep, { passive: true });
-    window.addEventListener("resize", updateActiveStep);
-
-    return () => {
-      window.removeEventListener("scroll", updateActiveStep);
-      window.removeEventListener("resize", updateActiveStep);
-    };
-  }, [stepRefs]);
-
-  return activeIndex;
-}
-
-interface TimelineStepProps {
-  step: PipelineStep;
-  status: StepStatus;
-  isLast: boolean;
-  reduceMotion: boolean;
-}
-
-const TimelineStep = React.forwardRef<HTMLDivElement, TimelineStepProps>(
-  function TimelineStep({ step, status, isLast, reduceMotion }, ref) {
-    const Icon = step.icon;
-    const isActive = status === "active";
-    const isCompleted = status === "completed";
-
-    return (
-      <div
-        ref={ref}
-        className={cn("relative flex gap-5 sm:gap-8", !isLast && "pb-10 sm:pb-12")}
-      >
-        {/* Node on the timeline */}
-        <div className="relative z-10 flex shrink-0 flex-col items-center">
-          <motion.span
-            layout={!reduceMotion}
-            className={cn(
-              "flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white shadow-soft transition-colors duration-300 sm:h-11 sm:w-11",
-              isActive &&
-                "border-accent-primary bg-accent-primary text-white shadow-soft-lg ring-4 ring-accent-primary/20",
-              isCompleted && "border-accent-primary bg-accent-primary text-white",
-              status === "upcoming" && "border-border text-foreground-muted"
-            )}
-            aria-hidden
-          >
-            {isCompleted || isActive ? (
-              <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" strokeWidth={2.25} />
-            ) : (
-              <span className="text-xs font-bold sm:text-sm">{step.number}</span>
-            )}
-          </motion.span>
-        </div>
-
-        {/* Step card */}
-        <motion.article
-          initial={reduceMotion ? false : { opacity: 0, x: 16 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.4 }}
-          className={cn(
-            "min-w-0 flex-1 rounded-2xl border p-5 transition-all duration-300 sm:p-6",
-            isActive
-              ? "border-accent-primary/40 bg-white shadow-soft-lg"
-              : isCompleted
-                ? "border-border/80 bg-white shadow-soft"
-                : "border-border/60 bg-white/70 shadow-soft opacity-80"
-          )}
-        >
-          <span
-            className={cn(
-              "text-xs font-semibold uppercase tracking-wider",
-              isActive || isCompleted ? "text-accent-primary" : "text-foreground-muted"
-            )}
-          >
-            Step {step.number}
-          </span>
-          <h3
-            className={cn(
-              "mt-1.5 text-lg font-bold sm:text-xl",
-              isActive ? "text-foreground" : "text-foreground/90"
-            )}
-          >
-            {step.title}
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-foreground-muted sm:text-base">
-            {step.description}
-          </p>
-        </motion.article>
-      </div>
-    );
-  }
-);
-
+/**
+ * The approach section scans itself: pinned while a sheet of light passes
+ * down the five steps, developing each one from a ghost outline into full
+ * ink, with a live y-position readout riding the line.
+ */
 export function Pipeline() {
-  const reduceMotion = useReducedMotion();
-  const timelineRef = React.useRef<HTMLDivElement>(null);
-  const stepRefs = React.useRef<(HTMLDivElement | null)[]>([]);
-  const activeIndex = useActiveStepIndex(stepRefs);
-  const [progressHeight, setProgressHeight] = React.useState(0);
+  const sectionRef = React.useRef<HTMLElement | null>(null);
+  const scanAreaRef = React.useRef<HTMLDivElement | null>(null);
+  const devRef = React.useRef<HTMLDivElement | null>(null);
+  const lineRef = React.useRef<HTMLDivElement | null>(null);
+  const readoutRef = React.useRef<HTMLSpanElement | null>(null);
 
   React.useEffect(() => {
-    const updateProgress = () => {
-      const timeline = timelineRef.current;
-      const activeStep = stepRefs.current[activeIndex];
-      if (!timeline || !activeStep) return;
+    const section = sectionRef.current;
+    const scanArea = scanAreaRef.current;
+    const dev = devRef.current;
+    const line = lineRef.current;
+    const readout = readoutRef.current;
+    if (!section || !scanArea || !dev || !line) return;
 
-      const timelineRect = timeline.getBoundingClientRect();
-      const activeRect = activeStep.getBoundingClientRect();
-      const nodeCenter = activeRect.top - timelineRect.top + 21;
-
-      setProgressHeight(Math.max(0, nodeCenter));
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, [activeIndex]);
+    const mm = gsap.matchMedia();
+    mm.add(
+      "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        gsap.set(line, { opacity: 1 });
+        const st = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "+=130%",
+          pin: true,
+          scrub: 0.4,
+          onUpdate: (self) => {
+            const p = self.progress;
+            const h = scanArea.offsetHeight;
+            dev.style.clipPath = `inset(0 0 ${(1 - p) * 100}% 0)`;
+            line.style.transform = `translateY(${p * h}px)`;
+            if (readout) {
+              readout.textContent = `y ${String(Math.round(p * h)).padStart(4, "0")} px`;
+            }
+          },
+        });
+        return () => st.kill();
+      }
+    );
+    return () => mm.revert();
+  }, []);
 
   return (
     <section
-      className="border-y border-border bg-background-secondary/40 py-16 sm:py-20"
+      ref={sectionRef}
+      className="border-y border-border bg-background-secondary/50"
       aria-labelledby="pipeline-heading"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          id="pipeline-heading"
-          className="text-center text-3xl font-bold text-foreground sm:text-4xl"
-        >
-          Our Approach
-        </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-foreground-muted">
-          We take responsibility for the whole journey from problem to
-          production system, and can enter at whatever stage suits you.
-        </p>
+      <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-20">
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <ScanHeading
+            as="h2"
+            id="pipeline-heading"
+            className="font-display text-4xl font-bold leading-none text-foreground sm:text-5xl lg:col-span-5"
+          >
+            Our Approach
+          </ScanHeading>
+          <Reveal className="lg:col-span-7 lg:justify-self-end">
+            <p className="max-w-xl text-lg leading-relaxed text-foreground-muted">
+              We take responsibility for the whole journey from problem to
+              production system, and can enter at whatever stage suits you.
+            </p>
+          </Reveal>
+        </div>
 
-        <div
-          ref={timelineRef}
-          className="relative mx-auto mt-14 max-w-3xl pl-2 sm:mt-16 sm:pl-4"
-          aria-label="Engagement stages timeline"
-        >
-          {/* Track line */}
+        <div ref={scanAreaRef} className="relative mt-12 border-t border-foreground/70">
+          {/* undeveloped layer */}
+          <div className="absolute inset-0" aria-hidden>
+            <StepsList ghost />
+          </div>
+          {/* developed layer, revealed by the scan */}
+          <div ref={devRef} className="relative bg-transparent">
+            <StepsList />
+          </div>
+          {/* the scan line and its readout; shown only while pinned on desktop */}
           <div
-            className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-border sm:left-[21px]"
+            ref={lineRef}
+            className="pointer-events-none absolute inset-x-0 top-0 opacity-0"
             aria-hidden
-          />
-
-          {/* Scroll progress fill */}
-          <motion.div
-            className="absolute left-[19px] top-2 w-0.5 origin-top bg-gradient-to-b from-teal-400 to-teal-600 sm:left-[21px]"
-            animate={{ height: progressHeight }}
-            transition={
-              reduceMotion ? { duration: 0 } : { duration: 0.35, ease: "easeOut" }
-            }
-            aria-hidden
-          />
-
-          <div className="relative">
-            {pipelineSteps.map((step, index) => (
-              <TimelineStep
-                key={step.id}
-                ref={(element) => {
-                  stepRefs.current[index] = element;
-                }}
-                step={step}
-                status={getStepStatus(index, activeIndex)}
-                isLast={index === pipelineSteps.length - 1}
-                reduceMotion={!!reduceMotion}
-              />
-            ))}
+          >
+            <div className="relative h-px bg-accent-secondary shadow-[0_0_14px_rgba(34,211,238,0.65)]">
+              <span
+                ref={readoutRef}
+                className="annot absolute -top-2.5 right-0 bg-background-secondary px-2 text-accent-deep"
+              >
+                y 0000 px
+              </span>
+            </div>
           </div>
         </div>
       </div>

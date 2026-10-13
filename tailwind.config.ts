@@ -12,8 +12,8 @@ const config: Config = {
       colors: {
         // Primary background
         background: {
-          DEFAULT: "#fafaf9", // off-white
-          secondary: "#f5f5f4", // light grey
+          DEFAULT: "#fafcfb", // cool paper white
+          secondary: "#eef4f3", // light teal-grey
         },
         // Accents
         accent: {
@@ -21,13 +21,22 @@ const config: Config = {
           "primary-hover": "#0f766e",
           secondary: "#22d3ee", // soft cyan
           "secondary-hover": "#06b6d4",
+          logo: "#14a49c", // logo teal, marks and lines
+          deep: "#0f766e", // small teal text on light, AA contrast
+        },
+        // Dark instrument surfaces
+        ink: {
+          DEFAULT: "#0a1413", // near-black with a teal cast
+          raised: "#101e1c",
+          line: "#1d2f2d", // hairlines on ink
+          soft: "#8fa7a3", // muted text on ink
         },
         // Text
         foreground: {
-          DEFAULT: "#1c1917", // dark charcoal
-          muted: "#78716c", // muted grey
+          DEFAULT: "#101d1b", // deep cool charcoal
+          muted: "#5c6f6c", // muted cool grey
         },
-        border: "#e7e5e4",
+        border: "#dce6e4",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
@@ -51,22 +60,19 @@ const config: Config = {
         },
       },
       borderRadius: {
-        sm: "0.375rem", // 6px
-        DEFAULT: "0.5rem", // 8px
-        md: "0.625rem", // 10px
-        lg: "0.75rem", // 12px
-        xl: "1rem", // 16px
-        "2xl": "1.25rem", // 20px
-        "3xl": "1.5rem", // 24px
+        sm: "0.125rem", // 2px
+        DEFAULT: "0.25rem", // 4px
+        md: "0.25rem", // 4px
+        lg: "0.375rem", // 6px
+        xl: "0.5rem", // 8px
+        "2xl": "0.5rem", // 8px
+        "3xl": "0.625rem", // 10px
       },
       boxShadow: {
-        soft: "0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06)",
-        "soft-md":
-          "0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)",
-        "soft-lg":
-          "0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05)",
-        "soft-xl":
-          "0 20px 25px -5px rgb(0 0 0 / 0.04), 0 8px 10px -6px rgb(0 0 0 / 0.04)",
+        soft: "0 1px 2px 0 rgb(10 30 28 / 0.05)",
+        "soft-md": "0 3px 8px -2px rgb(10 30 28 / 0.07)",
+        "soft-lg": "0 10px 24px -8px rgb(10 30 28 / 0.1)",
+        "soft-xl": "0 24px 48px -16px rgb(10 30 28 / 0.14)",
       },
       backgroundImage: {
         "gradient-teal":

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Award,
   Lightbulb,
@@ -10,10 +9,18 @@ import {
   FileCheck,
   type LucideIcon,
 } from "lucide-react";
+import { ScanHeading, Reveal } from "@/components/ui/reveal";
 
-const values = [
+const values: {
+  id: string;
+  index: string;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}[] = [
   {
     id: "excellence",
+    index: "01",
     icon: Award,
     title: "Excellence",
     description:
@@ -21,6 +28,7 @@ const values = [
   },
   {
     id: "innovation",
+    index: "02",
     icon: Lightbulb,
     title: "Innovation",
     description:
@@ -28,6 +36,7 @@ const values = [
   },
   {
     id: "partnership",
+    index: "03",
     icon: Handshake,
     title: "Partnership",
     description:
@@ -35,6 +44,7 @@ const values = [
   },
   {
     id: "accessibility",
+    index: "04",
     icon: Accessibility,
     title: "Integration",
     description:
@@ -42,6 +52,7 @@ const values = [
   },
   {
     id: "impact",
+    index: "05",
     icon: TrendingUp,
     title: "Impact",
     description:
@@ -49,65 +60,60 @@ const values = [
   },
   {
     id: "transparency",
+    index: "06",
     icon: FileCheck,
     title: "Transparency",
     description:
       "Clear metrics, auditable results, and honest communication at every step.",
   },
-] as const;
-
-const container = {
-  animate: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.35 },
-};
+];
 
 export function AboutValuesSection() {
   return (
     <>
-      <h2 className="text-center text-2xl font-bold text-foreground sm:text-3xl">
-        Our Core Values
-      </h2>
-      <p className="mx-auto mt-2 max-w-2xl text-center text-foreground-muted">
-        The principles that guide everything we do
-      </p>
-      <motion.div
-        className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        variants={container}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-40px" }}
-      >
-        {values.map((v) => {
-          const Icon = v.icon;
-          return (
-            <motion.article
-              key={v.id}
-              variants={item}
-              className="rounded-xl border border-border bg-white p-6 shadow-soft"
-            >
-              <span
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-primary text-white"
-                aria-hidden
+      <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+        <ScanHeading
+          as="h2"
+          className="font-display text-4xl font-bold leading-none text-white sm:text-5xl lg:col-span-6"
+        >
+          Our Core Values
+        </ScanHeading>
+        <Reveal className="lg:col-span-6 lg:justify-self-end">
+          <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
+            The principles that guide everything we do
+          </p>
+        </Reveal>
+      </div>
+      <Reveal className="mt-12">
+        <div className="grid grid-cols-1 gap-px overflow-hidden border border-ink-line bg-ink-line sm:grid-cols-2 lg:grid-cols-3">
+          {values.map((v) => {
+            const Icon = v.icon;
+            return (
+              <article
+                key={v.id}
+                className="group bg-ink p-7 transition-colors duration-300 hover:bg-ink-raised"
               >
-                <Icon className="h-5 w-5" strokeWidth={2} />
-              </span>
-              <h3 className="mt-4 text-lg font-bold text-foreground">
-                {v.title}
-              </h3>
-              <p className="mt-2 text-sm text-foreground-muted leading-relaxed">
-                {v.description}
-              </p>
-            </motion.article>
-          );
-        })}
-      </motion.div>
+                <div className="flex items-center justify-between">
+                  <Icon
+                    className="h-6 w-6 text-accent-logo transition-colors duration-300 group-hover:text-white"
+                    strokeWidth={1.6}
+                    aria-hidden
+                  />
+                  <span className="annot text-ink-soft" aria-hidden>
+                    {v.index}
+                  </span>
+                </div>
+                <h3 className="font-display mt-6 text-xl font-bold text-white">
+                  {v.title}
+                </h3>
+                <p className="mt-2.5 text-sm leading-relaxed text-ink-soft">
+                  {v.description}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </Reveal>
     </>
   );
 }

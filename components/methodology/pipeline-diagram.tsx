@@ -58,9 +58,8 @@ export function PipelineDiagram() {
   const active = STAGES[activeIndex];
 
   return (
-    <div className="rounded-2xl border border-border bg-white p-4 shadow-soft sm:p-6">
-      {/* Image */}
-      <div className="overflow-hidden rounded-xl">
+    <div className="border border-border bg-white p-4 sm:p-6">
+      <div className="overflow-hidden">
         <Image
           src="/methodology.png"
           alt="AMV inspection pipeline: Camera and Lighting, Pre-processing, Analysis, Inspection Decision, Line Action"
@@ -71,9 +70,8 @@ export function PipelineDiagram() {
         />
       </div>
 
-      {/* Stage tabs */}
       <div
-        className="mt-5 grid grid-cols-5 gap-1.5 sm:gap-2"
+        className="mt-6 grid grid-cols-5 border-y border-border"
         role="tablist"
         aria-label="Inspection pipeline stages"
       >
@@ -87,46 +85,50 @@ export function PipelineDiagram() {
               aria-selected={isActive}
               onClick={() => setActiveIndex(i)}
               className={cn(
-                "group flex flex-col items-center gap-1.5 rounded-xl border px-1 py-2.5 text-center transition-all duration-200 sm:py-3",
-                isActive
-                  ? "border-teal-500 bg-teal-50 shadow-soft"
-                  : "border-border bg-white hover:border-teal-300 hover:bg-teal-50/40"
+                "group relative flex flex-col items-center gap-1.5 px-1 py-3 text-center transition-colors duration-200 sm:py-4",
+                "border-l border-border first:border-l-0",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-primary",
+                isActive ? "bg-background-secondary/70" : "hover:bg-background-secondary/40"
               )}
             >
-              <span
+              <Icon
                 className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-lg transition-colors sm:h-9 sm:w-9",
-                  isActive
-                    ? "bg-teal-600 text-white"
-                    : "bg-teal-50 text-teal-600 group-hover:bg-teal-100"
+                  "h-5 w-5 transition-colors",
+                  isActive ? "text-accent-primary" : "text-foreground-muted"
                 )}
-              >
-                <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
-              </span>
+                strokeWidth={1.7}
+                aria-hidden
+              />
               <span
                 className={cn(
-                  "text-[10px] font-bold uppercase tracking-wide sm:text-xs",
-                  isActive ? "text-teal-700" : "text-foreground-muted"
+                  "text-[11px] font-semibold sm:text-xs",
+                  isActive ? "text-foreground" : "text-foreground-muted"
                 )}
               >
                 {stage.short}
               </span>
+              <span
+                className={cn(
+                  "absolute inset-x-0 bottom-0 h-0.5 origin-left bg-accent-logo transition-transform duration-300",
+                  isActive ? "scale-x-100" : "scale-x-0"
+                )}
+                aria-hidden
+              />
             </button>
           );
         })}
       </div>
 
-      {/* Explanation */}
-      <div className="mt-4 rounded-xl bg-background-secondary/60 p-5">
-        <div className="flex items-center gap-3">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal-600 text-[10px] font-bold text-white">
+      <div className="mt-5 px-1 pb-2">
+        <div className="flex items-baseline gap-3">
+          <span className="annot text-accent-deep" aria-hidden>
             {active.number}
           </span>
-          <h3 className="text-base font-bold text-foreground">{active.label}</h3>
+          <h2 className="text-base font-bold text-foreground">{active.label}</h2>
         </div>
         <p
           key={active.id}
-          className="mt-3 animate-in fade-in text-sm leading-relaxed text-foreground-muted duration-300"
+          className="mt-3 max-w-[68ch] text-[15px] leading-relaxed text-foreground-muted"
         >
           {active.explanation}
         </p>

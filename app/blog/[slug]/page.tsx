@@ -104,26 +104,27 @@ export default function BlogPostPage({
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-b border-border bg-background-secondary/60">
+        <div className="sheet-grid absolute inset-0" aria-hidden />
+        <div className="container relative mx-auto px-4 pb-14 pt-32 sm:px-6 sm:pb-16 sm:pt-36 lg:px-8">
           <div className="mx-auto max-w-3xl">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent-deep hover:underline"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               Back to blog
             </Link>
             <time
               dateTime={post.publishedAt}
-              className="mt-6 block text-xs font-semibold uppercase tracking-widest text-accent-primary"
+              className="annot mt-8 block text-accent-deep"
             >
               {formatDate(post.publishedAt)}
             </time>
-            <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">
+            <h1 className="font-display mt-3 text-3xl font-bold leading-tight text-foreground sm:text-5xl">
               {post.title}
             </h1>
-            <p className="mt-4 text-lg italic text-foreground-muted">
+            <p className="mt-5 text-lg leading-relaxed text-foreground-muted">
               {post.excerpt}
             </p>
           </div>
@@ -133,7 +134,7 @@ export default function BlogPostPage({
       {/* Post body */}
       <div className="container mx-auto px-4 py-14 sm:px-6 sm:py-18 lg:px-8">
         <div className="mx-auto max-w-3xl">
-          <div className="rounded-2xl border border-border/60 bg-white px-8 py-10 shadow-soft sm:px-12 sm:py-12">
+          <div className="max-w-[72ch]">
             {post.content.map((block, i) => renderBlock(block, i))}
           </div>
 
@@ -152,7 +153,7 @@ export default function BlogPostPage({
                   href={post.linkedInUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-[#0A66C2] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-foreground transition-colors"
                 >
                   <Linkedin className="h-4 w-4" aria-hidden />
                   View on LinkedIn
@@ -161,7 +162,7 @@ export default function BlogPostPage({
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-5 py-2.5 text-sm font-semibold text-white shadow-soft hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-sm bg-ink px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-primary"
             >
               Discuss your inspection challenge
             </Link>

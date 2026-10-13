@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Schibsted_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { AnalyticsPlaceholder } from "@/components/analytics-placeholder";
 
-const inter = Inter({
+const grotesk = Schibsted_Grotesk({
   subsets: ["latin"],
   variable: "--font-geist-sans",
   display: "swap",
@@ -13,6 +14,7 @@ const inter = Inter({
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-geist-mono",
   display: "swap",
 });
@@ -113,7 +115,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-AU"
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${grotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col font-sans antialiased">
         <script
@@ -122,9 +124,11 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd),
           }}
         />
-        <Navbar />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
+        <SmoothScroll>
+          <Navbar />
+          <main className="flex-1 w-full">{children}</main>
+          <Footer />
+        </SmoothScroll>
         <AnalyticsPlaceholder />
       </body>
     </html>

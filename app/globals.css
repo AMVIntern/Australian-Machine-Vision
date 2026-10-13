@@ -4,30 +4,188 @@
 
 @layer base {
   :root {
-    --background: #fafaf9;
-    --background-secondary: #f5f5f4;
-    /* Subtle teal tint for page background - consistent but not overwhelming */
-    --page-bg: #f4faf9;
-    --foreground: #1c1917;
-    --foreground-muted: #78716c;
+    --background: #fafcfb;
+    --background-secondary: #eef4f3;
+    --page-bg: #fafcfb;
+    --foreground: #101d1b;
+    --foreground-muted: #5c6f6c;
     --accent-primary: #0d9488;
     --accent-secondary: #22d3ee;
-    --border: #e7e5e4;
+    --border: #dce6e4;
+    --ink: #0a1413;
+  }
+
+  html {
+    scrollbar-color: #9db5b1 var(--background-secondary);
   }
 
   body {
     @apply text-foreground antialiased;
     background-color: var(--page-bg);
+    caret-color: var(--accent-primary);
+  }
+
+  ::selection {
+    background-color: #14a49c;
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid #0d9488;
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
-/* Glass utility classes */
 @layer utilities {
+  /* kept for untouched components */
   .glass {
-    @apply bg-white/80 backdrop-blur-glass border border-white/20 shadow-soft;
+    @apply bg-white/80 border border-white/20 shadow-soft;
   }
 
   .glass-lg {
-    @apply bg-white/70 backdrop-blur-glass-lg border border-white/20 shadow-soft-md;
+    @apply bg-white/70 border border-white/20 shadow-soft-md;
+  }
+
+  .font-display {
+    letter-spacing: -0.03em;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* mono annotation, the instrument's labelling voice */
+  .annot {
+    @apply font-mono text-xs tracking-wide;
+  }
+
+  /* faint engineering grid on paper */
+  .sheet-grid {
+    background-image:
+      linear-gradient(to right, rgba(13, 148, 136, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(13, 148, 136, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* faint dot lattice on ink */
+  .ink-dots {
+    background-image: radial-gradient(
+      circle,
+      rgba(143, 167, 163, 0.22) 1px,
+      transparent 1px
+    );
+    background-size: 26px 26px;
+  }
+
+  /* corner registration marks drawn with gradients */
+  .reg-marks {
+    position: relative;
+  }
+  .reg-marks::before,
+  .reg-marks::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+  }
+  .reg-marks::before {
+    top: 0;
+    left: 0;
+    border-top: 1px solid #14a49c;
+    border-left: 1px solid #14a49c;
+  }
+  .reg-marks::after {
+    bottom: 0;
+    right: 0;
+    border-bottom: 1px solid #14a49c;
+    border-right: 1px solid #14a49c;
+  }
+
+  /* one-shot scan sweep over media on group hover */
+  .scan-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(34, 211, 238, 0) 44%,
+      rgba(34, 211, 238, 0.4) 50%,
+      rgba(34, 211, 238, 0) 56%,
+      transparent 100%
+    );
+    transform: translateY(-101%);
+    pointer-events: none;
+  }
+  .group:hover .scan-hover::after,
+  .group:focus-within .scan-hover::after {
+    animation: scan-sweep 0.8s ease-in-out 1;
+  }
+
+  @keyframes scan-sweep {
+    from {
+      transform: translateY(-101%);
+    }
+    to {
+      transform: translateY(101%);
+    }
+  }
+
+  /* slow idle pulse for the hero scroll cue */
+  @keyframes cue-drop {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    45% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    55% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+  }
+  .cue-drop {
+    animation: cue-drop 2.2s ease-in-out infinite;
+  }
+
+  /* route-change entrance; opacity only, see app/template.tsx */
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .page-enter {
+    animation: page-enter 0.45s ease both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

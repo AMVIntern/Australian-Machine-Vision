@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock, Lock } from "lucide-react";
 import { ContactForm } from "@/components/contact/contact-form";
+import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -24,119 +25,87 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div>
-      <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <header className="mx-auto max-w-2xl text-center">
-          <h1
-            id="contact-title"
-            className="text-3xl font-bold text-foreground sm:text-4xl"
-          >
-            Contact Us
-          </h1>
-          <p className="mt-3 text-lg text-foreground-muted">
-            Reviewing your inspection capability or planning an upgrade? Let&apos;s
-            discuss how machine vision can help your operation.
+      <PageHeader
+        kicker="06 / Contact"
+        titleId="contact-title"
+        title="Contact Us"
+        intro={
+          <p>
+            Reviewing your inspection capability or planning an upgrade?
+            Let&apos;s discuss how machine vision can help your operation.
           </p>
-        </header>
+        }
+      />
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-10 lg:grid-cols-5 lg:gap-12">
-          <div className="lg:col-span-3">
-            <div className="rounded-xl border border-border bg-white p-6 shadow-soft sm:p-8">
-              <h2 className="text-xl font-bold text-foreground">
-                Send us a Message
-              </h2>
-              <div className="mt-6">
-                <ContactForm />
+      <section className="bg-background py-16 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-8">
+              <div className="border border-border bg-white p-6 sm:p-10">
+                <h2 className="font-display text-2xl font-bold text-foreground">
+                  Send us a Message
+                </h2>
+                <div className="mt-8">
+                  <ContactForm />
+                </div>
               </div>
             </div>
-          </div>
 
-          <aside className="lg:col-span-2">
-            <div className="rounded-xl border border-border bg-white p-6 shadow-soft">
-              <h2 className="text-lg font-bold text-foreground">
-                Contact Information
-              </h2>
-              <ul className="mt-6 space-y-4" role="list">
-                <li className="flex items-center gap-3">
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
-                    aria-hidden
-                  >
-                    <MapPin className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm text-foreground-muted leading-tight">
-                    Office: 9A Sir Laurence Drive Seaford 3198
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
-                    aria-hidden
-                  >
-                    <Phone className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm text-foreground-muted leading-tight">
-                    <a
-                      href="tel:0499990117"
-                      className="hover:text-foreground"
-                    >
-                      0499 990 117
-                    </a>
-                    {" / "}
-                    <a
-                      href="tel:0418535729"
-                      className="hover:text-foreground"
-                    >
-                      0418 535 729
-                    </a>
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
-                    aria-hidden
-                  >
-                    <Mail className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm text-foreground-muted leading-tight">
+            <aside className="space-y-6 lg:col-span-4">
+              <div className="border border-border bg-white p-6 sm:p-7">
+                <h2 className="font-display text-lg font-bold text-foreground">
+                  Contact Information
+                </h2>
+                <ul className="mt-6 divide-y divide-border" role="list">
+                  <li className="flex items-start gap-3 py-3.5 first:pt-0">
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
+                    <span className="text-[15px] leading-snug text-foreground">
+                      Office: 9A Sir Laurence Drive Seaford 3198
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3 py-3.5">
+                    <Phone className="mt-0.5 h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
+                    <span className="tabular text-[15px] leading-snug text-foreground">
+                      <a href="tel:0499990117" className="hover:text-accent-deep hover:underline">
+                        0499 990 117
+                      </a>
+                      {" / "}
+                      <a href="tel:0418535729" className="hover:text-accent-deep hover:underline">
+                        0418 535 729
+                      </a>
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3 py-3.5">
+                    <Mail className="mt-0.5 h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
                     <a
                       href="mailto:amvsupport@amvco.com.au"
-                      className="hover:text-foreground"
+                      className="break-all text-[15px] leading-snug text-foreground hover:text-accent-deep hover:underline"
                     >
                       amvsupport@amvco.com.au
                     </a>
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
-                    aria-hidden
-                  >
-                    <Clock className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm text-foreground-muted leading-tight">
-                    Monday to Friday, 9am to 5pm
-                  </span>
-                </li>
-              </ul>
-            </div>
+                  </li>
+                  <li className="flex items-start gap-3 py-3.5 last:pb-0">
+                    <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
+                    <span className="text-[15px] leading-snug text-foreground">
+                      Monday to Friday, 9am to 5pm
+                    </span>
+                  </li>
+                </ul>
+              </div>
 
-            <div className="mt-5 flex items-start gap-3 rounded-xl border border-teal-200/80 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-700 p-5">
-              <span
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15 text-white"
-                aria-hidden
-              >
-                <Lock className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="text-sm font-bold text-white">Your work stays confidential</p>
-                <p className="mt-1 text-xs leading-relaxed text-teal-50/90">
-                  We do not publish client names, line details or project outcomes without permission. Every engagement is treated as commercially sensitive.
+              <div className="reg-marks relative bg-ink p-6 text-white sm:p-7">
+                <Lock className="h-5 w-5 text-accent-logo" aria-hidden />
+                <p className="mt-4 font-bold">Your work stays confidential</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                  We do not publish client names, line details or project
+                  outcomes without permission. Every engagement is treated as
+                  commercially sensitive.
                 </p>
               </div>
-            </div>
-          </aside>
+            </aside>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

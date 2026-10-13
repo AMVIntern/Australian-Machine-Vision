@@ -1,10 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Layers, Brain, Ruler, BarChart2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ScanHeading, Reveal } from "@/components/ui/reveal";
 
 const CARDS = [
   {
     icon: Layers,
+    index: "01",
     name: "HALCON",
     label: "Industrial vision software",
     summary:
@@ -13,6 +16,7 @@ const CARDS = [
   },
   {
     icon: Brain,
+    index: "02",
     name: "Custom deep learning",
     label: "AI trained on your product",
     summary:
@@ -21,6 +25,7 @@ const CARDS = [
   },
   {
     icon: Ruler,
+    index: "03",
     name: "Classical vision",
     label: "Rule-based algorithms",
     summary:
@@ -29,6 +34,7 @@ const CARDS = [
   },
   {
     icon: BarChart2,
+    index: "04",
     name: "Cloud diagnostics",
     label: "Grafana dashboards",
     summary:
@@ -40,80 +46,78 @@ const CARDS = [
 export function MethodologyTeaser() {
   return (
     <section
-      className="border-y border-border bg-background-secondary/40 py-16 sm:py-20"
+      className="border-b border-border bg-background py-20 sm:py-28"
       aria-labelledby="methodology-teaser-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-5xl">
-          <div className="text-center">
-            <h2
-              id="methodology-teaser-heading"
-              className="text-3xl font-bold text-foreground sm:text-4xl"
-            >
-              How we build it
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-foreground-muted">
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <ScanHeading
+            as="h2"
+            id="methodology-teaser-heading"
+            className="font-display text-4xl font-bold leading-none text-foreground sm:text-5xl lg:col-span-5"
+          >
+            How we build it
+          </ScanHeading>
+          <Reveal className="lg:col-span-7 lg:justify-self-end">
+            <p className="max-w-xl text-lg leading-relaxed text-foreground-muted">
               AMV combines HALCON industrial software, custom-trained AI models
               and classical vision algorithms in a single system, applying each
               where it performs best. No single tool fits every inspection
               problem.
             </p>
-          </div>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {CARDS.map((card) => {
-              const Icon = card.icon;
-              return (
-                <Link
-                  key={card.name}
-                  href={card.href}
-                  className={cn(
-                    "group flex flex-col rounded-2xl border border-border/60 bg-white p-5 shadow-soft",
-                    "hover:-translate-y-0.5 hover:shadow-soft-lg transition-all duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
-                  )}
-                >
-                  <span
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
-                    aria-hidden
-                  >
-                    <Icon className="h-5 w-5" strokeWidth={2} />
-                  </span>
-                  <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-foreground-muted">
-                    {card.label}
-                  </p>
-                  <h3 className="mt-1 text-base font-bold text-foreground">
-                    {card.name}
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground-muted">
-                    {card.summary}
-                  </p>
-                  <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
-                    Learn more
-                    <ArrowRight
-                      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
-                      aria-hidden
-                    />
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link
-              href="/methodology"
-              className={cn(
-                "inline-flex items-center gap-2 rounded-lg border-2 border-accent-primary px-6 py-3 text-sm font-semibold text-accent-primary",
-                "hover:bg-accent-primary hover:text-white transition-colors duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
-              )}
-            >
-              How we build solutions
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-          </div>
+          </Reveal>
         </div>
+
+        <div className="mt-14 grid gap-px overflow-hidden border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          {CARDS.map((card) => {
+            const Icon = card.icon;
+            return (
+              <Link
+                key={card.name}
+                href={card.href}
+                className="group relative flex flex-col overflow-hidden bg-background px-6 py-8 transition-colors duration-300 hover:bg-background-secondary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent-primary lg:py-10"
+              >
+                <span className="scan-hover absolute inset-0" aria-hidden />
+                <div className="flex items-center justify-between">
+                  <Icon
+                    className="h-6 w-6 text-accent-primary"
+                    strokeWidth={1.6}
+                    aria-hidden
+                  />
+                  <span className="annot text-foreground-muted" aria-hidden>
+                    {card.index}
+                  </span>
+                </div>
+                <h3 className="font-display mt-10 text-xl font-bold text-foreground">
+                  {card.name}
+                </h3>
+                <p className="mt-1 text-sm font-medium text-accent-deep">
+                  {card.label}
+                </p>
+                <p className="mt-4 flex-1 text-[15px] leading-relaxed text-foreground-muted">
+                  {card.summary}
+                </p>
+                <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                  Learn more
+                  <ArrowRight
+                    className="h-4 w-4 text-accent-primary transition-transform duration-300 group-hover:translate-x-1"
+                    aria-hidden
+                  />
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+
+        <Reveal className="mt-10">
+          <Link
+            href="/methodology"
+            className="inline-flex h-12 items-center gap-2 rounded-sm bg-ink px-7 text-sm font-semibold text-white transition-colors hover:bg-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+          >
+            How we build solutions
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

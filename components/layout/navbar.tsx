@@ -5,35 +5,101 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/industries", label: "Industries" },
-  { href: "/methodology", label: "Methodology" },
-  { href: "/blog", label: "Blog" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", label: "Home", index: "01" },
+  { href: "/industries", label: "Industries", index: "02" },
+  { href: "/methodology", label: "Methodology", index: "03" },
+  { href: "/blog", label: "Blog", index: "04" },
+  { href: "/about", label: "About", index: "05" },
+  { href: "/contact", label: "Contact", index: "06" },
 ] as const;
+
+/** True while a `[data-nav="dark"]` element spans the probe line near the top. */
+function useOverDark() {
+  const [overDark, setOverDark] = React.useState(false);
+  const pathname = usePathname();
+
+  React.useEffect(() => {
+    let frame = 0;
+    const probe = () => {
+      frame = 0;
+      const y = 44;
+      const sections = document.querySelectorAll<HTMLElement>("[data-nav='dark']");
+      let dark = false;
+      sections.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top <= y && r.bottom >= y) dark = true;
+      });
+      setOverDark(dark);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(probe);
+    };
+    probe();
+    // re-probe shortly after a route change, once the new page has painted
+    const t = window.setTimeout(probe, 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(t);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+
+  return overDark;
+}
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
   const pathname = usePathname();
+  const overDark = useOverDark();
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  React.useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  React.useEffect(() => {
+    document.documentElement.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const dark = overDark || mobileOpen;
 
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b border-border bg-white/95 shadow-soft backdrop-blur-sm supports-[backdrop-filter]:bg-white/90"
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
+        dark
+          ? scrolled && !mobileOpen
+            ? "border-b border-ink-line bg-ink/85 backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
+          : scrolled
+            ? "border-b border-border bg-background/90 backdrop-blur-md"
+            : "border-b border-transparent bg-background/0"
+      )}
       role="banner"
     >
       <nav
-        className="container mx-auto flex h-[5rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
+        className="container mx-auto flex h-[4.5rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
-        {/* Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 rounded-md"
+          className="relative z-50 flex shrink-0 items-center rounded-sm transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
           aria-label="Australian Machine Vision - Home"
         >
           <Image
@@ -41,28 +107,32 @@ export function Navbar() {
             alt="Australian Machine Vision"
             width={180}
             height={48}
-            className="h-11 w-auto object-contain sm:h-12"
+            className={cn(
+              "h-10 w-auto object-contain transition-[filter] duration-300 sm:h-11",
+              dark && "brightness-0 invert"
+            )}
             priority
           />
         </Link>
 
-        {/* Desktop nav - centered */}
-        <ul
-          className="hidden md:flex flex-1 items-center justify-center gap-10"
-          role="list"
-        >
+        <ul className="hidden flex-1 items-center justify-center gap-8 md:flex" role="list">
           {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            const isActive =
+              pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
             return (
               <li key={href}>
                 <Link
                   href={href}
                   className={cn(
-                    "relative text-[15px] font-medium transition-colors py-2",
-                    "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:rounded-full after:bg-accent-primary after:content-[''] after:transition-all after:duration-200",
-                    isActive
-                      ? "text-accent-primary after:w-full"
-                      : "text-foreground hover:text-accent-primary after:w-0 hover:after:w-full"
+                    "relative py-2 text-[15px] font-medium transition-colors",
+                    "after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:transition-all after:duration-300 after:content-['']",
+                    dark
+                      ? isActive
+                        ? "text-white after:w-full after:bg-accent-logo"
+                        : "text-white/70 hover:text-white hover:after:w-full after:bg-white/50"
+                      : isActive
+                        ? "text-foreground after:w-full after:bg-accent-primary"
+                        : "text-foreground-muted hover:text-foreground hover:after:w-full after:bg-foreground/40"
                   )}
                 >
                   {label}
@@ -72,23 +142,29 @@ export function Navbar() {
           })}
         </ul>
 
-        {/* CTA - hidden on mobile (shown in drawer) */}
-        <div className="hidden md:flex shrink-0 items-center">
+        <div className="hidden shrink-0 items-center md:flex">
           <Link
             href="/contact"
             className={cn(
-              buttonVariants({ variant: "primary", size: "default" }),
-              "h-12 min-w-[8.5rem] rounded-lg px-6 text-base font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
+              "group relative inline-flex h-11 items-center justify-center overflow-hidden rounded-sm px-6 text-sm font-semibold transition-colors duration-300",
+              dark
+                ? "bg-accent-logo text-ink hover:bg-accent-secondary"
+                : "bg-ink text-white hover:bg-accent-primary"
             )}
           >
             Contact Us
           </Link>
         </div>
 
-        {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-lg p-2.5 text-foreground hover:bg-background-secondary hover:text-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-colors"
+          className={cn(
+            "relative z-50 inline-flex items-center justify-center rounded-sm p-2.5 transition-colors md:hidden",
+            dark
+              ? "text-white hover:bg-white/10"
+              : "text-foreground hover:bg-background-secondary",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary"
+          )}
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -98,50 +174,61 @@ export function Navbar() {
           ) : (
             <Menu className="h-6 w-6" aria-hidden />
           )}
+          <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
         </button>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu: full-screen ink sheet */}
       <div
         id="mobile-menu"
         className={cn(
-          "md:hidden border-t border-border bg-white",
-          mobileOpen ? "block" : "hidden"
+          "fixed inset-0 z-40 bg-ink transition-opacity duration-300 md:hidden",
+          mobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
         )}
         role="dialog"
         aria-label="Mobile menu"
       >
+        <div className="ink-dots absolute inset-0" aria-hidden />
         <ul
-          className="container mx-auto flex flex-col gap-0.5 py-4 px-4"
+          className="relative flex h-full flex-col justify-center gap-1 px-8 pt-16"
           role="list"
         >
-          {navLinks.map(({ href, label }) => {
+          {navLinks.map(({ href, label, index }, i) => {
             const isActive = pathname === href;
             return (
-              <li key={href}>
+              <li
+                key={href}
+                className={cn(
+                  "transition-all duration-500",
+                  mobileOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                )}
+                style={{ transitionDelay: mobileOpen ? `${80 + i * 55}ms` : "0ms" }}
+              >
                 <Link
                   href={href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "block py-3 px-4 rounded-lg text-[15px] font-medium transition-colors",
-                    isActive
-                      ? "bg-accent-primary/10 text-accent-primary"
-                      : "text-foreground hover:bg-background-secondary"
+                    "font-display flex items-baseline gap-4 py-2.5 text-3xl font-bold transition-colors",
+                    isActive ? "text-accent-logo" : "text-white hover:text-accent-logo"
                   )}
                 >
+                  <span className="annot w-7 shrink-0 text-ink-soft">{index}</span>
                   {label}
                 </Link>
               </li>
             );
           })}
-          <li className="pt-3 px-4">
+          <li
+            className={cn(
+              "mt-8 transition-all duration-500",
+              mobileOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            )}
+            style={{ transitionDelay: mobileOpen ? `${80 + navLinks.length * 55}ms` : "0ms" }}
+          >
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}
-              className={cn(
-                buttonVariants({ variant: "primary", size: "default" }),
-                "w-full inline-flex justify-center rounded-lg font-semibold"
-              )}
+              className="inline-flex h-12 w-full items-center justify-center rounded-sm bg-accent-logo px-6 text-base font-semibold text-ink"
             >
               Contact Us
             </Link>
