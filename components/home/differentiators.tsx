@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 
 interface DifferentiatorItem {
   id: string;
-  index: string;
   title: string;
   description: string;
   icon: LucideIcon;
@@ -23,7 +22,6 @@ interface DifferentiatorItem {
 const differentiators: DifferentiatorItem[] = [
   {
     id: "customised",
-    index: "01",
     title: "Built for the problems others won't take on",
     description:
       "Standard inspection products are designed for common cases. We build systems from the ground up for your product, your line and your defect type, including the non-standard and high-difficulty inspection challenges that off-the-shelf tools cannot solve.",
@@ -32,7 +30,6 @@ const differentiators: DifferentiatorItem[] = [
   },
   {
     id: "whole-stack",
-    index: "02",
     title: "Whole-stack capability",
     description:
       "We own the full pipeline, from imaging and lighting to the inspection algorithm, operator software and line integration. We are not tied to a single vendor or technique.",
@@ -40,7 +37,6 @@ const differentiators: DifferentiatorItem[] = [
   },
   {
     id: "production-grade",
-    index: "03",
     title: "Production-grade engineering",
     description:
       "Our systems run on the factory floor at full line speed, with the reliability, traceability and integration that around-the-clock operation demands.",
@@ -48,7 +44,6 @@ const differentiators: DifferentiatorItem[] = [
   },
   {
     id: "right-tool",
-    index: "04",
     title: "AI and classical vision combined",
     description:
       "We use HALCON and custom-trained deep learning models together, applying each technique where it performs best. One system, the right algorithm for each task.",
@@ -56,7 +51,6 @@ const differentiators: DifferentiatorItem[] = [
   },
   {
     id: "supported",
-    index: "05",
     title: "Customer oriented and globally supported",
     description:
       "We work closely with you through the life of the system, with deployments operating across Australia and international markets and tiered support where it is needed.",
@@ -109,42 +103,38 @@ export function Differentiators() {
                   )}
                   <span
                     className={cn(
-                      "annot transition-colors lg:col-span-1",
+                      "flex transition-colors lg:col-span-1",
                       item.featured
                         ? "text-accent-logo"
-                        : "text-foreground-muted group-hover:text-accent-deep"
-                    )}
-                    aria-hidden
-                  >
-                    {item.index}
-                  </span>
-                  <h3
-                    className={cn(
-                      "font-display text-2xl font-bold leading-tight lg:col-span-5",
-                      item.featured
-                        ? "text-white sm:text-3xl"
-                        : "text-foreground"
-                    )}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    className={cn(
-                      "leading-relaxed lg:col-span-5",
-                      item.featured ? "text-ink-soft" : "text-foreground-muted"
-                    )}
-                  >
-                    {item.description}
-                  </p>
-                  <span
-                    className={cn(
-                      "hidden justify-self-end lg:col-span-1 lg:flex",
-                      item.featured ? "text-accent-logo" : "text-accent-primary"
+                        : "text-foreground-muted group-hover:text-accent-primary"
                     )}
                     aria-hidden
                   >
                     <Icon className="h-6 w-6" strokeWidth={1.6} />
                   </span>
+                  <div className="lg:col-span-5">
+                    {item.featured && (
+                      <p className="annot mb-2 text-accent-logo">Core strength</p>
+                    )}
+                    <h3
+                      className={cn(
+                        "font-display text-2xl font-bold leading-tight",
+                        item.featured
+                          ? "text-white sm:text-3xl"
+                          : "text-foreground"
+                      )}
+                    >
+                      {item.title}
+                    </h3>
+                  </div>
+                  <p
+                    className={cn(
+                      "leading-relaxed lg:col-span-6",
+                      item.featured ? "text-ink-soft" : "text-foreground-muted"
+                    )}
+                  >
+                    {item.description}
+                  </p>
                 </article>
               </Reveal>
             );

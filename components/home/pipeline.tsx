@@ -82,12 +82,11 @@ function StepsList({
           >
             <span
               className={cn(
-                "annot lg:col-span-1",
+                "annot whitespace-nowrap lg:col-span-1",
                 ghost ? "text-foreground/20" : "text-accent-deep"
               )}
-              aria-hidden
             >
-              {String(step.number).padStart(2, "0")}
+              Step {step.number}
             </span>
             <span
               className={cn("hidden lg:col-span-1 lg:flex", ghost ? "text-foreground/15" : "text-accent-primary")}

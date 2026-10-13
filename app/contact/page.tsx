@@ -26,7 +26,6 @@ export default function ContactPage() {
   return (
     <div>
       <PageHeader
-        kicker="06 / Contact"
         titleId="contact-title"
         title="Contact Us"
         intro={

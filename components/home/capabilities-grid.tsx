@@ -132,9 +132,10 @@ type Selection =
   | { type: "problem"; id: string };
 
 export function CapabilitiesGrid() {
+  // opens on the imaging layer, as the current site does
   const [selection, setSelection] = React.useState<Selection>({
-    type: "problem",
-    id: "defect",
+    type: "family",
+    id: "imaging",
   });
 
   const selectedProblem =
@@ -177,8 +178,7 @@ export function CapabilitiesGrid() {
 
         <Reveal className="mt-14">
           <p className="annot max-w-xl text-ink-soft">
-            Select a problem to see which capability layers we combine, or a
-            layer to see what is in it.
+            Select a problem to see which capability layers we combine.
           </p>
 
           {/* routing matrix */}
@@ -213,13 +213,18 @@ export function CapabilitiesGrid() {
                         strokeWidth={1.7}
                         aria-hidden
                       />
-                      <span
-                        className={cn(
-                          "text-sm font-semibold leading-tight transition-colors",
-                          isActive ? "text-white" : "text-ink-soft"
-                        )}
-                      >
-                        {family.shortTitle}
+                      <span>
+                        <span
+                          className={cn(
+                            "block text-sm font-semibold leading-tight transition-colors",
+                            isActive ? "text-white" : "text-ink-soft"
+                          )}
+                        >
+                          {family.shortTitle}
+                        </span>
+                        <span className="mt-1 block text-xs leading-snug text-ink-soft/80">
+                          {family.title}
+                        </span>
                       </span>
                       <span
                         className={cn(
@@ -302,23 +307,38 @@ export function CapabilitiesGrid() {
             aria-live="polite"
           >
             {selectedProblem ? (
-              <div className="grid gap-4 lg:grid-cols-12">
+              <div className="grid gap-6 lg:grid-cols-12">
                 <div className="lg:col-span-5">
-                  <p className="annot text-accent-logo">Problem</p>
+                  <p className="annot text-accent-logo">Problem we solve</p>
                   <h3 className="font-display mt-2 text-xl font-bold text-white">
                     {selectedProblem.label}
                   </h3>
-                </div>
-                <div className="lg:col-span-7">
-                  <p className="max-w-[58ch] leading-relaxed text-ink-soft">
+                  <p className="mt-3 max-w-[58ch] leading-relaxed text-ink-soft">
                     {selectedProblem.summary}
                   </p>
-                  <p className="mt-3 text-sm text-white/80">
-                    {selectedProblem.families
-                      .map((id) => families.find((f) => f.id === id)?.shortTitle)
-                      .filter(Boolean)
-                      .join(" + ")}
-                  </p>
+                </div>
+                <div className="lg:col-span-7">
+                  <p className="annot text-ink-soft">Capability layers involved</p>
+                  <ul className="mt-3 divide-y divide-ink-line border-y border-ink-line" role="list">
+                    {selectedProblem.families.map((id) => {
+                      const family = families.find((f) => f.id === id);
+                      if (!family) return null;
+                      const Icon = family.icon;
+                      return (
+                        <li key={id} className="flex items-start gap-3 py-3">
+                          <Icon className="mt-0.5 h-4 w-4 shrink-0 text-accent-logo" strokeWidth={1.7} aria-hidden />
+                          <span>
+                            <span className="block text-sm font-semibold text-white">
+                              {family.title}
+                            </span>
+                            <span className="mt-1 block max-w-[58ch] text-sm leading-relaxed text-ink-soft">
+                              {family.intro}
+                            </span>
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               </div>
             ) : selectedFamily ? (
@@ -332,16 +352,32 @@ export function CapabilitiesGrid() {
                     {selectedFamily.intro}
                   </p>
                 </div>
-                <ul className="space-y-2.5 lg:col-span-7" role="list">
-                  {selectedFamily.items.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-[15px] text-white/85">
-                      <span className="annot mt-0.5 shrink-0 text-accent-logo" aria-hidden>
-                        +
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <div className="lg:col-span-7">
+                  <p className="annot text-ink-soft">Techniques we apply</p>
+                  <ul className="mt-3 space-y-2.5" role="list">
+                    {selectedFamily.items.map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-[15px] text-white/85">
+                        <span className="annot mt-0.5 shrink-0 text-accent-logo" aria-hidden>
+                          +
+                        </span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="annot mt-6 text-ink-soft">Applications</p>
+                  <ul className="mt-3 flex flex-wrap gap-2" role="list">
+                    {problems
+                      .filter((p) => p.families.includes(selectedFamily.id))
+                      .map((p) => (
+                        <li
+                          key={p.id}
+                          className="rounded-sm border border-ink-line px-2.5 py-1 text-xs text-white/80"
+                        >
+                          {p.label}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
               </div>
             ) : null}
           </div>

@@ -43,10 +43,6 @@ export function Footer() {
                 className="h-9 w-auto object-contain brightness-0 invert"
               />
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-ink-soft">
-              Custom machine vision and automated inspection systems,
-              engineered in Australia for production lines anywhere.
-            </p>
             <ul className="space-y-2.5 text-sm text-ink-soft" role="list">
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 shrink-0 text-accent-logo" aria-hidden />
@@ -102,12 +98,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-start justify-between gap-3 pt-8 sm:flex-row sm:items-center">
+        <div className="pt-8">
           <p className="text-sm text-ink-soft">
             © {new Date().getFullYear()} Australian Machine Vision Pty Ltd. All
             rights reserved.
           </p>
-          <p className="annot text-ink-soft/80">Seaford VIC / AU + global</p>
         </div>
       </div>
     </footer>

@@ -13,14 +13,12 @@ import { ScanHeading, Reveal } from "@/components/ui/reveal";
 
 const values: {
   id: string;
-  index: string;
   icon: LucideIcon;
   title: string;
   description: string;
 }[] = [
   {
     id: "excellence",
-    index: "01",
     icon: Award,
     title: "Excellence",
     description:
@@ -28,7 +26,6 @@ const values: {
   },
   {
     id: "innovation",
-    index: "02",
     icon: Lightbulb,
     title: "Innovation",
     description:
@@ -36,7 +33,6 @@ const values: {
   },
   {
     id: "partnership",
-    index: "03",
     icon: Handshake,
     title: "Partnership",
     description:
@@ -44,7 +40,6 @@ const values: {
   },
   {
     id: "accessibility",
-    index: "04",
     icon: Accessibility,
     title: "Integration",
     description:
@@ -52,7 +47,6 @@ const values: {
   },
   {
     id: "impact",
-    index: "05",
     icon: TrendingUp,
     title: "Impact",
     description:
@@ -60,7 +54,6 @@ const values: {
   },
   {
     id: "transparency",
-    index: "06",
     icon: FileCheck,
     title: "Transparency",
     description:
@@ -99,9 +92,6 @@ export function AboutValuesSection() {
                     strokeWidth={1.6}
                     aria-hidden
                   />
-                  <span className="annot text-ink-soft" aria-hidden>
-                    {v.index}
-                  </span>
                 </div>
                 <h3 className="font-display mt-6 text-xl font-bold text-white">
                   {v.title}

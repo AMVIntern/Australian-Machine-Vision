@@ -88,7 +88,6 @@ export default function MethodologyPage() {
       />
 
       <PageHeader
-        kicker="03 / Methodology"
         title={
           <>
             How we <span className="text-accent-primary">build</span>

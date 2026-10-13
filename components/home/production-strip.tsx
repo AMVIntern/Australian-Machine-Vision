@@ -11,7 +11,6 @@ import { Reveal, RuleDraw } from "@/components/ui/reveal";
 
 interface ProductionPoint {
   id: string;
-  index: string;
   title: string;
   description: string;
   icon: LucideIcon;
@@ -20,7 +19,6 @@ interface ProductionPoint {
 const points: ProductionPoint[] = [
   {
     id: "line-speed",
-    index: "01",
     title: "Runs at line speed",
     description:
       "Full line speed on the factory floor, built for around-the-clock operation.",
@@ -28,7 +26,6 @@ const points: ProductionPoint[] = [
   },
   {
     id: "integration",
-    index: "02",
     title: "Integrates with your line",
     description:
       "Direct integration with PLCs and line control, plus desktop, web and mobile software.",
@@ -36,7 +33,6 @@ const points: ProductionPoint[] = [
   },
   {
     id: "validated",
-    index: "03",
     title: "Validated and traceable",
     description:
       "Accuracy quantified against ground truth, with traceability built in.",
@@ -44,7 +40,6 @@ const points: ProductionPoint[] = [
   },
   {
     id: "supported",
-    index: "04",
     title: "Globally supported",
     description:
       "Deployments operating overseas, with tiered around-the-clock support.",
@@ -85,9 +80,6 @@ export function ProductionStrip() {
                       strokeWidth={1.6}
                       aria-hidden
                     />
-                    <span className="annot text-foreground-muted" aria-hidden>
-                      {point.index}
-                    </span>
                   </div>
                   <h3 className="mt-5 text-base font-bold text-foreground">
                     {point.title}

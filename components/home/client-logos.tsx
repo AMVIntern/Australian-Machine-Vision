@@ -25,19 +25,14 @@ export function ClientLogos() {
         </p>
 
         <div
-          className="group relative overflow-hidden lg:col-span-9"
-          style={{
-            maskImage:
-              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-          }}
+          className="group relative overflow-hidden lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:[mask-image:none] motion-reduce:[-webkit-mask-image:none]"
         >
-          <div className="flex w-max animate-marquee items-center gap-14 group-hover:[animation-play-state:paused] sm:gap-20">
+          {/* Reduced motion: one complete, wrapped row instead of a frozen ticker */}
+          <div className="flex w-max animate-marquee items-center gap-14 group-hover:[animation-play-state:paused] sm:gap-20 motion-reduce:w-full motion-reduce:animate-none">
             {[0, 1].map((set) => (
               <div
                 key={set}
-                className="flex items-center gap-14 sm:gap-20"
+                className={`flex items-center gap-14 sm:gap-20 motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-6${set === 1 ? " motion-reduce:hidden" : ""}`}
                 aria-hidden={set === 1 || undefined}
               >
                 {clients.map((client) => (

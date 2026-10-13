@@ -77,7 +77,7 @@ function renderBlock(block: ContentBlock, index: number) {
         <ol key={index} className="mt-5 space-y-5" role="list">
           {block.items.map((item, i) => (
             <li key={item.title} className="flex gap-4">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-primary/10 text-sm font-bold text-accent-primary">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-primary/10 text-sm font-bold text-accent-deep">
                 {i + 1}
               </span>
               <div>
@@ -143,7 +143,7 @@ export default function BlogPostPage({
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline"
+                className="inline-flex items-center gap-2 text-sm font-medium text-accent-deep hover:underline"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
                 All articles

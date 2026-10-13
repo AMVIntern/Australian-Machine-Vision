@@ -21,7 +21,6 @@ export default function BlogPage() {
   return (
     <div>
       <PageHeader
-        kicker="04 / Blog"
         title={
           <>
             Insights from <span className="text-accent-primary">AMV</span>

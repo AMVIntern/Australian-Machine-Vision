@@ -8,12 +8,12 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Home", index: "01" },
-  { href: "/industries", label: "Industries", index: "02" },
-  { href: "/methodology", label: "Methodology", index: "03" },
-  { href: "/blog", label: "Blog", index: "04" },
-  { href: "/about", label: "About", index: "05" },
-  { href: "/contact", label: "Contact", index: "06" },
+  { href: "/", label: "Home" },
+  { href: "/industries", label: "Industries" },
+  { href: "/methodology", label: "Methodology" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 /** True while a `[data-nav="dark"]` element spans the probe line near the top. */
@@ -182,8 +182,9 @@ export function Navbar() {
       <div
         id="mobile-menu"
         className={cn(
-          "fixed inset-0 z-40 bg-ink transition-opacity duration-300 md:hidden",
-          mobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          "fixed inset-0 z-40 bg-ink transition-[opacity,visibility] duration-300 md:hidden",
+          // invisible (not just transparent) when closed, so its links leave the tab order
+          mobileOpen ? "visible opacity-100" : "invisible pointer-events-none opacity-0"
         )}
         role="dialog"
         aria-label="Mobile menu"
@@ -193,7 +194,7 @@ export function Navbar() {
           className="relative flex h-full flex-col justify-center gap-1 px-8 pt-16"
           role="list"
         >
-          {navLinks.map(({ href, label, index }, i) => {
+          {navLinks.map(({ href, label }, i) => {
             const isActive = pathname === href;
             return (
               <li
@@ -212,7 +213,6 @@ export function Navbar() {
                     isActive ? "text-accent-logo" : "text-white hover:text-accent-logo"
                   )}
                 >
-                  <span className="annot w-7 shrink-0 text-ink-soft">{index}</span>
                   {label}
                 </Link>
               </li>

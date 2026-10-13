@@ -30,21 +30,18 @@ export const metadata: Metadata = {
 const teamStrengths = [
   {
     icon: ScanLine,
-    index: "01",
     title: "Advanced machine vision engineering",
     description:
       "Expertise across 2D, line-scan and 3D imaging, classical vision pipelines and applied deep learning.",
   },
   {
     icon: Settings2,
-    index: "02",
     title: "Robust automation and mechatronics",
     description:
       "Every system is designed for real-world reliability, line-speed performance and long-term stability.",
   },
   {
     icon: Code2,
-    index: "03",
     title: "Modern software and AI development",
     description:
       "Custom models, advanced imaging pipelines and scalable architectures that integrate cleanly into customer operations.",
@@ -55,7 +52,6 @@ export default function AboutPage() {
   return (
     <div>
       <PageHeader
-        kicker="05 / About"
         titleId="about-title"
         title={
           <>
@@ -82,9 +78,6 @@ export default function AboutPage() {
             <Reveal className="bg-background p-8 sm:p-10">
               <div className="flex items-center justify-between">
                 <Target className="h-7 w-7 text-accent-primary" strokeWidth={1.6} aria-hidden />
-                <span className="annot text-foreground-muted" aria-hidden>
-                  01
-                </span>
               </div>
               <h2 className="font-display mt-6 text-2xl font-bold text-foreground sm:text-3xl">
                 Our Mission
@@ -104,9 +97,6 @@ export default function AboutPage() {
             <Reveal className="bg-background p-8 sm:p-10" delay={0.08}>
               <div className="flex items-center justify-between">
                 <Eye className="h-7 w-7 text-accent-primary" strokeWidth={1.6} aria-hidden />
-                <span className="annot text-foreground-muted" aria-hidden>
-                  02
-                </span>
               </div>
               <h2 className="font-display mt-6 text-2xl font-bold text-foreground sm:text-3xl">
                 Our Vision
@@ -191,9 +181,6 @@ export default function AboutPage() {
                   <div key={strength.title} className="bg-background px-6 py-7">
                     <div className="flex items-center justify-between">
                       <Icon className="h-5 w-5 text-accent-primary" strokeWidth={1.7} aria-hidden />
-                      <span className="annot text-foreground-muted" aria-hidden>
-                        {strength.index}
-                      </span>
                     </div>
                     <h3 className="mt-5 text-sm font-bold text-foreground">
                       {strength.title}

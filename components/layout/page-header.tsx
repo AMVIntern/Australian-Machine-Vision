@@ -9,14 +9,12 @@ import { cn } from "@/lib/utils";
 export function PageHeader({
   title,
   intro,
-  kicker,
   children,
   titleId,
   className,
 }: {
   title: React.ReactNode;
   intro?: React.ReactNode;
-  kicker?: string;
   children?: React.ReactNode;
   titleId?: string;
   className?: string;
@@ -30,17 +28,6 @@ export function PageHeader({
     >
       <div className="sheet-grid absolute inset-0" aria-hidden />
       <div className="container relative mx-auto px-4 pb-14 pt-32 sm:px-6 sm:pb-16 sm:pt-36 lg:px-8">
-        {kicker && (
-          <Reveal>
-            <p className="annot mb-5 flex items-center gap-2.5 text-accent-deep">
-              <span
-                className="inline-block h-0 w-0 border-x-[5px] border-t-[7px] border-x-transparent border-t-accent-logo"
-                aria-hidden
-              />
-              {kicker}
-            </p>
-          </Reveal>
-        )}
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <ScanHeading
             as="h1"

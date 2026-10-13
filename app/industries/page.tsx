@@ -69,7 +69,6 @@ export default function IndustriesPage() {
       />
 
       <PageHeader
-        kicker="02 / Industries"
         title="Where our systems are deployed"
         intro={
           <p>
