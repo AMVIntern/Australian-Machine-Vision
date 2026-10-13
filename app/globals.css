@@ -161,6 +161,39 @@
   animation: beam-pulse 1.9s linear infinite;
 }
 
+/* One pass of the inspection signal along a pipeline connector (pathLength="1") */
+@keyframes signal-pulse {
+  from {
+    stroke-dashoffset: 0.22;
+  }
+  to {
+    stroke-dashoffset: -1.02;
+  }
+}
+
+.signal-pulse {
+  stroke-dashoffset: 0.22;
+  animation: signal-pulse 0.42s linear 1 both;
+}
+
+/* A pipeline station lighting as the signal reaches it */
+@keyframes station-flash {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.station-flash {
+  opacity: 0;
+  animation: station-flash 0.8s ease-out 1 both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
