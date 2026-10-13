@@ -212,7 +212,7 @@ function ActivePanel({ tab }: { tab: Sector }) {
               {tab.intro}
             </p>
 
-            <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-accent-primary">
+            <p className="mt-5 text-xs font-semibold uppercase tracking-wider text-accent-deep">
               Where we add value
             </p>
             <ul className="mt-3 space-y-2">
@@ -234,7 +234,7 @@ function ActivePanel({ tab }: { tab: Sector }) {
 
             <Link
               href="/contact"
-              className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-accent-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-accent-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
             >
               Discuss your application
               <ChevronRight className="h-4 w-4" aria-hidden />
@@ -424,7 +424,7 @@ export function IndustriesServed() {
                         <p className="mt-4 text-sm leading-relaxed text-foreground-muted">
                           {tab.intro}
                         </p>
-                        <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent-primary">
+                        <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-accent-deep">
                           Where we add value
                         </p>
                         <ul className="mt-3 space-y-2">
@@ -445,7 +445,7 @@ export function IndustriesServed() {
                         </ul>
                         <Link
                           href="/contact"
-                          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-primary hover:underline"
+                          className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent-deep hover:underline"
                         >
                           Discuss your application
                           <ChevronRight className="h-4 w-4" />

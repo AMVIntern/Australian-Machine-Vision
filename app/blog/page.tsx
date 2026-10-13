@@ -49,7 +49,7 @@ export default function BlogPage() {
               <Spotlight size={520} />
               <time
                 dateTime={post.publishedAt}
-                className="relative text-xs font-semibold uppercase tracking-widest text-accent-primary"
+                className="relative text-xs font-semibold uppercase tracking-widest text-accent-deep"
               >
                 {formatDate(post.publishedAt)}
               </time>
@@ -62,7 +62,7 @@ export default function BlogPage() {
               <div className="relative mt-5 flex flex-wrap items-center gap-4">
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="group/link inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-accent-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+                  className="group/link inline-flex items-center gap-2 rounded-sm text-sm font-semibold text-accent-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                 >
                   Read article
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/link:translate-x-1" aria-hidden />

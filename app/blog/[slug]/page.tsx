@@ -78,7 +78,7 @@ function renderBlock(block: ContentBlock, index: number) {
         <ol key={index} className="mt-5 space-y-5" role="list">
           {block.items.map((item, i) => (
             <li key={item.title} className="flex gap-4">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-primary/10 text-sm font-bold text-accent-primary">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-primary/10 text-sm font-bold text-accent-deep">
                 {i + 1}
               </span>
               <div>
@@ -111,14 +111,14 @@ export default function BlogPostPage({
           <div className="mx-auto max-w-3xl">
             <Link
               href="/blog"
-              className="group inline-flex items-center gap-2 rounded-sm text-sm font-medium text-accent-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              className="group inline-flex items-center gap-2 rounded-sm text-sm font-medium text-accent-deep hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
             >
               <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" aria-hidden />
               Back to blog
             </Link>
             <time
               dateTime={post.publishedAt}
-              className="mt-6 block text-xs font-semibold uppercase tracking-widest text-accent-primary"
+              className="mt-6 block text-xs font-semibold uppercase tracking-widest text-accent-deep"
             >
               {formatDate(post.publishedAt)}
             </time>
@@ -144,7 +144,7 @@ export default function BlogPostPage({
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline"
+                className="inline-flex items-center gap-2 text-sm font-medium text-accent-deep hover:underline"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
                 All articles
@@ -163,7 +163,7 @@ export default function BlogPostPage({
             </div>
             <Link
               href="/contact"
-              className="btn-shine inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition-shadow hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
+              className="btn-shine inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-teal-700 to-accent-primary px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition-shadow hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
             >
               Discuss your inspection challenge
             </Link>

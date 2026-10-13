@@ -105,7 +105,7 @@ export default function IndustriesPage() {
           {/* Key Applications */}
           <section aria-labelledby="key-applications-heading">
             <div className="mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent-deep">
                 What we inspect
               </p>
               <h2
@@ -146,7 +146,7 @@ export default function IndustriesPage() {
           {/* Industries */}
           <section aria-labelledby="industries-heading">
             <div className="mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent-deep">
                 Where we work
               </p>
               <h2
@@ -225,7 +225,7 @@ export default function IndustriesPage() {
             <Link
               href="/contact"
               className={cn(
-                "btn-shine group mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 py-3 text-sm font-semibold text-white shadow-soft",
+                "btn-shine group mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-teal-700 to-accent-primary px-6 py-3 text-sm font-semibold text-white shadow-soft",
                 "transition-shadow hover:shadow-soft-lg",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               )}

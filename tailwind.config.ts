@@ -18,6 +18,7 @@ const config: Config = {
         // Accents
         accent: {
           primary: "#0d9488", // teal
+          deep: "#0f766e", // small teal text on light, 5.5:1
           "primary-hover": "#0f766e",
           secondary: "#22d3ee", // soft cyan
           "secondary-hover": "#06b6d4",
@@ -25,7 +26,7 @@ const config: Config = {
         // Text
         foreground: {
           DEFAULT: "#1c1917", // dark charcoal
-          muted: "#78716c", // muted grey
+          muted: "#756e69", // muted grey, 4.5:1 on the light surfaces
         },
         border: "#e7e5e4",
       },

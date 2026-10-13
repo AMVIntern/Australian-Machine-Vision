@@ -60,7 +60,7 @@ export function IndustriesTeaser() {
             <Link
               href="/industries"
               className={cn(
-                "group inline-flex items-center gap-2 rounded-lg border-2 border-accent-primary px-6 py-3 text-sm font-semibold text-accent-primary",
+                "group inline-flex items-center gap-2 rounded-lg border-2 border-accent-primary px-6 py-3 text-sm font-semibold text-accent-deep",
                 "hover:bg-accent-primary hover:text-white hover:shadow-soft-md transition-[color,background-color,box-shadow] duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               )}

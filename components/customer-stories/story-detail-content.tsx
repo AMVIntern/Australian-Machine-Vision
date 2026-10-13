@@ -162,7 +162,7 @@ export function StoryDetailContent({ story }: StoryDetailContentProps) {
                   {index + 1}
                 </span>
                 {step.timeframe && (
-                  <p className="mt-4 text-sm font-medium text-accent-primary">
+                  <p className="mt-4 text-sm font-medium text-accent-deep">
                     {step.timeframe}
                   </p>
                 )}

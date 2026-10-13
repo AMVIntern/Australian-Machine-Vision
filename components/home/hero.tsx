@@ -82,7 +82,8 @@ export function Hero() {
       aria-labelledby="hero-heading"
     >
       {/* Interactive dot grid texture */}
-      <DotGrid />
+      {/* faded out behind the centred copy so the texture never sits under text */}
+      <DotGrid className="[-webkit-mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_90%)] [mask-image:radial-gradient(ellipse_55%_50%_at_50%_42%,transparent_45%,black_90%)] max-sm:[-webkit-mask-image:radial-gradient(ellipse_95%_42%_at_50%_45%,transparent_60%,black_100%)] max-sm:[mask-image:radial-gradient(ellipse_95%_42%_at_50%_45%,transparent_60%,black_100%)]" />
 
       {/* Subtle gradient orbs */}
       <div
@@ -161,7 +162,7 @@ export function Hero() {
                 <Link
                   href="/industries"
                   className={cn(
-                    "btn-shine inline-flex h-12 items-center justify-center rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 font-semibold text-white shadow-soft transition hover:shadow-soft-lg",
+                    "btn-shine inline-flex h-12 items-center justify-center rounded-lg bg-gradient-to-br from-teal-700 to-accent-primary px-6 font-semibold text-white shadow-soft transition hover:shadow-soft-lg",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                   )}
                 >
@@ -185,10 +186,8 @@ export function Hero() {
               </motion.div>
             </motion.div>
 
-            <motion.div
-              className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-foreground-muted"
-              variants={fadeInUp}
-            >
+            <motion.div className="mt-10 flex justify-center" variants={fadeInUp}>
+              <div className="flex flex-col items-start gap-x-8 gap-y-3 text-sm text-foreground-muted sm:flex-row sm:items-center">
               <span className="flex items-center gap-2">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-primary/10 text-accent-primary ring-1 ring-accent-primary/15">
                   <Award className="h-4 w-4" aria-hidden />
@@ -201,6 +200,7 @@ export function Hero() {
                 </span>
                 In-house engineering and software
               </span>
+              </div>
             </motion.div>
           </motion.div>
         </div>

@@ -115,7 +115,7 @@ export default function MethodologyPage() {
 
         <div className="mx-auto mt-14 max-w-4xl">
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent-deep">
               Technology stack
             </p>
             <h2 className="mt-1 text-2xl font-bold text-foreground sm:text-3xl">
@@ -175,7 +175,7 @@ export default function MethodologyPage() {
                 <Link
                   href="/contact"
                   className={cn(
-                    "btn-shine btn-shine-teal group inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-accent-primary shadow-soft",
+                    "btn-shine btn-shine-teal group inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-accent-deep shadow-soft",
                     "hover:bg-white/90 transition-opacity",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
                   )}

@@ -276,7 +276,7 @@ function FamilyPanel({ family }: { family: CapabilityFamily }) {
               <Icon className="h-7 w-7" strokeWidth={2} />
             </span>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-accent-primary">
+              <p className="text-xs font-semibold uppercase tracking-wider text-accent-deep">
                 Capability layer
               </p>
               <h3 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">
@@ -341,7 +341,7 @@ function ProblemPanel({ problem }: { problem: Problem }) {
 
   return (
     <motion.div key={`problem-${problem.id}`} {...panelVariants}>
-      <p className="text-xs font-semibold uppercase tracking-wider text-accent-primary">
+      <p className="text-xs font-semibold uppercase tracking-wider text-accent-deep">
         Problem we solve
       </p>
       <h3 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">
@@ -451,7 +451,7 @@ export function CapabilitiesGrid() {
           <div>
             <div className="flex items-center gap-3">
               <span className="h-px flex-1 bg-border" aria-hidden />
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-accent-primary">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-accent-deep">
                 Problems we solve
               </h3>
               <span className="h-px flex-1 bg-border" aria-hidden />

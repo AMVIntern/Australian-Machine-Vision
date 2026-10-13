@@ -114,7 +114,7 @@ export default function AboutPage() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent-deep">
               Our team
             </p>
             <h2
@@ -137,7 +137,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground">Ken Razga</h3>
-                <p className="mt-1 text-sm font-medium text-accent-primary">Director</p>
+                <p className="mt-1 text-sm font-medium text-accent-deep">Director</p>
                 <p className="mt-4 text-foreground-muted leading-relaxed">
                   Ken leads Australian Machine Vision, bringing more than 20 years
                   of hands-on experience in machine vision and industrial automation.
@@ -223,7 +223,7 @@ export default function AboutPage() {
               <p className="text-3xl font-bold tabular-nums text-accent-primary sm:text-4xl">
                 <NumberTicker value={20} />+
               </p>
-              <p className="mt-1 text-sm text-accent-primary">
+              <p className="mt-1 text-sm text-accent-deep">
                 Years of Experience
               </p>
             </div>
@@ -231,7 +231,7 @@ export default function AboutPage() {
               <p className="text-3xl font-bold text-accent-primary sm:text-4xl">
                 Global
               </p>
-              <p className="mt-1 text-sm text-accent-primary">
+              <p className="mt-1 text-sm text-accent-deep">
                 Australia and International Markets
               </p>
             </div>
@@ -239,7 +239,7 @@ export default function AboutPage() {
               <p className="text-3xl font-bold text-accent-primary sm:text-4xl">
                 In-House
               </p>
-              <p className="mt-1 text-sm text-accent-primary">
+              <p className="mt-1 text-sm text-accent-deep">
                 Engineering and Software
               </p>
             </div>
@@ -247,7 +247,7 @@ export default function AboutPage() {
               <p className="text-3xl font-bold text-accent-primary sm:text-4xl">
                 Trusted
               </p>
-              <p className="mt-1 text-sm text-accent-primary">
+              <p className="mt-1 text-sm text-accent-deep">
                 Technology Partner Network
               </p>
             </div>
@@ -275,7 +275,7 @@ export default function AboutPage() {
                 manufacturing, logistics and beyond. See the full list with
                 capability examples for each sector.
               </p>
-              <span className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+              <span className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-accent-deep">
                 Explore industries
                 <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
               </span>
@@ -296,7 +296,7 @@ export default function AboutPage() {
                 and classical vision algorithms. Each technique is applied where
                 it performs best.
               </p>
-              <span className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+              <span className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-accent-deep">
                 See our methodology
                 <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
               </span>

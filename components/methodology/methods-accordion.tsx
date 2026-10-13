@@ -58,14 +58,14 @@ export function MethodsAccordion({ methods }: { methods: Method[] }) {
               <span
                 className={cn(
                   "hidden shrink-0 text-3xl font-bold tabular-nums transition-colors duration-300 sm:block",
-                  isOpen ? "text-accent-primary/60" : "text-accent-primary/25"
+                  isOpen ? "text-accent-primary" : "text-foreground-muted"
                 )}
                 aria-hidden
               >
                 {method.number}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-accent-primary">
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-accent-deep">
                   {method.label}
                 </p>
                 <h2 className="mt-0.5 text-lg font-bold text-foreground sm:text-xl">

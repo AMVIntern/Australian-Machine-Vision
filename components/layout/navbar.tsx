@@ -99,7 +99,7 @@ export function Navbar() {
                   className={cn(
                     "relative block rounded-sm py-2 text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-4",
                     isActive || hovered === href
-                      ? "text-accent-primary"
+                      ? "text-accent-deep"
                       : "text-foreground"
                   )}
                 >

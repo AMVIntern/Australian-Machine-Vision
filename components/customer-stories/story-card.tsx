@@ -66,7 +66,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
             {story.metrics.slice(0, 3).map((m) => (
               <li
                 key={m.label}
-                className="rounded-md bg-accent-primary/10 px-2 py-1 text-xs font-medium text-accent-primary"
+                className="rounded-md bg-accent-primary/10 px-2 py-1 text-xs font-medium text-accent-deep"
               >
                 {m.value} {m.label}
               </li>
@@ -74,7 +74,7 @@ export function StoryCard({ story, index = 0 }: StoryCardProps) {
           </ul>
           <span
             className={cn(
-              "mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent-primary",
+              "mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent-deep",
               "group-hover:gap-2 transition-all"
             )}
           >

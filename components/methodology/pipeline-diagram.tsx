@@ -142,7 +142,7 @@ export function PipelineDiagram() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="flex items-center gap-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal-600 text-[10px] font-bold text-white">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal-700 text-[10px] font-bold text-white">
                 {active.number}
               </span>
               <h3 className="text-base font-bold text-foreground">{active.label}</h3>

@@ -157,9 +157,12 @@ const TimelineStep = React.forwardRef<HTMLDivElement, TimelineStepProps>(
         </div>
 
         {/* Step card */}
+        {/* The server renders the hidden starting state inline, so reduced
+            motion still needs an animation target to land on visible. */}
         <motion.article
-          initial={reduceMotion ? false : { opacity: 0, x: 16 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, x: 0 }}
+          {...(reduceMotion
+            ? { initial: false, animate: { opacity: 1, x: 0 } }
+            : { initial: { opacity: 0, x: 16 }, whileInView: { opacity: 1, x: 0 } })}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.4 }}
           className={cn(
@@ -174,7 +177,7 @@ const TimelineStep = React.forwardRef<HTMLDivElement, TimelineStepProps>(
           <span
             className={cn(
               "text-xs font-semibold uppercase tracking-wider",
-              isActive || isCompleted ? "text-accent-primary" : "text-foreground-muted"
+              isActive || isCompleted ? "text-accent-deep" : "text-foreground-muted"
             )}
           >
             Step {step.number}
@@ -247,12 +250,12 @@ export function Pipeline() {
               className="absolute inset-0 origin-top rounded-full bg-gradient-to-b from-teal-400 via-teal-500 to-teal-600"
               style={{ scaleY: reduceMotion ? scrollYProgress : progress }}
             />
-            {!reduceMotion && (
-              <motion.span
-                className="absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-secondary shadow-[0_0_0_3px_rgba(34,211,238,0.22),0_0_6px_rgba(34,211,238,0.35)]"
-                style={{ top: headTop, opacity: headOpacity }}
-              />
-            )}
+            {/* Always rendered so server and client markup match during
+                hydration; reduced motion hides it through its style. */}
+            <motion.span
+              className="absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-secondary shadow-[0_0_0_3px_rgba(34,211,238,0.22),0_0_6px_rgba(34,211,238,0.35)]"
+              style={{ top: headTop, opacity: reduceMotion ? 0 : headOpacity }}
+            />
           </div>
 
           <div className="relative">

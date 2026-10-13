@@ -23,8 +23,9 @@ export function ClientLogos() {
           Trusted by leading organisations
         </p>
 
-        <div className="pause-on-hover mask-fade-x relative overflow-hidden">
-          <div className="flex w-max animate-marquee items-center gap-14 sm:gap-20">
+        <div className="pause-on-hover mask-fade-x relative overflow-hidden motion-reduce:![mask-image:none] motion-reduce:![-webkit-mask-image:none]">
+          {/* Reduced motion: one complete, wrapped row instead of a frozen ticker */}
+          <div className="flex w-max animate-marquee items-center gap-14 sm:gap-20 motion-reduce:w-full motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-6">
             {[...clients, ...clients].map((client, i) => (
               <Image
                 key={`${client.name}-${i}`}
@@ -33,7 +34,7 @@ export function ClientLogos() {
                 aria-hidden={i >= clients.length ? true : undefined}
                 width={client.width}
                 height={client.height}
-                className="shrink-0 object-contain opacity-90 transition duration-300 hover:scale-105 hover:opacity-100"
+                className={`shrink-0 object-contain opacity-90 transition duration-300 hover:scale-105 hover:opacity-100${i >= clients.length ? " motion-reduce:hidden" : ""}`}
               />
             ))}
           </div>
