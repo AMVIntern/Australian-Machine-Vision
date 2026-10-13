@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import {
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -20,7 +21,12 @@ function AssemblingMark() {
     target: ref,
     offset: ["start end", "center 55%"],
   });
-  const p = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.6 });
+  const spring = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.6 });
+  // Reduced motion reads a progress pinned at 1, so the mark rests assembled.
+  // The styles stay motion values in both modes: the server renders the
+  // scattered start inline, and only motion values repaint it after hydration.
+  const assembled = useMotionValue(1);
+  const p = reduceMotion ? assembled : spring;
 
   const leftX = useTransform(p, [0, 1], [-140, 0]);
   const leftY = useTransform(p, [0, 1], [90, 0]);
@@ -32,34 +38,22 @@ function AssemblingMark() {
   const triOpacity = useTransform(p, [0, 0.5, 1], [0.2, 0.85, 1]);
   const lens = useTransform(p, [0.8, 1], [0, 1]);
 
-  const still = !!reduceMotion;
-
   return (
     <div ref={ref} className="relative mx-auto w-full max-w-[34rem]">
       <svg viewBox="0 0 628 340" className="h-auto w-full overflow-visible" aria-hidden>
         <motion.polygon
           points="8,88 250,58 352,336"
           fill="#14a49c"
-          style={still ? undefined : { x: leftX, y: leftY, rotate: leftR, transformOrigin: "180px 200px" }}
+          style={{ x: leftX, y: leftY, rotate: leftR, transformOrigin: "180px 200px" }}
         />
         <motion.polygon
           points="372,44 600,6 556,124"
           fill="#14a49c"
-          style={still ? undefined : { x: rightX, y: rightY, rotate: rightR, transformOrigin: "480px 60px" }}
+          style={{ x: rightX, y: rightY, rotate: rightR, transformOrigin: "480px 60px" }}
         />
-        <motion.g
-          style={still ? undefined : { scale: triScale, opacity: triOpacity, transformOrigin: "320px 180px" }}
-        >
+        <motion.g style={{ scale: triScale, opacity: triOpacity, transformOrigin: "320px 180px" }}>
           <polygon points="26,40 612,40 330,332" fill="#201c20" />
-          <motion.circle
-            cx={330}
-            cy={286}
-            r={7}
-            fill="#22d3ee"
-            style={{
-              opacity: still ? 1 : lens,
-                          }}
-          />
+          <motion.circle cx={330} cy={286} r={7} fill="#22d3ee" style={{ opacity: lens }} />
         </motion.g>
       </svg>
     </div>
