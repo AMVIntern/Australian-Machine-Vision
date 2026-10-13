@@ -84,9 +84,28 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        shine: {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "-200% 0" },
+        },
+        "border-beam": {
+          "100%": { offsetDistance: "100%" },
+        },
+        "grid-drift": {
+          "0%": { backgroundPosition: "0 0" },
+          "100%": { backgroundPosition: "48px 48px" },
+        },
+        sweep: {
+          "0%, 20%": { transform: "translateX(0)" },
+          "80%, 100%": { transform: "translateX(400%)" },
+        },
       },
       animation: {
         marquee: "marquee 30s linear infinite",
+        shine: "shine 6s linear infinite",
+        "border-beam": "border-beam 9s linear infinite",
+        "grid-drift": "grid-drift 12s linear infinite",
+        sweep: "sweep 8s cubic-bezier(0.65, 0, 0.35, 1) infinite",
       },
     },
   },

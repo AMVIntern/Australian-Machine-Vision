@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AnimatedGridPattern } from "@/components/fx/animated-grid-pattern";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
 };
 
 const stagger = {
@@ -18,6 +22,10 @@ const stagger = {
 };
 
 export function FinalCTA() {
+  const reduceMotion = useReducedMotion();
+  const hover = reduceMotion ? undefined : { scale: 1.03 };
+  const tap = reduceMotion ? undefined : { scale: 0.98 };
+
   return (
     <section
       className="py-0"
@@ -26,15 +34,21 @@ export function FinalCTA() {
       {/* Full-width teal gradient banner: darker left to lighter right */}
       <motion.div
         className={cn(
-          "w-full bg-gradient-to-r from-teal-700 via-teal-600 to-teal-400",
+          "relative w-full overflow-hidden bg-gradient-to-r from-teal-700 via-teal-600 to-teal-400",
           "py-16 sm:py-20 lg:py-24"
         )}
-        initial="initial"
+        initial={reduceMotion ? false : "initial"}
         whileInView="animate"
         viewport={{ once: true, margin: "-80px" }}
         variants={stagger}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimatedGridPattern
+          className="[mask-image:radial-gradient(ellipse_55%_75%_at_50%_50%,transparent_35%,#000_100%)]"
+          stroke="rgba(255,255,255,0.09)"
+          maxOpacity={0.14}
+          numSquares={30}
+        />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <motion.h2
               id="final-cta-heading"
@@ -55,14 +69,11 @@ export function FinalCTA() {
               className="mt-10 flex flex-wrap items-center justify-center gap-4"
               variants={fadeIn}
             >
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <motion.div whileHover={hover} whileTap={tap}>
                 <Link
                   href="/contact"
                   className={cn(
-                    "inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-base font-semibold text-accent-primary",
+                    "btn-shine btn-shine-teal inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-base font-semibold text-accent-primary",
                     "shadow-soft hover:bg-white/95 hover:shadow-soft-md",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
                   )}
@@ -70,10 +81,7 @@ export function FinalCTA() {
                   Contact Us
                 </Link>
               </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <motion.div whileHover={hover} whileTap={tap}>
                 <Link
                   href="/contact"
                   className={cn(
@@ -88,7 +96,7 @@ export function FinalCTA() {
             </motion.div>
 
             <motion.div
-              className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-5 py-2.5"
+              className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-5 py-2.5 backdrop-blur-sm"
               variants={fadeIn}
             >
               <Lock className="h-4 w-4 shrink-0 text-white" aria-hidden />

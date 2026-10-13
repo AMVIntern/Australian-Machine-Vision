@@ -55,8 +55,11 @@ const container = {
 
 const item = {
   initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.35 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  },
 };
 
 export function ProductionStrip() {
@@ -89,10 +92,10 @@ export function ProductionStrip() {
               <motion.div
                 key={point.id}
                 variants={item}
-                className="flex flex-col items-center text-center"
+                className="group flex flex-col items-center text-center"
               >
                 <span
-                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-soft"
+                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-soft ring-0 ring-accent-primary/15 transition-[transform,box-shadow] duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-soft-lg group-hover:ring-[6px]"
                   aria-hidden
                 >
                   <Icon className="h-6 w-6" strokeWidth={2} />

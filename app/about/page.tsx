@@ -4,6 +4,10 @@ import Image from "next/image";
 import { Target, Eye, ScanLine, Settings2, Code2 } from "lucide-react";
 import { AboutValuesSection } from "@/components/about/about-values-section";
 import { cn } from "@/lib/utils";
+import { PageHeroBackground } from "@/components/fx/page-hero-background";
+import { Spotlight } from "@/components/fx/spotlight";
+import { NumberTicker } from "@/components/fx/number-ticker";
+import { AnimatedGridPattern } from "@/components/fx/animated-grid-pattern";
 
 export const metadata: Metadata = {
   title: "About",
@@ -28,8 +32,9 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero - Our Vision is Your Solution */}
-      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
+        <PageHeroBackground />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mx-auto max-w-3xl text-center">
             <h1
               id="about-title"
@@ -102,7 +107,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Team — Ken + broader team capability */}
+      {/* Our Team: Ken + broader team capability */}
       <section
         className="border-y border-border bg-background-secondary/40 py-12 sm:py-16"
         aria-labelledby="team-heading"
@@ -121,7 +126,7 @@ export default function AboutPage() {
 
             {/* Ken's profile */}
             <div className="mt-8 grid items-center gap-8 sm:grid-cols-[auto,1fr] sm:gap-10">
-              <div className="mx-auto h-36 w-36 overflow-hidden rounded-2xl border border-border shadow-soft sm:h-44 sm:w-44">
+              <div className="mx-auto h-36 w-36 overflow-hidden rounded-2xl border border-border shadow-soft ring-4 ring-accent-primary/10 sm:h-44 sm:w-44">
                 <Image
                   src="/team/ken-razga.jpg"
                   alt="Ken Razga, Director at Australian Machine Vision"
@@ -155,36 +160,39 @@ export default function AboutPage() {
             </p>
 
             <div className="mt-6 grid gap-5 sm:grid-cols-3">
-              <div className="rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+              <div className="group relative overflow-hidden rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg">
+                <Spotlight />
+                <span className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
                   <ScanLine className="h-5 w-5" aria-hidden />
                 </span>
-                <h3 className="mt-4 text-sm font-bold text-foreground">
+                <h3 className="relative mt-4 text-sm font-bold text-foreground">
                   Advanced machine vision engineering
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                <p className="relative mt-2 text-sm leading-relaxed text-foreground-muted">
                   Expertise across 2D, line-scan and 3D imaging, classical vision pipelines and applied deep learning.
                 </p>
               </div>
-              <div className="rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+              <div className="group relative overflow-hidden rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg">
+                <Spotlight />
+                <span className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
                   <Settings2 className="h-5 w-5" aria-hidden />
                 </span>
-                <h3 className="mt-4 text-sm font-bold text-foreground">
+                <h3 className="relative mt-4 text-sm font-bold text-foreground">
                   Robust automation and mechatronics
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                <p className="relative mt-2 text-sm leading-relaxed text-foreground-muted">
                   Every system is designed for real-world reliability, line-speed performance and long-term stability.
                 </p>
               </div>
-              <div className="rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+              <div className="group relative overflow-hidden rounded-xl border border-border/60 bg-white px-6 py-5 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg">
+                <Spotlight />
+                <span className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
                   <Code2 className="h-5 w-5" aria-hidden />
                 </span>
-                <h3 className="mt-4 text-sm font-bold text-foreground">
+                <h3 className="relative mt-4 text-sm font-bold text-foreground">
                   Modern software and AI development
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                <p className="relative mt-2 text-sm leading-relaxed text-foreground-muted">
                   Custom models, advanced imaging pipelines and scalable architectures that integrate cleanly into customer operations.
                 </p>
               </div>
@@ -213,7 +221,7 @@ export default function AboutPage() {
           <div className="flex flex-wrap justify-center gap-10 sm:gap-16">
             <div className="text-center">
               <p className="text-3xl font-bold tabular-nums text-accent-primary sm:text-4xl">
-                20+
+                <NumberTicker value={20} />+
               </p>
               <p className="mt-1 text-sm text-accent-primary">
                 Years of Experience
@@ -254,41 +262,43 @@ export default function AboutPage() {
             <Link
               href="/industries"
               className={cn(
-                "group flex flex-col rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft-lg",
+                "group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-soft-lg",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               )}
             >
-              <h2 className="text-base font-bold text-foreground">
+              <Spotlight />
+              <h2 className="relative text-base font-bold text-foreground">
                 Industries we work in
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+              <p className="relative mt-2 text-sm leading-relaxed text-foreground-muted">
                 AMV works across food, healthcare, packaging, industrial
                 manufacturing, logistics and beyond. See the full list with
                 capability examples for each sector.
               </p>
-              <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+              <span className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
                 Explore industries
-                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
+                <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
               </span>
             </Link>
             <Link
               href="/methodology"
               className={cn(
-                "group flex flex-col rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft-lg",
+                "group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background-secondary/60 p-6 transition-[transform,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-soft-lg",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               )}
             >
-              <h2 className="text-base font-bold text-foreground">
+              <Spotlight />
+              <h2 className="relative text-base font-bold text-foreground">
                 How we build solutions
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+              <p className="relative mt-2 text-sm leading-relaxed text-foreground-muted">
                 We combine HALCON industrial software, custom-trained AI models
                 and classical vision algorithms. Each technique is applied where
                 it performs best.
               </p>
-              <span className="mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
+              <span className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-accent-primary">
                 See our methodology
-                <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
+                <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 16 16" aria-hidden="true"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8h10M9 4l4 4-4 4"/></svg>
               </span>
             </Link>
           </div>
@@ -297,10 +307,16 @@ export default function AboutPage() {
 
       {/* Teal CTA band */}
       <section
-        className="bg-gradient-to-r from-teal-700 via-teal-600 to-teal-400 py-16 sm:py-20"
+        className="relative overflow-hidden bg-gradient-to-r from-teal-700 via-teal-600 to-teal-400 py-16 sm:py-20"
         aria-labelledby="about-cta-heading"
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimatedGridPattern
+          className="[mask-image:radial-gradient(ellipse_55%_75%_at_50%_50%,transparent_35%,#000_100%)]"
+          stroke="rgba(255,255,255,0.09)"
+          maxOpacity={0.14}
+          numSquares={24}
+        />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2
               id="about-cta-heading"
@@ -317,8 +333,8 @@ export default function AboutPage() {
               <Link
                 href="/contact"
                 className={cn(
-                  "inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-base font-semibold text-accent-primary",
-                  "shadow-soft hover:bg-white/95",
+                  "btn-shine btn-shine-teal inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-base font-semibold text-accent-primary",
+                  "shadow-soft transition-shadow hover:bg-white/95 hover:shadow-soft-lg",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
                 )}
               >

@@ -10,6 +10,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Spotlight } from "@/components/fx/spotlight";
+import { BorderBeam } from "@/components/fx/border-beam";
 
 export interface DifferentiatorItem {
   id: string;
@@ -72,8 +74,11 @@ const container = {
 
 const cardItem = {
   initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.38 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  },
 };
 
 function DifferentiatorCard({ item }: { item: DifferentiatorItem }) {
@@ -84,7 +89,7 @@ function DifferentiatorCard({ item }: { item: DifferentiatorItem }) {
     <motion.article
       variants={cardItem}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-2xl text-left transition-all",
+        "group relative flex flex-col overflow-hidden rounded-2xl text-left transition-[transform,box-shadow] duration-300",
         "hover:-translate-y-0.5 hover:shadow-soft-lg",
         item.gridClass,
         isFeatured
@@ -92,8 +97,29 @@ function DifferentiatorCard({ item }: { item: DifferentiatorItem }) {
           : "border border-border/60 bg-white p-6 shadow-soft"
       )}
     >
+      {isFeatured ? (
+        <Spotlight
+          color="rgba(255, 255, 255, 0.12)"
+          borderColor="rgba(255, 255, 255, 0.6)"
+          size={420}
+        />
+      ) : (
+        <Spotlight />
+      )}
+
       {isFeatured && (
         <>
+          {/* Faint measurement grid */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.12] [mask-image:radial-gradient(ellipse_at_top_right,#000_20%,transparent_75%)]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.9) 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
+            }}
+            aria-hidden
+          />
+          <BorderBeam size={240} duration={10} colorFrom="#ffffff" colorTo="#67e8f9" />
           <div
             className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10 blur-2xl"
             aria-hidden
@@ -153,7 +179,7 @@ function DifferentiatorCard({ item }: { item: DifferentiatorItem }) {
 export function Differentiators() {
   return (
     <section
-      className="bg-white/80 backdrop-blur-sm py-16 sm:py-20"
+      className="bg-white/80 pb-16 pt-12 backdrop-blur-sm sm:pb-20 sm:pt-16"
       aria-labelledby="differentiators-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

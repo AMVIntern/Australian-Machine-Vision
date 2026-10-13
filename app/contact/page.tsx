@@ -40,7 +40,7 @@ export default function ContactPage() {
 
         <div className="mx-auto mt-12 grid max-w-5xl gap-10 lg:grid-cols-5 lg:gap-12">
           <div className="lg:col-span-3">
-            <div className="rounded-xl border border-border bg-white p-6 shadow-soft sm:p-8">
+            <div className="rounded-xl border border-border bg-white p-6 shadow-soft transition-shadow duration-300 focus-within:shadow-soft-lg focus-within:ring-1 focus-within:ring-accent-primary/20 sm:p-8">
               <h2 className="text-xl font-bold text-foreground">
                 Send us a Message
               </h2>
@@ -56,9 +56,9 @@ export default function ContactPage() {
                 Contact Information
               </h2>
               <ul className="mt-6 space-y-4" role="list">
-                <li className="flex items-center gap-3">
+                <li className="group flex items-center gap-3">
                   <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors duration-300 group-hover:bg-accent-primary group-hover:text-white"
                     aria-hidden
                   >
                     <MapPin className="h-4 w-4" />
@@ -67,9 +67,9 @@ export default function ContactPage() {
                     Office: 9A Sir Laurence Drive Seaford 3198
                   </span>
                 </li>
-                <li className="flex items-center gap-3">
+                <li className="group flex items-center gap-3">
                   <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors duration-300 group-hover:bg-accent-primary group-hover:text-white"
                     aria-hidden
                   >
                     <Phone className="h-4 w-4" />
@@ -77,22 +77,22 @@ export default function ContactPage() {
                   <span className="text-sm text-foreground-muted leading-tight">
                     <a
                       href="tel:0499990117"
-                      className="hover:text-foreground"
+                      className="rounded-sm transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                     >
                       0499 990 117
                     </a>
                     {" / "}
                     <a
                       href="tel:0418535729"
-                      className="hover:text-foreground"
+                      className="rounded-sm transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                     >
                       0418 535 729
                     </a>
                   </span>
                 </li>
-                <li className="flex items-center gap-3">
+                <li className="group flex items-center gap-3">
                   <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors duration-300 group-hover:bg-accent-primary group-hover:text-white"
                     aria-hidden
                   >
                     <Mail className="h-4 w-4" />
@@ -100,15 +100,15 @@ export default function ContactPage() {
                   <span className="text-sm text-foreground-muted leading-tight">
                     <a
                       href="mailto:amvsupport@amvco.com.au"
-                      className="hover:text-foreground"
+                      className="rounded-sm transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
                     >
                       amvsupport@amvco.com.au
                     </a>
                   </span>
                 </li>
-                <li className="flex items-center gap-3">
+                <li className="group flex items-center gap-3">
                   <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors duration-300 group-hover:bg-accent-primary group-hover:text-white"
                     aria-hidden
                   >
                     <Clock className="h-4 w-4" />

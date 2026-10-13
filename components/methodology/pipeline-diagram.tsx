@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { Camera, Cpu, ScanSearch, CheckCircle2, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -56,6 +57,7 @@ const STAGES = [
 export function PipelineDiagram() {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = STAGES[activeIndex];
+  const reduceMotion = useReducedMotion();
 
   return (
     <div className="rounded-2xl border border-border bg-white p-4 shadow-soft sm:p-6">
@@ -87,15 +89,28 @@ export function PipelineDiagram() {
               aria-selected={isActive}
               onClick={() => setActiveIndex(i)}
               className={cn(
-                "group flex flex-col items-center gap-1.5 rounded-xl border px-1 py-2.5 text-center transition-all duration-200 sm:py-3",
+                "group relative flex flex-col items-center gap-1.5 rounded-xl border px-1 py-2.5 text-center transition-colors duration-200 sm:py-3",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2",
                 isActive
-                  ? "border-teal-500 bg-teal-50 shadow-soft"
+                  ? "border-transparent"
                   : "border-border bg-white hover:border-teal-300 hover:bg-teal-50/40"
               )}
             >
+              {isActive && (
+                <motion.span
+                  layoutId="stage-highlight"
+                  className="absolute -inset-px rounded-xl border border-teal-500 bg-teal-50 shadow-soft"
+                  transition={
+                    reduceMotion
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 380, damping: 34 }
+                  }
+                  aria-hidden
+                />
+              )}
               <span
                 className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-lg transition-colors sm:h-9 sm:w-9",
+                  "relative flex h-8 w-8 items-center justify-center rounded-lg transition-colors duration-300 sm:h-9 sm:w-9",
                   isActive
                     ? "bg-teal-600 text-white"
                     : "bg-teal-50 text-teal-600 group-hover:bg-teal-100"
@@ -105,7 +120,7 @@ export function PipelineDiagram() {
               </span>
               <span
                 className={cn(
-                  "text-[10px] font-bold uppercase tracking-wide sm:text-xs",
+                  "relative text-[10px] font-bold uppercase tracking-wide sm:text-xs",
                   isActive ? "text-teal-700" : "text-foreground-muted"
                 )}
               >
@@ -117,19 +132,26 @@ export function PipelineDiagram() {
       </div>
 
       {/* Explanation */}
-      <div className="mt-4 rounded-xl bg-background-secondary/60 p-5">
-        <div className="flex items-center gap-3">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal-600 text-[10px] font-bold text-white">
-            {active.number}
-          </span>
-          <h3 className="text-base font-bold text-foreground">{active.label}</h3>
-        </div>
-        <p
-          key={active.id}
-          className="mt-3 animate-in fade-in text-sm leading-relaxed text-foreground-muted duration-300"
-        >
-          {active.explanation}
-        </p>
+      <div className="mt-4 overflow-hidden rounded-xl bg-background-secondary/60 p-5" aria-live="polite">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={active.id}
+            initial={reduceMotion ? false : { opacity: 0, y: 6, filter: "blur(3px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -4, filter: "blur(3px)" }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="flex items-center gap-3">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal-600 text-[10px] font-bold text-white">
+                {active.number}
+              </span>
+              <h3 className="text-base font-bold text-foreground">{active.label}</h3>
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
+              {active.explanation}
+            </p>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

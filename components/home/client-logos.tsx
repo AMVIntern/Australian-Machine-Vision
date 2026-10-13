@@ -23,26 +23,17 @@ export function ClientLogos() {
           Trusted by leading organisations
         </p>
 
-        <div className="relative overflow-hidden">
-          {/* Gradient masks for fade at edges */}
-          <div
-            className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-teal-50 to-transparent sm:w-32"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-teal-50 to-transparent sm:w-32"
-            aria-hidden
-          />
-
+        <div className="pause-on-hover mask-fade-x relative overflow-hidden">
           <div className="flex w-max animate-marquee items-center gap-14 sm:gap-20">
             {[...clients, ...clients].map((client, i) => (
               <Image
                 key={`${client.name}-${i}`}
                 src={client.src}
-                alt={client.name}
+                alt={i < clients.length ? client.name : ""}
+                aria-hidden={i >= clients.length ? true : undefined}
                 width={client.width}
                 height={client.height}
-                className="shrink-0 object-contain"
+                className="shrink-0 object-contain opacity-90 transition duration-300 hover:scale-105 hover:opacity-100"
               />
             ))}
           </div>

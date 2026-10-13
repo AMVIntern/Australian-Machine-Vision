@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,23 +18,53 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+function isActivePath(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+  const [hovered, setHovered] = React.useState<string | null>(null);
   const pathname = usePathname();
+  const reduceMotion = useReducedMotion();
+
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  React.useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const activeHref = navLinks.find(({ href }) => isActivePath(pathname, href))?.href;
+  const indicatorHref = hovered ?? activeHref;
 
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b border-border bg-white/95 shadow-soft backdrop-blur-sm supports-[backdrop-filter]:bg-white/90"
+      className={cn(
+        "sticky top-0 z-50 w-full border-b transition-[background-color,box-shadow,border-color] duration-300",
+        scrolled
+          ? "border-border/70 bg-white/80 shadow-soft-md backdrop-blur-md supports-[backdrop-filter]:bg-white/75"
+          : "border-border bg-white/95 shadow-soft backdrop-blur-sm supports-[backdrop-filter]:bg-white/90"
+      )}
       role="banner"
     >
       <nav
-        className="container mx-auto flex h-[5rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
+        className={cn(
+          "container mx-auto flex items-center justify-between gap-6 px-4 transition-[height] duration-300 sm:px-6 lg:px-8",
+          scrolled ? "h-16" : "h-[5rem]"
+        )}
         aria-label="Main navigation"
       >
         {/* Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 rounded-md"
+          className="flex shrink-0 items-center rounded-md transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
           aria-label="Australian Machine Vision - Home"
         >
           <Image
@@ -41,31 +72,50 @@ export function Navbar() {
             alt="Australian Machine Vision"
             width={180}
             height={48}
-            className="h-11 w-auto object-contain sm:h-12"
+            className={cn(
+              "w-auto object-contain transition-[height] duration-300",
+              scrolled ? "h-10 sm:h-11" : "h-11 sm:h-12 lg:h-14"
+            )}
             priority
           />
         </Link>
 
         {/* Desktop nav - centered */}
         <ul
-          className="hidden md:flex flex-1 items-center justify-center gap-10"
+          className="hidden flex-1 items-center justify-center gap-10 md:flex"
           role="list"
+          onMouseLeave={() => setHovered(null)}
         >
           {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            const isActive = activeHref === href;
             return (
-              <li key={href}>
+              <li key={href} className="relative">
                 <Link
                   href={href}
+                  onMouseEnter={() => setHovered(href)}
+                  onFocus={() => setHovered(href)}
+                  onBlur={() => setHovered(null)}
+                  aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "relative text-[15px] font-medium transition-colors py-2",
-                    "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:rounded-full after:bg-accent-primary after:content-[''] after:transition-all after:duration-200",
-                    isActive
-                      ? "text-accent-primary after:w-full"
-                      : "text-foreground hover:text-accent-primary after:w-0 hover:after:w-full"
+                    "relative block rounded-sm py-2 text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-4",
+                    isActive || hovered === href
+                      ? "text-accent-primary"
+                      : "text-foreground"
                   )}
                 >
                   {label}
+                  {indicatorHref === href && (
+                    <motion.span
+                      layoutId="nav-indicator"
+                      className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-accent-primary"
+                      transition={
+                        reduceMotion
+                          ? { duration: 0 }
+                          : { type: "spring", stiffness: 420, damping: 34 }
+                      }
+                      aria-hidden
+                    />
+                  )}
                 </Link>
               </li>
             );
@@ -73,12 +123,13 @@ export function Navbar() {
         </ul>
 
         {/* CTA - hidden on mobile (shown in drawer) */}
-        <div className="hidden md:flex shrink-0 items-center">
+        <div className="hidden shrink-0 items-center md:flex">
           <Link
             href="/contact"
             className={cn(
               buttonVariants({ variant: "primary", size: "default" }),
-              "h-12 min-w-[8.5rem] rounded-lg px-6 text-base font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
+              "btn-shine min-w-[8.5rem] rounded-lg px-6 text-base font-semibold shadow-soft transition-all duration-300 hover:opacity-95 hover:shadow-soft-md",
+              scrolled ? "h-11" : "h-12"
             )}
           >
             Contact Us
@@ -88,66 +139,90 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-lg p-2.5 text-foreground hover:bg-background-secondary hover:text-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-colors"
+          className="inline-flex items-center justify-center rounded-lg p-2.5 text-foreground transition-colors hover:bg-background-secondary hover:text-accent-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 md:hidden"
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? (
-            <X className="h-6 w-6" aria-hidden />
-          ) : (
-            <Menu className="h-6 w-6" aria-hidden />
-          )}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={mobileOpen ? "close" : "open"}
+              initial={reduceMotion ? false : { rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={reduceMotion ? undefined : { rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="block"
+            >
+              {mobileOpen ? (
+                <X className="h-6 w-6" aria-hidden />
+              ) : (
+                <Menu className="h-6 w-6" aria-hidden />
+              )}
+            </motion.span>
+          </AnimatePresence>
         </button>
       </nav>
 
       {/* Mobile menu */}
-      <div
-        id="mobile-menu"
-        className={cn(
-          "md:hidden border-t border-border bg-white",
-          mobileOpen ? "block" : "hidden"
-        )}
-        role="dialog"
-        aria-label="Mobile menu"
-      >
-        <ul
-          className="container mx-auto flex flex-col gap-0.5 py-4 px-4"
-          role="list"
-        >
-          {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href;
-            return (
-              <li key={href}>
+      <AnimatePresence initial={false}>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-menu"
+            key="mobile-menu"
+            className="overflow-hidden border-t border-border bg-white md:hidden"
+            role="dialog"
+            aria-label="Mobile menu"
+            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ul
+              className="container mx-auto flex flex-col gap-0.5 px-4 py-4"
+              role="list"
+            >
+              {navLinks.map(({ href, label }, index) => {
+                const isActive = activeHref === href;
+                return (
+                  <motion.li
+                    key={href}
+                    initial={reduceMotion ? false : { opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.04 * index, duration: 0.22 }}
+                  >
+                    <Link
+                      href={href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={isActive ? "page" : undefined}
+                      className={cn(
+                        "block rounded-lg px-4 py-3 text-[15px] font-medium transition-colors",
+                        isActive
+                          ? "bg-accent-primary/10 text-accent-primary"
+                          : "text-foreground hover:bg-background-secondary"
+                      )}
+                    >
+                      {label}
+                    </Link>
+                  </motion.li>
+                );
+              })}
+              <li className="px-4 pt-3">
                 <Link
-                  href={href}
+                  href="/contact"
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "block py-3 px-4 rounded-lg text-[15px] font-medium transition-colors",
-                    isActive
-                      ? "bg-accent-primary/10 text-accent-primary"
-                      : "text-foreground hover:bg-background-secondary"
+                    buttonVariants({ variant: "primary", size: "default" }),
+                    "inline-flex w-full justify-center rounded-lg font-semibold"
                   )}
                 >
-                  {label}
+                  Contact Us
                 </Link>
               </li>
-            );
-          })}
-          <li className="pt-3 px-4">
-            <Link
-              href="/contact"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                buttonVariants({ variant: "primary", size: "default" }),
-                "w-full inline-flex justify-center rounded-lg font-semibold"
-              )}
-            >
-              Contact Us
-            </Link>
-          </li>
-        </ul>
-      </div>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

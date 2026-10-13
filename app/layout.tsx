@@ -4,6 +4,8 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AnalyticsPlaceholder } from "@/components/analytics-placeholder";
+import { SmoothScroll } from "@/components/fx/smooth-scroll";
+import { ScrollProgress } from "@/components/fx/scroll-progress";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -122,9 +124,12 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd),
           }}
         />
-        <Navbar />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
+        <SmoothScroll>
+          <ScrollProgress />
+          <Navbar />
+          <main className="flex-1 w-full">{children}</main>
+          <Footer />
+        </SmoothScroll>
         <AnalyticsPlaceholder />
       </body>
     </html>

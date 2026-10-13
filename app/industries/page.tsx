@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { INDUSTRIES, KEY_APPLICATIONS } from "@/lib/industries-data";
+import { PageHeroBackground } from "@/components/fx/page-hero-background";
+import { Spotlight } from "@/components/fx/spotlight";
 
 export const metadata: Metadata = {
   title: "Industries | Australian Machine Vision",
@@ -67,8 +69,9 @@ export default function IndustriesPage() {
       />
 
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
+        <PageHeroBackground />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mx-auto max-w-3xl text-center">
             <h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
               Where our systems{" "}
@@ -82,15 +85,15 @@ export default function IndustriesPage() {
             </p>
             <Link
               href="/contact"
-              className="mt-6 inline-flex items-center gap-3 rounded-full border border-accent-primary/30 bg-white/70 px-5 py-2.5 transition-colors hover:bg-white"
+              className="group mt-6 inline-flex items-center gap-3 rounded-full border border-accent-primary/30 bg-white/70 px-5 py-2.5 shadow-soft backdrop-blur-sm transition-[background-color,box-shadow] hover:bg-white hover:shadow-soft-md"
             >
               <MessageCircle className="h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
               <span className="text-sm text-foreground-muted">
                 Industry not listed?{" "}
                 <span className="font-semibold text-accent-primary">Contact us</span>
-                {" "}— we take on challenges that don&apos;t fit a category.
+                , we take on challenges that don&apos;t fit a category.
               </span>
-              <ArrowRight className="h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
+              <ArrowRight className="h-4 w-4 shrink-0 text-accent-primary transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
             </Link>
           </header>
         </div>
@@ -125,12 +128,13 @@ export default function IndustriesPage() {
                 return (
                   <li
                     key={app}
-                    className="group flex items-start gap-4 rounded-xl border border-border/60 bg-white px-5 py-4 shadow-soft transition-all hover:border-accent-primary/40 hover:bg-teal-50/40 hover:shadow-soft-md"
+                    className="group relative flex items-start gap-4 overflow-hidden rounded-xl border border-border/60 bg-white px-5 py-4 shadow-soft transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-accent-primary/30 hover:shadow-soft-md"
                   >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors group-hover:bg-accent-primary/20">
+                    <Spotlight />
+                    <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors duration-300 group-hover:bg-accent-primary group-hover:text-white">
                       <Icon className="h-4 w-4" aria-hidden />
                     </span>
-                    <span className="pt-1.5 text-sm font-medium text-foreground">
+                    <span className="relative pt-1.5 text-sm font-medium text-foreground">
                       {app}
                     </span>
                   </li>
@@ -156,7 +160,7 @@ export default function IndustriesPage() {
               {INDUSTRIES.map((industry, index) => (
                 <article
                   key={industry.id}
-                  className="overflow-hidden rounded-2xl border border-border/60 bg-white shadow-soft"
+                  className="group overflow-hidden rounded-2xl border border-border/60 bg-white shadow-soft transition-shadow duration-300 hover:shadow-soft-lg"
                 >
                   <div
                     className={cn(
@@ -165,12 +169,12 @@ export default function IndustriesPage() {
                     )}
                   >
                     {/* Image panel */}
-                    <div className="relative h-64 shrink-0 md:h-auto md:w-[42%]">
+                    <div className="relative h-64 shrink-0 overflow-hidden md:h-auto md:w-[42%]">
                       <Image
                         src={industry.imagePlaceholder}
                         alt={`${industry.name} inspection`}
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
                         sizes="(max-width: 768px) 100vw, 42vw"
                       />
                     </div>
@@ -221,13 +225,13 @@ export default function IndustriesPage() {
             <Link
               href="/contact"
               className={cn(
-                "mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 py-3 text-sm font-semibold text-white shadow-soft",
-                "hover:opacity-90 transition-opacity",
+                "btn-shine group mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 py-3 text-sm font-semibold text-white shadow-soft",
+                "transition-shadow hover:shadow-soft-lg",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               )}
             >
               Tell us about your challenge
-              <ArrowRight className="h-4 w-4" aria-hidden />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
             </Link>
           </div>
 

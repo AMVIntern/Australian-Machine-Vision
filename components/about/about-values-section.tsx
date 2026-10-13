@@ -10,6 +10,7 @@ import {
   FileCheck,
   type LucideIcon,
 } from "lucide-react";
+import { Spotlight } from "@/components/fx/spotlight";
 
 const values = [
   {
@@ -64,8 +65,11 @@ const container = {
 
 const item = {
   initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.35 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+  },
 };
 
 export function AboutValuesSection() {
@@ -90,18 +94,19 @@ export function AboutValuesSection() {
             <motion.article
               key={v.id}
               variants={item}
-              className="rounded-xl border border-border bg-white p-6 shadow-soft"
+              className="group relative overflow-hidden rounded-xl border border-border bg-white p-6 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-soft-lg"
             >
+              <Spotlight />
               <span
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-primary text-white"
+                className="relative flex h-11 w-11 items-center justify-center rounded-full bg-accent-primary text-white ring-0 ring-accent-primary/15 transition-[box-shadow] duration-300 group-hover:ring-[6px]"
                 aria-hidden
               >
                 <Icon className="h-5 w-5" strokeWidth={2} />
               </span>
-              <h3 className="mt-4 text-lg font-bold text-foreground">
+              <h3 className="relative mt-4 text-lg font-bold text-foreground">
                 {v.title}
               </h3>
-              <p className="mt-2 text-sm text-foreground-muted leading-relaxed">
+              <p className="relative mt-2 text-sm text-foreground-muted leading-relaxed">
                 {v.description}
               </p>
             </motion.article>

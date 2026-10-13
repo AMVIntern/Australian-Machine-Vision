@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import {
   FlaskConical,
   Code2,
@@ -195,30 +201,20 @@ export function Pipeline() {
   const timelineRef = React.useRef<HTMLDivElement>(null);
   const stepRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const activeIndex = useActiveStepIndex(stepRefs);
-  const [progressHeight, setProgressHeight] = React.useState(0);
 
-  React.useEffect(() => {
-    const updateProgress = () => {
-      const timeline = timelineRef.current;
-      const activeStep = stepRefs.current[activeIndex];
-      if (!timeline || !activeStep) return;
-
-      const timelineRect = timeline.getBoundingClientRect();
-      const activeRect = activeStep.getBoundingClientRect();
-      const nodeCenter = activeRect.top - timelineRect.top + 21;
-
-      setProgressHeight(Math.max(0, nodeCenter));
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, [activeIndex]);
+  // Adapted from Aceternity "Tracing Beam" / "Timeline" (MIT): the beam head
+  // tracks the same viewport line (42%) used to pick the active step.
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 42%", "end 42%"],
+  });
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 260,
+    damping: 40,
+    restDelta: 0.001,
+  });
+  const headTop = useTransform(progress, (v) => `${Math.min(100, Math.max(0, v * 100))}%`);
+  const headOpacity = useTransform(progress, [0, 0.02, 0.98, 1], [0, 1, 1, 0.6]);
 
   return (
     <section
@@ -242,21 +238,22 @@ export function Pipeline() {
           className="relative mx-auto mt-14 max-w-3xl pl-2 sm:mt-16 sm:pl-4"
           aria-label="Engagement stages timeline"
         >
-          {/* Track line */}
+          {/* Track line, scroll-linked fill and glowing head */}
           <div
-            className="absolute left-[19px] top-2 bottom-2 w-0.5 bg-border sm:left-[21px]"
+            className="absolute bottom-2 left-[19px] top-2 w-0.5 rounded-full bg-border sm:left-[21px]"
             aria-hidden
-          />
-
-          {/* Scroll progress fill */}
-          <motion.div
-            className="absolute left-[19px] top-2 w-0.5 origin-top bg-gradient-to-b from-teal-400 to-teal-600 sm:left-[21px]"
-            animate={{ height: progressHeight }}
-            transition={
-              reduceMotion ? { duration: 0 } : { duration: 0.35, ease: "easeOut" }
-            }
-            aria-hidden
-          />
+          >
+            <motion.div
+              className="absolute inset-0 origin-top rounded-full bg-gradient-to-b from-teal-400 via-teal-500 to-teal-600"
+              style={{ scaleY: reduceMotion ? scrollYProgress : progress }}
+            />
+            {!reduceMotion && (
+              <motion.span
+                className="absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-secondary shadow-[0_0_0_3px_rgba(34,211,238,0.22),0_0_6px_rgba(34,211,238,0.35)]"
+                style={{ top: headTop, opacity: headOpacity }}
+              />
+            )}
+          </div>
 
           <div className="relative">
             {pipelineSteps.map((step, index) => (

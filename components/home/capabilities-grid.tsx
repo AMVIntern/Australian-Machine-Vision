@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Camera, Ruler, Brain, Check, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -155,11 +155,13 @@ type Selection =
   | { type: "problem"; id: string };
 
 const panelVariants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
-  transition: { duration: 0.25 },
+  initial: { opacity: 0, y: 12, filter: "blur(4px)" },
+  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  exit: { opacity: 0, y: -8, filter: "blur(4px)" },
+  transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
 };
+
+const highlightSpring = { type: "spring", stiffness: 380, damping: 34 } as const;
 
 function getFamily(id: FamilyId) {
   return families.find((family) => family.id === id) ?? families[0];
@@ -178,6 +180,7 @@ function FamilySelector({
   highlightedFamilies: Set<FamilyId>;
   onSelect: (id: FamilyId) => void;
 }) {
+  const reduceMotion = useReducedMotion();
   return (
     <div
       className="grid grid-cols-1 gap-3 sm:grid-cols-3"
@@ -198,25 +201,36 @@ function FamilySelector({
             aria-selected={isSelected}
             onClick={() => onSelect(family.id)}
             className={cn(
-              "group relative flex items-center gap-3 rounded-xl border-2 bg-white p-4 text-left shadow-soft transition-all",
+              "group relative flex items-center gap-3 rounded-xl border-2 bg-white p-4 text-left shadow-soft transition-[border-color,box-shadow,background-color] duration-300",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2",
               isSelected
-                ? cn("border-accent-primary shadow-soft-lg", family.accent.bg)
+                ? "border-transparent shadow-soft-lg"
                 : isHighlighted
                   ? cn("border-accent-primary/50", family.accent.bg)
                   : "border-border hover:border-accent-primary/30 hover:shadow-soft-lg"
             )}
           >
+            {isSelected && (
+              <motion.span
+                layoutId="family-highlight"
+                className={cn(
+                  "absolute -inset-[2px] rounded-xl border-2 border-accent-primary",
+                  family.accent.bg
+                )}
+                transition={reduceMotion ? { duration: 0 } : highlightSpring}
+                aria-hidden
+              />
+            )}
             <span
               className={cn(
-                "flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white shadow-soft",
+                "relative flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white shadow-soft transition-transform duration-300 group-hover:scale-105",
                 family.accent.icon
               )}
               aria-hidden
             >
               <Icon className="h-5 w-5" strokeWidth={2} />
             </span>
-            <span>
+            <span className="relative">
               <span className="block text-sm font-bold text-foreground">
                 {family.shortTitle}
               </span>
@@ -226,9 +240,12 @@ function FamilySelector({
             </span>
             {isHighlighted && !isSelected && (
               <span
-                className="absolute right-3 top-3 h-2 w-2 rounded-full bg-accent-primary"
+                className="absolute right-3 top-3 flex h-2 w-2"
                 aria-hidden
-              />
+              >
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-primary/50 motion-reduce:hidden" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-primary" />
+              </span>
             )}
           </button>
         );
@@ -344,14 +361,19 @@ function ProblemPanel({ problem }: { problem: Problem }) {
             <div
               key={family.id}
               className={cn(
-                "rounded-xl border-l-4 bg-white p-4 shadow-soft",
-                family.accent.border,
+                "rounded-xl border border-border/70 bg-white p-4 shadow-soft",
                 family.accent.bg
               )}
             >
               <div className="flex items-center gap-3">
-                <span className={family.accent.icon} aria-hidden>
-                  <Icon className="h-5 w-5" strokeWidth={2} />
+                <span
+                  className={cn(
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white shadow-soft",
+                    family.accent.icon
+                  )}
+                  aria-hidden
+                >
+                  <Icon className="h-4 w-4" strokeWidth={2} />
                 </span>
                 <h4 className="text-sm font-bold text-foreground">
                   {family.title}
@@ -369,6 +391,7 @@ function ProblemPanel({ problem }: { problem: Problem }) {
 }
 
 export function CapabilitiesGrid() {
+  const reduceMotion = useReducedMotion();
   const [selection, setSelection] = React.useState<Selection>({
     type: "family",
     id: "imaging",
@@ -415,8 +438,8 @@ export function CapabilitiesGrid() {
             onSelect={handleFamilySelect}
           />
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-white p-6 shadow-soft-lg sm:p-8">
-            <AnimatePresence mode="wait">
+          <div className="overflow-hidden rounded-2xl border border-border bg-white p-6 shadow-soft-lg ring-1 ring-accent-primary/5 sm:p-8">
+            <AnimatePresence mode="wait" initial={false}>
               {selection.type === "family" ? (
                 <FamilyPanel family={getFamily(selection.id)} />
               ) : (
@@ -453,14 +476,22 @@ export function CapabilitiesGrid() {
                     role="listitem"
                     onClick={() => handleProblemSelect(problem.id)}
                     className={cn(
-                      "rounded-full border px-3.5 py-2 text-left text-xs font-medium transition-all sm:text-sm",
+                      "relative rounded-full border px-3.5 py-2 text-left text-xs font-medium transition-colors duration-200 sm:text-sm",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2",
                       isSelected
-                        ? "border-accent-primary bg-accent-primary text-white shadow-soft"
+                        ? "border-accent-primary text-white shadow-soft"
                         : "border-border bg-white text-foreground hover:border-accent-primary/40 hover:bg-teal-50/50"
                     )}
                   >
-                    {problem.label}
+                    {isSelected && (
+                      <motion.span
+                        layoutId="problem-pill"
+                        className="absolute -inset-px rounded-full bg-accent-primary"
+                        transition={reduceMotion ? { duration: 0 } : highlightSpring}
+                        aria-hidden
+                      />
+                    )}
+                    <span className="relative">{problem.label}</span>
                   </button>
                 );
               })}

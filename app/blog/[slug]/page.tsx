@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Linkedin } from "lucide-react";
 import { BLOG_POSTS, getBlogPost, formatDate, type ContentBlock } from "@/lib/blog-data";
+import { PageHeroBackground } from "@/components/fx/page-hero-background";
 
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));
@@ -104,14 +105,15 @@ export default function BlogPostPage({
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
+        <PageHeroBackground />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-medium text-accent-primary hover:underline"
+              className="group inline-flex items-center gap-2 rounded-sm text-sm font-medium text-accent-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
             >
-              <ArrowLeft className="h-4 w-4" aria-hidden />
+              <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" aria-hidden />
               Back to blog
             </Link>
             <time
@@ -161,7 +163,7 @@ export default function BlogPostPage({
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-5 py-2.5 text-sm font-semibold text-white shadow-soft hover:opacity-90 transition-opacity"
+              className="btn-shine inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition-shadow hover:shadow-soft-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
             >
               Discuss your inspection challenge
             </Link>

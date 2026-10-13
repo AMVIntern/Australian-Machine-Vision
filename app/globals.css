@@ -15,9 +15,56 @@
     --border: #e7e5e4;
   }
 
+  html {
+    scroll-padding-top: 6rem;
+    scrollbar-color: #0d9488 #eef6f5;
+    scrollbar-width: thin;
+  }
+
   body {
     @apply text-foreground antialiased;
     background-color: var(--page-bg);
+    caret-color: var(--accent-primary);
+  }
+
+  ::selection {
+    background: rgb(34 211 238 / 0.3);
+    color: #1c1917;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #eef6f5;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #0d9488;
+    border: 2px solid #eef6f5;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0f766e;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
   }
 }
 
@@ -29,5 +76,90 @@
 
   .glass-lg {
     @apply bg-white/70 backdrop-blur-glass-lg border border-white/20 shadow-soft-md;
+  }
+
+  /* Soft edge fade for horizontal marquees */
+  .mask-fade-x {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  }
+
+  .pause-on-hover:hover .animate-marquee {
+    animation-play-state: paused;
+  }
+
+  /* Light sweep across the primary button on hover */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .btn-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgb(255 255 255 / 0.38) 50%,
+      transparent 70%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-shine:hover::after {
+    transform: translateX(120%);
+  }
+  .btn-shine-teal::after {
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgb(13 148 136 / 0.16) 50%,
+      transparent 70%
+    );
+  }
+
+  /* Animated shiny text for the hero badge */
+  .shiny-text {
+    background-image: linear-gradient(
+      100deg,
+      #1c1917 0%,
+      #1c1917 40%,
+      #0d9488 50%,
+      #1c1917 60%,
+      #1c1917 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .shiny-text {
+    background-image: none;
+    color: #1c1917;
   }
 }

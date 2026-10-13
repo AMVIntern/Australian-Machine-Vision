@@ -51,7 +51,7 @@ export default function CustomerStoriesPage() {
               </p>
               <Link
                 href="/contact"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-accent-primary px-6 text-sm font-semibold text-white shadow-soft transition hover:opacity-90"
+                className="btn-shine mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-accent-primary px-6 text-sm font-semibold text-white shadow-soft transition hover:shadow-soft-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
               >
                 Contact Us
               </Link>
