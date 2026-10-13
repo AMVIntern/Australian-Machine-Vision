@@ -46,11 +46,13 @@ const capabilities = [
   },
 ];
 
+// Company figures. Precision and line speed stay on the home page, where
+// they sit with the note that explains them.
 const stats: { value: string | null; label: string }[] = [
   { value: null, label: "Years of Experience" },
-  { value: "Global", label: "Australia and International Markets" },
-  { value: "In-House", label: "Engineering and Software" },
-  { value: "Trusted", label: "Technology Partner Network" },
+  { value: "1M+", label: "Products Inspected Every Day" },
+  { value: "24/7", label: "Operation on Live Production Lines" },
+  { value: "4", label: "Countries with AMV Systems" },
 ];
 
 export default function AboutPage() {
