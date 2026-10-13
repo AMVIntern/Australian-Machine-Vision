@@ -36,7 +36,6 @@ function AssemblingMark() {
   const rightR = useTransform(p, [0, 1], [12, 0]);
   const triScale = useTransform(p, [0, 1], [0.86, 1]);
   const triOpacity = useTransform(p, [0, 0.5, 1], [0.2, 0.85, 1]);
-  const lens = useTransform(p, [0.8, 1], [0, 1]);
 
   return (
     <div ref={ref} className="relative mx-auto w-full max-w-[34rem]">
@@ -51,10 +50,11 @@ function AssemblingMark() {
           fill="#14a49c"
           style={{ x: rightX, y: rightY, rotate: rightR, transformOrigin: "480px 60px" }}
         />
-        <motion.g style={{ scale: triScale, opacity: triOpacity, transformOrigin: "320px 180px" }}>
-          <polygon points="26,40 612,40 330,332" fill="#201c20" />
-          <motion.circle cx={330} cy={286} r={7} fill="#22d3ee" style={{ opacity: lens }} />
-        </motion.g>
+        <motion.polygon
+          points="26,40 612,40 330,332"
+          fill="#201c20"
+          style={{ scale: triScale, opacity: triOpacity, transformOrigin: "320px 180px" }}
+        />
       </svg>
     </div>
   );
