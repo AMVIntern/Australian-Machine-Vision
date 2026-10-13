@@ -8,6 +8,8 @@ import { Pipeline } from "@/components/home/pipeline";
 import { CapabilitiesGrid } from "@/components/home/capabilities-grid";
 import { Differentiators } from "@/components/home/differentiators";
 import { ProductionStrip } from "@/components/home/production-strip";
+import { NumbersBand } from "@/components/home/numbers-band";
+import { SupportReach } from "@/components/home/support-reach";
 import { FinalCTA } from "@/components/home/final-cta";
 
 export const metadata: Metadata = {
@@ -36,12 +38,14 @@ export default function HomePage() {
     <>
       <Hero />
       <ClientLogos />
+      <NumbersBand />
       <Differentiators />
       <CapabilitiesGrid />
       <MethodologyTeaser />
       <IndustriesTeaser />
       <Pipeline />
       <ProductionStrip />
+      <SupportReach />
       <FinalCTA />
     </>
   );
