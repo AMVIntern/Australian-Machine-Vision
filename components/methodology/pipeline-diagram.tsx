@@ -132,7 +132,7 @@ export function PipelineDiagram() {
             className="grid gap-4 sm:grid-cols-[10rem_1fr]"
           >
             <div className="flex items-baseline gap-3 sm:block">
-              <span className="font-display tabular text-3xl font-extrabold text-accent-primary/40">
+              <span className="font-display tabular text-3xl font-extrabold text-accent-primary">
                 {active.number}
               </span>
               <h2 className="font-bold text-foreground sm:mt-1">{active.label}</h2>

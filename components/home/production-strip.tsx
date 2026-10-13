@@ -64,11 +64,11 @@ export function ProductionStrip() {
             </p>
           </div>
 
-          <dl className="grid border-t border-foreground sm:grid-cols-2 lg:col-span-8">
+          <ul className="grid border-t border-foreground sm:grid-cols-2 lg:col-span-8" role="list">
             {points.map((point, i) => {
               const Icon = point.icon;
               return (
-                <div
+                <li
                   key={point.id}
                   className={
                     "flex gap-5 border-b border-border py-7 sm:pr-8 " +
@@ -81,15 +81,15 @@ export function ProductionStrip() {
                     aria-hidden
                   />
                   <div>
-                    <dt className="font-bold text-foreground">{point.title}</dt>
-                    <dd className="mt-1.5 text-[15px] leading-relaxed text-foreground-muted">
+                    <h3 className="font-bold text-foreground">{point.title}</h3>
+                    <p className="mt-1.5 text-[15px] leading-relaxed text-foreground-muted">
                       {point.description}
-                    </dd>
+                    </p>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </dl>
+          </ul>
         </div>
       </div>
     </section>

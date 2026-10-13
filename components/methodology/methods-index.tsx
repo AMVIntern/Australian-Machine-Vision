@@ -82,7 +82,7 @@ export function MethodsIndex({ methods }: { methods: Method[] }) {
         {methods.map((method) => (
           <article key={method.id} id={method.id} className="scroll-mt-28">
             <div className="flex items-baseline gap-4">
-              <span className="font-display tabular text-2xl font-extrabold text-accent-primary/40" aria-hidden>
+              <span className="font-display tabular text-2xl font-extrabold text-accent-primary" aria-hidden>
                 {method.number}
               </span>
               <div>

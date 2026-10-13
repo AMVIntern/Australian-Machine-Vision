@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useReducedMotion } from "framer-motion";
+import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -274,6 +275,15 @@ function drawTag(
 export function InspectionLine({ className }: { className?: string }) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
+  // null until mounted so the server and first client render agree. The line
+  // runs by default and starts paused when the visitor prefers reduced motion.
+  const [playing, setPlaying] = React.useState<boolean | null>(null);
+  const playingRef = React.useRef(false);
+  const syncRef = React.useRef<() => void>(() => {});
+
+  React.useEffect(() => {
+    setPlaying(!reduceMotion);
+  }, [reduceMotion]);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -285,13 +295,13 @@ export function InspectionLine({ className }: { className?: string }) {
     let height = 0;
     let scale = 1;
     let raf = 0;
-    let visible = true;
+    let onScreen = true;
     let last = performance.now();
     let spawnIndex = 0;
     let nextId = 0;
     let beltOffset = 0;
     const items: Item[] = [];
-    const pointer = { x: -999, y: -999, inside: false, ex: -999, ey: -999 };
+    const pointer = { x: 0, y: 0, inside: false };
 
     const mono = getComputedStyle(canvas).getPropertyValue("--font-mono").trim();
     if (mono) tagFont = mono;
@@ -368,9 +378,6 @@ export function InspectionLine({ className }: { className?: string }) {
       }
       const leftmost = items.reduce((m, it) => Math.min(m, it.drop >= 0 ? Infinity : it.x), Infinity);
       if (leftmost > -80 + spacing() || items.length === 0) spawn(Math.min(leftmost, width) - spacing());
-
-      pointer.ex += (pointer.x - pointer.ex) * Math.min(1, dt * 14);
-      pointer.ey += (pointer.y - pointer.ey) * Math.min(1, dt * 14);
     };
 
     const draw = () => {
@@ -527,10 +534,12 @@ export function InspectionLine({ className }: { className?: string }) {
       ctx.lineTo(gx, 0);
       ctx.stroke();
 
-      // pointer camera
+      // Pointer camera. The system cursor is hidden over the canvas, so the
+      // reticle is drawn exactly at the pointer and stays visible while it
+      // locks on to a product.
       if (pointer.inside) {
-        const px = pointer.ex;
-        const py = pointer.ey;
+        const px = pointer.x;
+        const py = pointer.y;
         const target = items.find((it) => {
           if (it.drop >= 0) return false;
           const { w, h } = size(it.kind, s);
@@ -546,96 +555,129 @@ export function InspectionLine({ className }: { className?: string }) {
         } else {
           ctx.globalAlpha = 0.8;
           drawBrackets(ctx, px - 18, py - 18, 36, 36, 8);
-          ctx.beginPath();
-          ctx.moveTo(px - 5, py);
-          ctx.lineTo(px + 5, py);
-          ctx.moveTo(px, py - 5);
-          ctx.lineTo(px, py + 5);
-          ctx.stroke();
           ctx.globalAlpha = 1;
         }
+        ctx.beginPath();
+        ctx.moveTo(px - 6, py);
+        ctx.lineTo(px + 6, py);
+        ctx.moveTo(px, py - 6);
+        ctx.lineTo(px, py + 6);
+        ctx.stroke();
       }
     };
 
+    const shouldRun = () =>
+      playingRef.current && onScreen && document.visibilityState === "visible";
+
     const frame = (now: number) => {
+      raf = 0;
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       update(dt);
       draw();
-      if (visible) raf = requestAnimationFrame(frame);
+      if (shouldRun()) raf = requestAnimationFrame(frame);
     };
+
+    // Start or stop the loop to match play state and visibility. Only one
+    // loop is ever scheduled; a stopped line keeps a current still frame.
+    const sync = () => {
+      if (shouldRun()) {
+        if (!raf) {
+          last = performance.now();
+          raf = requestAnimationFrame(frame);
+        }
+      } else {
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        draw();
+      }
+    };
+    syncRef.current = sync;
 
     resize();
     seed();
-
-    if (reduceMotion) {
-      // A single still frame: one product mid-scan, verdicts on the rest.
-      draw();
-    } else {
-      raf = requestAnimationFrame(frame);
-    }
+    sync();
 
     const ro = new ResizeObserver(() => {
       resize();
       seed();
-      if (reduceMotion) draw();
+      if (!raf) draw();
     });
     ro.observe(canvas);
 
     const io = new IntersectionObserver(([entry]) => {
-      const wasVisible = visible;
-      visible = entry.isIntersecting && document.visibilityState === "visible";
-      if (visible && !wasVisible && !reduceMotion) {
-        last = performance.now();
-        raf = requestAnimationFrame(frame);
-      }
+      onScreen = entry.isIntersecting;
+      sync();
     });
     io.observe(canvas);
 
-    const onVisibility = () => {
-      const wasVisible = visible;
-      visible = document.visibilityState === "visible";
-      if (visible && !wasVisible && !reduceMotion) {
-        last = performance.now();
-        raf = requestAnimationFrame(frame);
-      }
-    };
-    document.addEventListener("visibilitychange", onVisibility);
+    document.addEventListener("visibilitychange", sync);
 
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       const rect = canvas.getBoundingClientRect();
       pointer.x = e.clientX - rect.left;
       pointer.y = e.clientY - rect.top;
-      if (!pointer.inside) {
-        pointer.ex = pointer.x;
-        pointer.ey = pointer.y;
-      }
       pointer.inside = true;
-      if (reduceMotion) draw();
+      if (!raf) draw();
     };
     const onLeave = () => {
       pointer.inside = false;
-      if (reduceMotion) draw();
+      if (!raf) draw();
     };
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerleave", onLeave);
 
     return () => {
       cancelAnimationFrame(raf);
+      syncRef.current = () => {};
       ro.disconnect();
       io.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
+      document.removeEventListener("visibilitychange", sync);
       canvas.removeEventListener("pointermove", onMove);
       canvas.removeEventListener("pointerleave", onLeave);
     };
-  }, [reduceMotion]);
+  }, []);
+
+  React.useEffect(() => {
+    playingRef.current = !!playing;
+    syncRef.current();
+  }, [playing]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      className={cn("block h-full w-full cursor-none", className)}
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        aria-hidden
+        className={cn("block h-full w-full cursor-none", className)}
+      />
+      {playing !== null && (
+        <div className="pointer-events-none absolute inset-x-0 top-2">
+          <div className="container mx-auto flex justify-end px-4 sm:px-6 lg:px-8">
+            <button
+              type="button"
+              onClick={() => setPlaying((p) => !p)}
+              aria-label={
+                playing
+                  ? "Pause the inspection line animation"
+                  : "Play the inspection line animation"
+              }
+              className={cn(
+                "pointer-events-auto inline-flex h-8 items-center gap-2 rounded-md border border-white/15 bg-ink/70 px-3 font-mono text-xs text-ink-soft backdrop-blur-sm",
+                "transition-colors hover:border-accent-logo hover:text-white",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+              )}
+            >
+              {playing ? (
+                <Pause className="h-3.5 w-3.5 text-accent-logo" aria-hidden />
+              ) : (
+                <Play className="h-3.5 w-3.5 text-accent-logo" aria-hidden />
+              )}
+              {playing ? "Pause" : "Play"}
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

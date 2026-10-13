@@ -22,15 +22,10 @@ export function ClientLogos() {
         </p>
 
         <div
-          className="group relative min-w-0 flex-1 overflow-hidden"
-          style={{
-            maskImage:
-              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-          }}
+          className="group relative min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] motion-reduce:[mask-image:none] motion-reduce:[-webkit-mask-image:none]"
         >
-          <div className="flex w-max animate-marquee items-center gap-14 group-hover:[animation-play-state:paused] sm:gap-20">
+          {/* Reduced motion: one complete, wrapped row instead of a frozen ticker */}
+          <div className="flex w-max animate-marquee items-center gap-14 group-hover:[animation-play-state:paused] sm:gap-20 motion-reduce:w-full motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-10 motion-reduce:gap-y-6">
             {[...clients, ...clients].map((client, i) => (
               <Image
                 key={`${client.name}-${i}`}
@@ -39,7 +34,7 @@ export function ClientLogos() {
                 aria-hidden={i >= clients.length}
                 width={client.width}
                 height={client.height}
-                className="h-auto max-h-14 w-auto shrink-0 object-contain opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                className={`h-auto max-h-14 w-auto shrink-0 object-contain opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0${i >= clients.length ? " motion-reduce:hidden" : ""}`}
               />
             ))}
           </div>

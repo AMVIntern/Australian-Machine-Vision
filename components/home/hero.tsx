@@ -12,14 +12,14 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 export function Hero() {
   const reduceMotion = useReducedMotion();
 
-  const rise = (delay: number) =>
-    reduceMotion
-      ? {}
-      : {
-          initial: { opacity: 0, y: 28, filter: "blur(8px)" },
-          animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-          transition: { duration: 0.9, delay, ease: EASE },
-        };
+  // `animate` must always be present: the server renders the hidden `initial`
+  // state inline, and only an animation target brings it back to visible.
+  // Reduced motion skips the entrance by starting at the target.
+  const rise = (delay: number) => ({
+    initial: reduceMotion ? false : { opacity: 0, y: 28, filter: "blur(8px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    transition: { duration: 0.9, delay, ease: EASE },
+  });
 
   return (
     <section
