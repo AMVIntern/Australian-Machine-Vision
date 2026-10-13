@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { INDUSTRIES, KEY_APPLICATIONS } from "@/lib/industries-data";
+import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = {
   title: "Industries | Australian Machine Vision",
@@ -66,173 +67,184 @@ export default function IndustriesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
       />
 
-      {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
+      <PageHeader
+        title="Where our systems are deployed"
+        intro={
+          <p>
+            AMV builds custom automated inspection systems for food
+            processing, industrial and general manufacturing environments.
+            These are the core areas where our capability is most applied,
+            not the limits of what we can do.
+          </p>
+        }
+      >
+        <Link
+          href="/contact"
+          className="group mt-10 inline-flex items-center gap-3 rounded-md border border-white/15 bg-white/[0.04] px-5 py-3 transition-colors hover:border-accent-logo"
+        >
+          <MessageCircle className="h-4 w-4 shrink-0 text-accent-logo" aria-hidden />
+          <span className="text-sm text-ink-soft">
+            Industry not listed?{" "}
+            <span className="font-semibold text-white">Contact us</span>, we
+            take on challenges that don&apos;t fit a category.
+          </span>
+          <ArrowRight
+            className="h-4 w-4 shrink-0 text-accent-logo transition-transform group-hover:translate-x-1"
+            aria-hidden
+          />
+        </Link>
+      </PageHeader>
+
+      {/* Key Applications */}
+      <section className="bg-white py-20 sm:py-28" aria-labelledby="key-applications-heading">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <header className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-              Where our systems{" "}
-              <span className="text-accent-primary">are deployed</span>
-            </h1>
-            <p className="mt-4 text-lg text-foreground-muted">
-              AMV builds custom automated inspection systems for food
-              processing, industrial and general manufacturing environments.
-              These are the core areas where our capability is most applied,
-              not the limits of what we can do.
-            </p>
-            <Link
-              href="/contact"
-              className="mt-6 inline-flex items-center gap-3 rounded-full border border-accent-primary/30 bg-white/70 px-5 py-2.5 transition-colors hover:bg-white"
-            >
-              <MessageCircle className="h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
-              <span className="text-sm text-foreground-muted">
-                Industry not listed?{" "}
-                <span className="font-semibold text-accent-primary">Contact us</span>
-                {" "}— we take on challenges that don&apos;t fit a category.
-              </span>
-              <ArrowRight className="h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
-            </Link>
-          </header>
-        </div>
-      </section>
-
-      <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-5xl space-y-20">
-
-          {/* Key Applications */}
-          <section aria-labelledby="key-applications-heading">
-            <div className="mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-6">
+              <p className="flex items-center gap-2.5 text-sm font-medium text-accent-deep">
+                <span
+                  className="h-0 w-0 border-x-[5px] border-t-[7px] border-x-transparent border-t-accent-logo"
+                  aria-hidden
+                />
                 What we inspect
               </p>
               <h2
                 id="key-applications-heading"
-                className="mt-1 text-2xl font-bold text-foreground sm:text-3xl"
+                className="font-display mt-4 text-4xl font-extrabold leading-none text-foreground sm:text-5xl"
               >
                 Key applications
               </h2>
-              <p className="mt-3 max-w-2xl text-foreground-muted">
-                Our systems address the core inspection and quality drivers
-                across food, industrial and manufacturing environments.
-              </p>
             </div>
-            <ul
-              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              role="list"
-            >
-              {KEY_APPLICATIONS.map((app, i) => {
-                const Icon = APP_ICONS[i] ?? CheckSquare;
-                return (
-                  <li
-                    key={app}
-                    className="group flex items-start gap-4 rounded-xl border border-border/60 bg-white px-5 py-4 shadow-soft transition-all hover:border-accent-primary/40 hover:bg-teal-50/40 hover:shadow-soft-md"
-                  >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary transition-colors group-hover:bg-accent-primary/20">
-                      <Icon className="h-4 w-4" aria-hidden />
-                    </span>
-                    <span className="pt-1.5 text-sm font-medium text-foreground">
-                      {app}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-
-          {/* Industries */}
-          <section aria-labelledby="industries-heading">
-            <div className="mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
-                Where we work
-              </p>
-              <h2
-                id="industries-heading"
-                className="mt-1 text-2xl font-bold text-foreground sm:text-3xl"
-              >
-                Industries
-              </h2>
-            </div>
-            <div className="space-y-8">
-              {INDUSTRIES.map((industry, index) => (
-                <article
-                  key={industry.id}
-                  className="overflow-hidden rounded-2xl border border-border/60 bg-white shadow-soft"
-                >
-                  <div
-                    className={cn(
-                      "flex flex-col md:flex-row",
-                      index % 2 === 1 && "md:flex-row-reverse"
-                    )}
-                  >
-                    {/* Image panel */}
-                    <div className="relative h-64 shrink-0 md:h-auto md:w-[42%]">
-                      <Image
-                        src={industry.imagePlaceholder}
-                        alt={`${industry.name} inspection`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 42vw"
-                      />
-                    </div>
-
-                    {/* Content panel */}
-                    <div className="flex flex-col justify-center px-8 py-9 sm:px-10 sm:py-10">
-                      <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                        {industry.name}
-                      </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
-                        {industry.headline}
-                      </p>
-                      <ul
-                        className="mt-6 grid gap-x-6 gap-y-2.5 sm:grid-cols-2"
-                        role="list"
-                      >
-                        {industry.capabilities.map((cap) => (
-                          <li
-                            key={cap}
-                            className="flex items-start gap-2 text-sm text-foreground-muted"
-                          >
-                            <span
-                              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-primary"
-                              aria-hidden
-                            />
-                            {cap}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          {/* Not limited to these */}
-          <div className="rounded-2xl border border-dashed border-border bg-background-secondary/60 px-8 py-10 text-center">
-            <p className="text-base font-medium text-foreground">
-              Not limited to these industries
+            <p className="max-w-xl text-lg leading-relaxed text-foreground-muted lg:col-span-6 lg:justify-self-end">
+              Our systems address the core inspection and quality drivers
+              across food, industrial and manufacturing environments.
             </p>
-            <p className="mx-auto mt-2 max-w-xl text-sm text-foreground-muted">
-              If your production environment has an inspection challenge, we
-              want to hear about it. AMV takes on non-standard and
-              high-difficulty problems that do not fit neatly into any
-              category list.
-            </p>
-            <Link
-              href="/contact"
-              className={cn(
-                "mt-6 inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-accent-primary to-teal-400 px-6 py-3 text-sm font-semibold text-white shadow-soft",
-                "hover:opacity-90 transition-opacity",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2"
-              )}
-            >
-              Tell us about your challenge
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
           </div>
 
+          <ul
+            className="mt-14 grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3"
+            role="list"
+          >
+            {KEY_APPLICATIONS.map((app, i) => {
+              const Icon = APP_ICONS[i] ?? CheckSquare;
+              return (
+                <li
+                  key={app}
+                  className="group flex items-start gap-4 bg-white px-6 py-7 transition-colors duration-300 hover:bg-background-tint"
+                >
+                  <Icon
+                    className="mt-0.5 h-5 w-5 shrink-0 text-accent-primary transition-transform duration-300 group-hover:scale-110"
+                    strokeWidth={1.75}
+                    aria-hidden
+                  />
+                  <span className="font-medium leading-snug text-foreground">{app}</span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      </div>
+      </section>
+
+      {/* Industries */}
+      <section className="bg-background pb-20 sm:pb-28" aria-labelledby="industries-heading">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-t border-border pt-20 sm:pt-24">
+            <p className="flex items-center gap-2.5 text-sm font-medium text-accent-deep">
+              <span
+                className="h-0 w-0 border-x-[5px] border-t-[7px] border-x-transparent border-t-accent-logo"
+                aria-hidden
+              />
+              Where we work
+            </p>
+            <h2
+              id="industries-heading"
+              className="font-display mt-4 text-4xl font-extrabold leading-none text-foreground sm:text-5xl"
+            >
+              Industries
+            </h2>
+          </div>
+
+          <div className="mt-14 space-y-20 sm:space-y-24">
+            {INDUSTRIES.map((industry, index) => (
+              <article
+                key={industry.id}
+                className="group grid items-center gap-10 lg:grid-cols-12 lg:gap-14"
+              >
+                <div
+                  className={cn(
+                    "scan-hover chamfer-lg relative aspect-[4/3] bg-ink lg:col-span-6",
+                    index % 2 === 1 && "lg:order-2"
+                  )}
+                >
+                  <Image
+                    src={industry.imagePlaceholder}
+                    alt={`${industry.name} inspection`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+
+                <div className="lg:col-span-6">
+                  <h3 className="font-display text-3xl font-extrabold text-foreground sm:text-4xl">
+                    {industry.name}
+                  </h3>
+                  <p className="mt-4 max-w-lg text-lg leading-relaxed text-foreground-muted">
+                    {industry.headline}
+                  </p>
+                  <ul
+                    className="mt-8 grid gap-x-8 border-t border-border sm:grid-cols-2"
+                    role="list"
+                  >
+                    {industry.capabilities.map((cap) => (
+                      <li
+                        key={cap}
+                        className="flex items-start gap-3 border-b border-border py-3 text-[15px] text-foreground"
+                      >
+                        <span
+                          className="mt-[0.45rem] h-0 w-0 shrink-0 border-x-[4px] border-t-[6px] border-x-transparent border-t-accent-logo"
+                          aria-hidden
+                        />
+                        {cap}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {/* Not limited to these */}
+          <div className="chamfer-lg relative mt-24 overflow-hidden bg-ink px-8 py-12 text-white sm:px-12 sm:py-14">
+            <div
+              className="pointer-events-none absolute -right-10 -top-10 h-48 w-80 bg-accent-logo/20"
+              style={{ clipPath: "polygon(0 25%, 100% 0, 55% 100%)" }}
+              aria-hidden
+            />
+            <div className="relative grid gap-8 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-8">
+                <p className="font-display text-2xl font-extrabold sm:text-3xl">
+                  Not limited to these industries
+                </p>
+                <p className="mt-3 max-w-xl leading-relaxed text-ink-soft">
+                  If your production environment has an inspection challenge, we
+                  want to hear about it. AMV takes on non-standard and
+                  high-difficulty problems that do not fit neatly into any
+                  category list.
+                </p>
+              </div>
+              <div className="lg:col-span-4 lg:justify-self-end">
+                <Link
+                  href="/contact"
+                  className="chamfer inline-flex h-12 items-center gap-2 bg-accent-logo px-6 text-sm font-semibold text-ink transition-colors hover:bg-accent-secondary"
+                >
+                  Tell us about your challenge
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

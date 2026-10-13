@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AnalyticsPlaceholder } from "@/components/analytics-placeholder";
+import { SmoothScroll } from "@/components/layout/smooth-scroll";
 
-const inter = Inter({
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  axes: ["wdth"],
+  variable: "--font-sans",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  weight: ["400", "500"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -113,7 +116,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-AU"
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${archivo.variable} ${plexMono.variable}`}
     >
       <body className="min-h-screen flex flex-col font-sans antialiased">
         <script
@@ -122,9 +125,11 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd),
           }}
         />
-        <Navbar />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
+        <SmoothScroll>
+          <Navbar />
+          <main className="w-full flex-1">{children}</main>
+          <Footer />
+        </SmoothScroll>
         <AnalyticsPlaceholder />
       </body>
     </html>

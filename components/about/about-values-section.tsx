@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
   Award,
   Lightbulb,
@@ -8,7 +5,6 @@ import {
   Accessibility,
   TrendingUp,
   FileCheck,
-  type LucideIcon,
 } from "lucide-react";
 
 const values = [
@@ -56,58 +52,39 @@ const values = [
   },
 ] as const;
 
-const container = {
-  animate: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.35 },
-};
-
 export function AboutValuesSection() {
   return (
     <>
-      <h2 className="text-center text-2xl font-bold text-foreground sm:text-3xl">
-        Our Core Values
-      </h2>
-      <p className="mx-auto mt-2 max-w-2xl text-center text-foreground-muted">
-        The principles that guide everything we do
-      </p>
-      <motion.div
-        className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        variants={container}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-40px" }}
-      >
+      <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+        <h2 className="font-display text-4xl font-extrabold leading-none text-white sm:text-5xl lg:col-span-7">
+          Our Core Values
+        </h2>
+        <p className="max-w-md text-lg text-ink-soft lg:col-span-5 lg:justify-self-end">
+          The principles that guide everything we do
+        </p>
+      </div>
+      {/* gap-px over a tinted background draws the hairline grid */}
+      <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-md border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
         {values.map((v) => {
           const Icon = v.icon;
           return (
-            <motion.article
+            <article
               key={v.id}
-              variants={item}
-              className="rounded-xl border border-border bg-white p-6 shadow-soft"
+              className="group bg-ink p-7 transition-colors duration-300 hover:bg-ink-raised sm:p-8"
             >
-              <span
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-primary text-white"
+              <Icon
+                className="h-6 w-6 text-accent-logo transition-colors group-hover:text-white"
+                strokeWidth={1.75}
                 aria-hidden
-              >
-                <Icon className="h-5 w-5" strokeWidth={2} />
-              </span>
-              <h3 className="mt-4 text-lg font-bold text-foreground">
-                {v.title}
-              </h3>
-              <p className="mt-2 text-sm text-foreground-muted leading-relaxed">
+              />
+              <h3 className="font-wide mt-6 text-xl font-bold text-white">{v.title}</h3>
+              <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-ink-soft">
                 {v.description}
               </p>
-            </motion.article>
+            </article>
           );
         })}
-      </motion.div>
+      </div>
     </>
   );
 }

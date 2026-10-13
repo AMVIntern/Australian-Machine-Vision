@@ -142,7 +142,7 @@ export function SearchableSelect({
               className={cn(
                 "cursor-pointer px-4 py-2 text-sm text-foreground",
                 i === highlighted && "bg-accent-primary/10",
-                opt.value === value && "font-semibold text-accent-primary"
+                opt.value === value && "font-semibold text-accent-deep"
               )}
             >
               {opt.label}

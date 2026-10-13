@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 const clients = [
@@ -17,32 +15,31 @@ const clients = [
 
 export function ClientLogos() {
   return (
-    <section className="bg-teal-50 py-6" aria-label="Clients">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="mb-6 text-center text-xs font-semibold uppercase tracking-widest text-foreground-muted">
+    <section className="border-b border-border bg-white" aria-label="Clients">
+      <div className="container mx-auto flex flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:gap-10 lg:px-8">
+        <p className="shrink-0 text-sm font-medium text-foreground-muted md:w-40">
           Trusted by leading organisations
         </p>
 
-        <div className="relative overflow-hidden">
-          {/* Gradient masks for fade at edges */}
-          <div
-            className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-teal-50 to-transparent sm:w-32"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-teal-50 to-transparent sm:w-32"
-            aria-hidden
-          />
-
-          <div className="flex w-max animate-marquee items-center gap-14 sm:gap-20">
+        <div
+          className="group relative min-w-0 flex-1 overflow-hidden"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+          }}
+        >
+          <div className="flex w-max animate-marquee items-center gap-14 group-hover:[animation-play-state:paused] sm:gap-20">
             {[...clients, ...clients].map((client, i) => (
               <Image
                 key={`${client.name}-${i}`}
                 src={client.src}
-                alt={client.name}
+                alt={i < clients.length ? client.name : ""}
+                aria-hidden={i >= clients.length}
                 width={client.width}
                 height={client.height}
-                className="shrink-0 object-contain"
+                className="h-auto max-h-14 w-auto shrink-0 object-contain opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
               />
             ))}
           </div>

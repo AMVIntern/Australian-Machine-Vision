@@ -1,104 +1,133 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
-};
+/** The AMV mark, assembling as the section scrolls into view. */
+function AssemblingMark() {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "center 55%"],
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.6 });
 
-const stagger = {
-  animate: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.15 },
-  },
-};
+  const leftX = useTransform(p, [0, 1], [-140, 0]);
+  const leftY = useTransform(p, [0, 1], [90, 0]);
+  const leftR = useTransform(p, [0, 1], [-14, 0]);
+  const rightX = useTransform(p, [0, 1], [150, 0]);
+  const rightY = useTransform(p, [0, 1], [-80, 0]);
+  const rightR = useTransform(p, [0, 1], [12, 0]);
+  const triScale = useTransform(p, [0, 1], [0.86, 1]);
+  const triOpacity = useTransform(p, [0, 0.5, 1], [0.2, 0.85, 1]);
+  const lens = useTransform(p, [0.8, 1], [0, 1]);
 
-export function FinalCTA() {
+  const still = !!reduceMotion;
+
+  return (
+    <div ref={ref} className="relative mx-auto w-full max-w-[34rem]">
+      <svg viewBox="0 0 628 340" className="h-auto w-full overflow-visible" aria-hidden>
+        <motion.polygon
+          points="8,88 250,58 352,336"
+          fill="#14a49c"
+          style={still ? undefined : { x: leftX, y: leftY, rotate: leftR, transformOrigin: "180px 200px" }}
+        />
+        <motion.polygon
+          points="372,44 600,6 556,124"
+          fill="#14a49c"
+          style={still ? undefined : { x: rightX, y: rightY, rotate: rightR, transformOrigin: "480px 60px" }}
+        />
+        <motion.g
+          style={still ? undefined : { scale: triScale, opacity: triOpacity, transformOrigin: "320px 180px" }}
+        >
+          <polygon points="26,40 612,40 330,332" fill="#201c20" />
+          <motion.circle
+            cx={330}
+            cy={286}
+            r={7}
+            fill="#22d3ee"
+            style={{
+              opacity: still ? 1 : lens,
+                          }}
+          />
+        </motion.g>
+      </svg>
+    </div>
+  );
+}
+
+export function FinalCTA({
+  showSecondary = true,
+  showNote = true,
+  headingId = "final-cta-heading",
+}: {
+  showSecondary?: boolean;
+  showNote?: boolean;
+  headingId?: string;
+}) {
   return (
     <section
-      className="py-0"
-      aria-labelledby="final-cta-heading"
+      className="relative overflow-hidden bg-background-tint py-24 sm:py-32"
+      aria-labelledby={headingId}
     >
-      {/* Full-width teal gradient banner: darker left to lighter right */}
-      <motion.div
-        className={cn(
-          "w-full bg-gradient-to-r from-teal-700 via-teal-600 to-teal-400",
-          "py-16 sm:py-20 lg:py-24"
-        )}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={stagger}
-      >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.h2
-              id="final-cta-heading"
-              className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl"
-              variants={fadeIn}
+      <div className="dot-field-light pointer-events-none absolute inset-0 opacity-70" aria-hidden />
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-16 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h2
+              id={headingId}
+              className="font-display max-w-[16ch] text-4xl font-extrabold leading-[1.02] text-foreground sm:text-6xl"
             >
               Let&apos;s Solve Your Inspection Challenge
-            </motion.h2>
-            <motion.p
-              className="mt-4 text-lg text-white/95 sm:text-xl"
-              variants={fadeIn}
-            >
+            </h2>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground-muted sm:text-xl">
               If you are reviewing your inspection capability or planning
               upgrades across multiple sites, our team can help you identify the
               right approach.
-            </motion.p>
-            <motion.div
-              className="mt-10 flex flex-wrap items-center justify-center gap-4"
-              variants={fadeIn}
-            >
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Link
+                href="/contact"
+                className={cn(
+                  "chamfer inline-flex h-12 items-center justify-center bg-ink px-8 text-base font-semibold text-white transition-colors",
+                  "hover:bg-accent-primary"
+                )}
               >
+                Contact Us
+              </Link>
+              {showSecondary && (
                 <Link
                   href="/contact"
-                  className={cn(
-                    "inline-flex h-12 items-center justify-center rounded-lg bg-white px-8 text-base font-semibold text-accent-primary",
-                    "shadow-soft hover:bg-white/95 hover:shadow-soft-md",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
-                  )}
-                >
-                  Contact Us
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Link
-                  href="/contact"
-                  className={cn(
-                    "inline-flex h-12 items-center justify-center rounded-lg bg-teal-500 px-8 text-base font-semibold text-white",
-                    "hover:bg-teal-400",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
-                  )}
+                  className="inline-flex h-12 items-center justify-center rounded-md border border-foreground/20 bg-white px-8 text-base font-semibold text-foreground transition-colors hover:border-accent-deep hover:text-accent-deep"
                 >
                   Talk to Our Team
                 </Link>
-              </motion.div>
-            </motion.div>
+              )}
+            </div>
 
-            <motion.div
-              className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-5 py-2.5"
-              variants={fadeIn}
-            >
-              <Lock className="h-4 w-4 shrink-0 text-white" aria-hidden />
-              <p className="text-sm font-medium text-white">
+            {showNote && (
+              <p className="mt-10 flex max-w-xl items-start gap-3 border-t border-border pt-6 text-sm leading-relaxed text-foreground-muted">
+                <Lock className="mt-0.5 h-4 w-4 shrink-0 text-accent-primary" aria-hidden />
                 Your work stays confidential. We do not publish client names or project details without permission.
               </p>
-            </motion.div>
+            )}
+          </div>
+
+          <div className="lg:col-span-5">
+            <AssemblingMark />
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

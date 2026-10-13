@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
   Gauge,
   Network,
@@ -47,66 +44,53 @@ const points: ProductionPoint[] = [
   },
 ];
 
-const container = {
-  animate: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.35 },
-};
-
 export function ProductionStrip() {
   return (
     <section
-      className="border-y border-border bg-background-secondary/50 py-14 sm:py-16"
+      className="border-b border-border bg-white py-20 sm:py-24"
       aria-labelledby="production-heading"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          id="production-heading"
-          className="text-center text-2xl font-bold text-foreground sm:text-3xl"
-        >
-          Engineered for production
-        </h2>
-        <p className="mx-auto mt-2 max-w-2xl text-center text-foreground-muted">
-          Built to run reliably where it matters, on the line.
-        </p>
+        <div className="grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <h2
+              id="production-heading"
+              className="font-display text-3xl font-extrabold leading-[1.05] text-foreground sm:text-4xl"
+            >
+              Engineered for production
+            </h2>
+            <p className="mt-4 max-w-sm text-lg leading-relaxed text-foreground-muted">
+              Built to run reliably where it matters, on the line.
+            </p>
+          </div>
 
-        <motion.div
-          className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
-          variants={container}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: "-60px" }}
-        >
-          {points.map((point) => {
-            const Icon = point.icon;
-            return (
-              <motion.div
-                key={point.id}
-                variants={item}
-                className="flex flex-col items-center text-center"
-              >
-                <span
-                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-soft"
-                  aria-hidden
+          <dl className="grid border-t border-foreground sm:grid-cols-2 lg:col-span-8">
+            {points.map((point, i) => {
+              const Icon = point.icon;
+              return (
+                <div
+                  key={point.id}
+                  className={
+                    "flex gap-5 border-b border-border py-7 sm:pr-8 " +
+                    (i % 2 === 1 ? "sm:border-l sm:pl-8" : "")
+                  }
                 >
-                  <Icon className="h-6 w-6" strokeWidth={2} />
-                </span>
-                <h3 className="mt-4 text-base font-bold text-foreground">
-                  {point.title}
-                </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-foreground-muted">
-                  {point.description}
-                </p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                  <Icon
+                    className="mt-0.5 h-6 w-6 shrink-0 text-accent-primary"
+                    strokeWidth={1.75}
+                    aria-hidden
+                  />
+                  <div>
+                    <dt className="font-bold text-foreground">{point.title}</dt>
+                    <dd className="mt-1.5 text-[15px] leading-relaxed text-foreground-muted">
+                      {point.description}
+                    </dd>
+                  </div>
+                </div>
+              );
+            })}
+          </dl>
+        </div>
       </div>
     </section>
   );

@@ -4,8 +4,14 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -17,137 +23,199 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+/** True while a section marked data-nav="dark" sits under the floating bar. */
+function useOverDark(pathname: string) {
+  const [overDark, setOverDark] = React.useState(true);
+
+  React.useEffect(() => {
+    let frame = 0;
+    const check = () => {
+      frame = 0;
+      const probe = 40;
+      const dark = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-nav='dark']")
+      ).some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top <= probe && r.bottom >= probe;
+      });
+      setOverDark(dark);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(check);
+    };
+    check();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+
+  return overDark;
+}
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [hidden, setHidden] = React.useState(false);
   const pathname = usePathname();
+  const overDark = useOverDark(pathname);
+  const reduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+
+  // Step out of the way while reading down the page, return on the way up.
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    if (mobileOpen) return;
+    setHidden(y > prev && y > 160);
+  });
+
+  React.useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header
-      className="sticky top-0 z-50 w-full border-b border-border bg-white/95 shadow-soft backdrop-blur-sm supports-[backdrop-filter]:bg-white/90"
+    <motion.header
+      className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4"
       role="banner"
+      initial={false}
+      animate={{ y: hidden && !reduceMotion ? "-120%" : "0%" }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
     >
       <nav
-        className="container mx-auto flex h-[5rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
+        className={cn(
+          "mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 rounded-lg border pl-3 pr-2 transition-colors duration-300 sm:pl-4",
+          overDark
+            ? "border-white/10 bg-ink/75 text-white shadow-[0_18px_40px_-20px_rgb(0_0_0/0.7)] backdrop-blur-md"
+            : "border-border bg-white/90 text-foreground shadow-soft-lg backdrop-blur-md"
+        )}
         aria-label="Main navigation"
       >
-        {/* Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary focus-visible:ring-offset-2 rounded-md"
+          className="flex shrink-0 items-center rounded-md"
           aria-label="Australian Machine Vision - Home"
         >
           <Image
             src="/amv-logo.png"
             alt="Australian Machine Vision"
             width={180}
-            height={48}
-            className="h-11 w-auto object-contain sm:h-12"
+            height={97}
+            className="h-11 w-auto object-contain"
             priority
           />
         </Link>
 
-        {/* Desktop nav - centered */}
-        <ul
-          className="hidden md:flex flex-1 items-center justify-center gap-10"
-          role="list"
-        >
+        <ul className="hidden items-center gap-1 md:flex" role="list">
           {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            const active = isActive(href);
             return (
-              <li key={href}>
+              <li key={href} className="relative">
                 <Link
                   href={href}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative text-[15px] font-medium transition-colors py-2",
-                    "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:rounded-full after:bg-accent-primary after:content-[''] after:transition-all after:duration-200",
-                    isActive
-                      ? "text-accent-primary after:w-full"
-                      : "text-foreground hover:text-accent-primary after:w-0 hover:after:w-full"
+                    "relative block rounded-md px-3.5 py-2 text-[15px] font-medium transition-colors",
+                    overDark
+                      ? active
+                        ? "text-white"
+                        : "text-white/70 hover:text-white"
+                      : active
+                        ? "text-foreground"
+                        : "text-foreground/65 hover:text-foreground"
                   )}
                 >
                   {label}
+                  {active && (
+                    <motion.span
+                      layoutId="nav-mark"
+                      className="absolute -bottom-0.5 left-1/2 h-0 w-0 -translate-x-1/2 border-x-[5px] border-t-[6px] border-x-transparent border-t-accent-logo"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      aria-hidden
+                    />
+                  )}
                 </Link>
               </li>
             );
           })}
         </ul>
 
-        {/* CTA - hidden on mobile (shown in drawer) */}
-        <div className="hidden md:flex shrink-0 items-center">
+        <div className="hidden md:block">
           <Link
             href="/contact"
             className={cn(
-              buttonVariants({ variant: "primary", size: "default" }),
-              "h-12 min-w-[8.5rem] rounded-lg px-6 text-base font-semibold shadow-soft hover:shadow-soft-md hover:opacity-95 transition-all duration-200"
+              "chamfer inline-flex h-12 items-center justify-center px-6 text-[15px] font-semibold transition-colors",
+              overDark
+                ? "bg-accent-logo text-ink hover:bg-accent-secondary"
+                : "bg-ink text-white hover:bg-accent-primary"
             )}
           >
             Contact Us
           </Link>
         </div>
 
-        {/* Mobile menu button */}
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-lg p-2.5 text-foreground hover:bg-background-secondary hover:text-accent-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 transition-colors"
+          className={cn(
+            "inline-flex h-11 w-11 items-center justify-center rounded-md md:hidden",
+            overDark ? "text-white hover:bg-white/10" : "text-foreground hover:bg-background-secondary"
+          )}
           aria-expanded={mobileOpen}
           aria-controls="mobile-menu"
-          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMobileOpen((open) => !open)}
         >
-          {mobileOpen ? (
-            <X className="h-6 w-6" aria-hidden />
-          ) : (
-            <Menu className="h-6 w-6" aria-hidden />
-          )}
+          {mobileOpen ? <X className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        id="mobile-menu"
-        className={cn(
-          "md:hidden border-t border-border bg-white",
-          mobileOpen ? "block" : "hidden"
-        )}
-        role="dialog"
-        aria-label="Mobile menu"
-      >
-        <ul
-          className="container mx-auto flex flex-col gap-0.5 py-4 px-4"
-          role="list"
-        >
-          {navLinks.map(({ href, label }) => {
-            const isActive = pathname === href;
-            return (
-              <li key={href}>
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            id="mobile-menu"
+            className="mx-auto mt-2 max-w-6xl overflow-hidden rounded-lg border border-white/10 bg-ink text-white shadow-soft-xl md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <ul className="flex flex-col p-2" role="list">
+              {navLinks.map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    aria-current={isActive(href) ? "page" : undefined}
+                    className={cn(
+                      "flex items-center justify-between rounded-md px-4 py-3.5 text-base font-medium",
+                      isActive(href) ? "bg-white/10 text-white" : "text-white/75 hover:bg-white/5"
+                    )}
+                  >
+                    {label}
+                    {isActive(href) && (
+                      <span
+                        className="h-0 w-0 border-x-[5px] border-t-[6px] border-x-transparent border-t-accent-logo"
+                        aria-hidden
+                      />
+                    )}
+                  </Link>
+                </li>
+              ))}
+              <li className="p-2 pt-3">
                 <Link
-                  href={href}
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "block py-3 px-4 rounded-lg text-[15px] font-medium transition-colors",
-                    isActive
-                      ? "bg-accent-primary/10 text-accent-primary"
-                      : "text-foreground hover:bg-background-secondary"
-                  )}
+                  href="/contact"
+                  className="chamfer flex h-12 w-full items-center justify-center bg-accent-logo font-semibold text-ink"
                 >
-                  {label}
+                  Contact Us
                 </Link>
               </li>
-            );
-          })}
-          <li className="pt-3 px-4">
-            <Link
-              href="/contact"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                buttonVariants({ variant: "primary", size: "default" }),
-                "w-full inline-flex justify-center rounded-lg font-semibold"
-              )}
-            >
-              Contact Us
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </header>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

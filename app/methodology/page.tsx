@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PipelineDiagram } from "@/components/methodology/pipeline-diagram";
-import { MethodsAccordion } from "@/components/methodology/methods-accordion";
+import { MethodsIndex } from "@/components/methodology/methods-index";
+import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = {
   title: "Methodology | Australian Machine Vision",
@@ -84,81 +85,91 @@ export default function MethodologyPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
       />
-      {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-br from-teal-50/95 via-cyan-50/80 to-background py-12 sm:py-16">
+
+      <PageHeader
+        title="How we build"
+        intro={
+          <p>
+            AMV does not use a single tool for everything. We combine proven
+            industrial vision software with custom AI models and classical
+            algorithms, applying each where it performs best. This is what
+            makes a custom system more accurate and more reliable than an
+            off-the-shelf product.
+          </p>
+        }
+      />
+
+      {/* Pipeline diagram */}
+      <section className="bg-background py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <header className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">
-              How we{" "}
-              <span className="text-accent-primary">build</span>
-            </h1>
-            <p className="mt-4 text-lg text-foreground-muted">
-              AMV does not use a single tool for everything. We combine proven
-              industrial vision software with custom AI models and classical
-              algorithms, applying each where it performs best. This is what
-              makes a custom system more accurate and more reliable than an
-              off-the-shelf product.
-            </p>
-          </header>
+          <div className="mx-auto max-w-5xl">
+            <PipelineDiagram />
+          </div>
         </div>
       </section>
 
       {/* Technology blocks */}
-      <div className="container mx-auto px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        {/* Pipeline diagram */}
-        <div className="mx-auto max-w-4xl">
-          <PipelineDiagram />
-        </div>
-
-        <div className="mx-auto mt-14 max-w-4xl">
-          <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent-primary">
-              Technology stack
-            </p>
-            <h2 className="mt-1 text-2xl font-bold text-foreground sm:text-3xl">
-              Software, AI and classical vision
-            </h2>
-          </div>
-          <MethodsAccordion methods={METHODS} />
-        </div>
-
-        {/* How it comes together */}
-        <div className="mx-auto mt-20 max-w-4xl">
-          <div className="overflow-hidden rounded-2xl border border-teal-200/80 bg-gradient-to-br from-teal-600 via-teal-600 to-teal-700 shadow-soft-lg">
-            <div className="px-8 py-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-teal-100/70">
-                The full picture
+      <section className="border-t border-border bg-white py-20 sm:py-28" aria-labelledby="stack-heading">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 grid gap-4 lg:grid-cols-12">
+            <div className="lg:col-span-9 lg:col-start-4">
+              <p className="flex items-center gap-2.5 text-sm font-medium text-accent-deep">
+                <span
+                  className="h-0 w-0 border-x-[5px] border-t-[7px] border-x-transparent border-t-accent-logo"
+                  aria-hidden
+                />
+                Technology stack
               </p>
-              <h2 className="mt-2 text-xl font-bold text-white sm:text-2xl">
+              <h2
+                id="stack-heading"
+                className="font-display mt-4 text-4xl font-extrabold leading-none text-foreground sm:text-5xl"
+              >
+                Software, AI and classical vision
+              </h2>
+            </div>
+          </div>
+          <MethodsIndex methods={METHODS} />
+        </div>
+      </section>
+
+      {/* How it comes together */}
+      <section className="bay relative overflow-hidden py-20 sm:py-28" data-nav="dark" aria-labelledby="together-heading">
+        <div className="dot-field pointer-events-none absolute inset-0 opacity-40" aria-hidden />
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="text-sm font-medium text-accent-logo">The full picture</p>
+              <h2
+                id="together-heading"
+                className="font-display mt-4 text-4xl font-extrabold leading-[1.02] sm:text-5xl"
+              >
                 How it comes together
               </h2>
-
-              <p className="mt-6 text-sm leading-relaxed text-teal-50/90">
+            </div>
+            <div className="lg:col-span-7">
+              <p className="text-lg leading-relaxed text-ink-soft">
                 AMV owns the full pipeline. Camera selection, lighting design,
                 software development, on-site commissioning. Because we control
                 every stage, we choose the right tool for each part of the
                 problem rather than forcing one approach across the whole system.
               </p>
-              <p className="mt-4 text-sm leading-relaxed text-teal-50/90">
+              <p className="mt-5 text-lg leading-relaxed text-ink-soft">
                 In practice that means a single system might run HALCON for
                 precise dimensional gauging, a custom AI model for surface defect
                 detection, and classical edge detection for label placement, all
                 in parallel at full line speed.
               </p>
 
-              <div className="mt-6 border-t border-white/15 pt-6">
-                <p className="text-base font-semibold text-white">
-                  Custom-built means built around your product, your line, and your defect types. Not a standard product with your logo on it.
-                </p>
-              </div>
+              <p className="font-wide mt-10 border-t border-white/15 pt-8 text-xl font-bold leading-snug text-white sm:text-2xl">
+                Custom-built means built around your product, your line, and your defect types. Not a standard product with your logo on it.
+              </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
+              <div className="mt-10 flex flex-wrap gap-3">
                 <Link
                   href="/industries"
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-2.5 text-sm font-semibold text-white",
-                    "hover:border-white hover:bg-white/10 transition-colors duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
+                    "inline-flex h-12 items-center gap-2 rounded-md border border-white/25 px-5 text-sm font-semibold text-white",
+                    "transition-colors hover:border-white hover:bg-white/5"
                   )}
                 >
                   See the industries we work in
@@ -167,9 +178,8 @@ export default function MethodologyPage() {
                 <Link
                   href="/contact"
                   className={cn(
-                    "inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-accent-primary shadow-soft",
-                    "hover:bg-white/90 transition-opacity",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-teal-600"
+                    "chamfer inline-flex h-12 items-center gap-2 bg-accent-logo px-6 text-sm font-semibold text-ink",
+                    "transition-colors hover:bg-accent-secondary"
                   )}
                 >
                   Discuss your inspection challenge
@@ -179,7 +189,7 @@ export default function MethodologyPage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
