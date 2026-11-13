@@ -34,7 +34,7 @@ export function ClientLogos() {
                 aria-hidden={i >= clients.length}
                 width={client.width}
                 height={client.height}
-                className={`h-auto max-h-14 w-auto shrink-0 object-contain opacity-60 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0${i >= clients.length ? " motion-reduce:hidden" : ""}`}
+                className={`h-auto max-h-14 w-auto shrink-0 object-contain${i >= clients.length ? " motion-reduce:hidden" : ""}`}
               />
             ))}
           </div>
