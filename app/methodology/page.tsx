@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn, SITE_URL } from "@/lib/utils";
+import { breadcrumbJsonLd, jsonLdScript, SERVICE_JSON_LD } from "@/lib/structured-data";
 import { PipelineDiagram } from "@/components/methodology/pipeline-diagram";
 import { MethodsIndex } from "@/components/methodology/methods-index";
 import { PageHeader } from "@/components/layout/page-header";
@@ -77,14 +78,21 @@ const pageJsonLd = {
   description:
     "How AMV builds machine vision and automated inspection systems. HALCON and custom deep learning combined, classical computer vision, and cloud-based Grafana diagnostics.",
   url: `${SITE_URL}/methodology`,
+  about: SERVICE_JSON_LD,
 };
+
+const breadcrumb = breadcrumbJsonLd([{ name: "Methodology", path: "/methodology" }]);
 
 export default function MethodologyPage() {
   return (
     <div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
+        dangerouslySetInnerHTML={jsonLdScript(pageJsonLd)}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(breadcrumb)}
       />
 
       <PageHeader

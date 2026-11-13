@@ -16,6 +16,7 @@ import {
   Zap,
 } from "lucide-react";
 import { cn, SITE_URL } from "@/lib/utils";
+import { breadcrumbJsonLd, jsonLdScript, SERVICE_JSON_LD } from "@/lib/structured-data";
 import { INDUSTRIES, KEY_APPLICATIONS } from "@/lib/industries-data";
 import { PageHeader } from "@/components/layout/page-header";
 
@@ -46,7 +47,10 @@ const pageJsonLd = {
   description:
     "AMV builds custom machine vision and automated inspection systems for food processing, industrial manufacturing and general manufacturing environments.",
   url: `${SITE_URL}/industries`,
+  mainEntity: SERVICE_JSON_LD,
 };
+
+const breadcrumb = breadcrumbJsonLd([{ name: "Industries", path: "/industries" }]);
 
 const APP_ICONS: LucideIcon[] = [
   CheckSquare,
@@ -65,7 +69,11 @@ export default function IndustriesPage() {
     <div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageJsonLd) }}
+        dangerouslySetInnerHTML={jsonLdScript(pageJsonLd)}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(breadcrumb)}
       />
 
       <PageHeader

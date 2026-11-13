@@ -7,6 +7,10 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  images: {
+    // AVIF first: typically 20 to 30% smaller than WebP for the same quality.
+    formats: ["image/avif", "image/webp"],
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

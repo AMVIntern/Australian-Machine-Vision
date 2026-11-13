@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Linkedin } from "lucide-react";
-import { BLOG_POSTS, getBlogPost, formatDate, type ContentBlock } from "@/lib/blog-data";
+import { BLOG_POSTS, getBlogPost, formatDate, type BlogPost, type ContentBlock } from "@/lib/blog-data";
+import { SITE_URL } from "@/lib/utils";
+import { breadcrumbJsonLd, jsonLdScript, ORGANIZATION_ID } from "@/lib/structured-data";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -88,13 +90,39 @@ function renderBlock(block: ContentBlock, index: number) {
   }
 }
 
+// Author is the organisation until the byline is confirmed for each post.
+function articleJsonLd(post: BlogPost) {
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    inLanguage: "en-AU",
+    url,
+    mainEntityOfPage: url,
+    image: `${SITE_URL}/opengraph-image`,
+    author: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+  };
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Blog", path: "/blog" },
+    { name: post.title, path: `/blog/${post.slug}` },
+  ]);
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(articleJsonLd(post))} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumb)} />
       <section className="bay relative overflow-hidden" data-nav="dark">
         <div className="dot-field pointer-events-none absolute inset-0 opacity-40" aria-hidden />
         <div className="container relative mx-auto px-4 pb-16 pt-36 sm:px-6 sm:pt-40 lg:px-8">
@@ -145,6 +173,18 @@ export default async function BlogPostPage({ params }: Props) {
                     View on LinkedIn
                   </a>
                 )}
+                <Link
+                  href="/methodology"
+                  className="text-sm text-foreground-muted transition-colors hover:text-accent-deep"
+                >
+                  How we build inspection systems
+                </Link>
+                <Link
+                  href="/industries"
+                  className="text-sm text-foreground-muted transition-colors hover:text-accent-deep"
+                >
+                  Industries we work in
+                </Link>
               </div>
               <Link
                 href="/contact"

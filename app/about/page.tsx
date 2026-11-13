@@ -8,6 +8,7 @@ import { Initialled } from "@/components/ui/initialled";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { FinalCTA } from "@/components/home/final-cta";
 import { cn } from "@/lib/utils";
+import { breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "About",
@@ -56,9 +57,15 @@ const stats: { value: string | null; label: string }[] = [
   { value: "4", label: "Countries with AMV Systems" },
 ];
 
+const breadcrumb = breadcrumbJsonLd([{ name: "About", path: "/about" }]);
+
 export default function AboutPage() {
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(breadcrumb)}
+      />
       <PageHeader
         titleId="about-title"
         title={<Initialled text="Our Vision is Your Solution" />}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock, Lock } from "lucide-react";
 import { ContactForm } from "@/components/contact/contact-form";
 import { PageHeader } from "@/components/layout/page-header";
+import { breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -23,9 +24,15 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumb = breadcrumbJsonLd([{ name: "Contact", path: "/contact" }]);
+
 export default function ContactPage() {
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(breadcrumb)}
+      />
       <PageHeader
         titleId="contact-title"
         title="Contact Us"

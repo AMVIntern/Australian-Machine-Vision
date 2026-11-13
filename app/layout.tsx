@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { AnalyticsPlaceholder } from "@/components/analytics-placeholder";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { SITE_URL } from "@/lib/utils";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -88,6 +89,7 @@ export const metadata: Metadata = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORGANIZATION_ID,
   name: "Australian Machine Vision",
   alternateName: "AMV",
   url: siteUrl,

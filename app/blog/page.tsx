@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Linkedin } from "lucide-react";
 import { BLOG_POSTS, formatDate } from "@/lib/blog-data";
 import { PageHeader } from "@/components/layout/page-header";
+import { breadcrumbJsonLd, jsonLdScript } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -18,9 +19,15 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumb = breadcrumbJsonLd([{ name: "Blog", path: "/blog" }]);
+
 export default function BlogPage() {
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdScript(breadcrumb)}
+      />
       <PageHeader
         title="Insights from AMV"
         intro={
