@@ -1,17 +1,21 @@
 import Image from "next/image";
 
 const clients = [
+  { name: "Textor", src: "/logos/TextorLogo.png", width: 60, height: 64 },
+  { name: "Saputo", src: "/logos/SaputoLogo.png", width: 124, height: 48 },
+  { name: "Nestle", src: "/logos/NestleLogo.png", width: 120, height: 64 },
+  { name: "CHEP", src: "/logos/ChepLogo.png", width: 86, height: 64 },
+  { name: "RMIT", src: "/logos/RMITLogo.png", width: 124, height: 48 },
   { name: "Timberlink", src: "/logos/TimberLinkLogo.png", width: 140, height: 64 },
   { name: "Australian Red Cross", src: "/logos/AustralianRedCross.png", width: 150, height: 75 },
   { name: "Symbion", src: "/logos/SymbionLogo.png", width: 140, height: 64 },
   { name: "Daniels Health", src: "/logos/DanielsHealthLogo.png", width: 104, height: 48 },
-  { name: "Tip Top Bakery", src: "/logos/TipTopBakeryLogo.png", width: 96, height: 48 },
-  { name: "Textor", src: "/logos/TextorLogo.png", width: 96, height: 48 },
-  { name: "Saputo", src: "/logos/SaputoLogo.png", width: 124, height: 48 },
-  { name: "Nestle", src: "/logos/NestleLogo.png", width: 120, height: 64 },
-  { name: "CHEP", src: "/logos/ChepLogo.png", width: 108, height: 64 },
-  { name: "RMIT", src: "/logos/RMITLogo.png", width: 124, height: 48 },
+  { name: "Tip Top Bakery", src: "/logos/TipTopBakeryLogo.png", width: 76, height: 64 },
 ];
+
+// Sizes above follow the original site, with Tip Top, Textor and CHEP given
+// taller boxes so the squarer logos read at a similar weight. This enlarges all evenly.
+const LOGO_SCALE = 1.2;
 
 export function ClientLogos() {
   return (
@@ -32,9 +36,10 @@ export function ClientLogos() {
                 src={client.src}
                 alt={i < clients.length ? client.name : ""}
                 aria-hidden={i >= clients.length}
-                width={client.width}
-                height={client.height}
-                className={`h-auto max-h-14 w-auto shrink-0 object-contain${i >= clients.length ? " motion-reduce:hidden" : ""}`}
+                width={Math.round(client.width * LOGO_SCALE)}
+                height={Math.round(client.height * LOGO_SCALE)}
+                style={{ maxHeight: Math.round(client.height * LOGO_SCALE) }}
+                className={`shrink-0 object-contain${i >= clients.length ? " motion-reduce:hidden" : ""}`}
               />
             ))}
           </div>

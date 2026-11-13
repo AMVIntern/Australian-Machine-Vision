@@ -14,13 +14,13 @@ import { FinalCTA } from "@/components/home/final-cta";
 export const metadata: Metadata = {
   title: "Australian Machine Vision | Machine Vision and Automated Inspection",
   description:
-    "Custom machine vision and automated inspection systems for any industry. Australian engineered, with 20+ years of integration experience, in-house software and AI-powered inspection.",
+    "Custom machine vision and automated inspection systems for any industry. Australian engineered, with 25+ years of integration experience, in-house software and AI-powered inspection.",
   alternates: { canonical: "/" },
   openGraph: {
     title:
       "Australian Machine Vision | Machine Vision and Automated Inspection",
     description:
-      "Custom machine vision and automated inspection systems for manufacturers across any industry. 20+ years of experience, in-house engineering and software.",
+      "Custom machine vision and automated inspection systems for manufacturers across any industry. 25+ years of experience, in-house engineering and software.",
     type: "website",
   },
   twitter: {

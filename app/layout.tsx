@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Australian Machine Vision",
   },
   description:
-    "Australian Machine Vision builds custom machine vision and automated inspection systems for manufacturers across any industry. HALCON, AI deep learning and classical vision combined. 20+ years of experience.",
+    "Australian Machine Vision builds custom machine vision and automated inspection systems for manufacturers across any industry. HALCON, AI deep learning and classical vision combined. 25+ years of experience.",
   keywords: [
     "machine vision",
     "machine vision Australia",

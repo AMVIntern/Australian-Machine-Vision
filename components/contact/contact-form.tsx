@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useEffect, useMemo, useState } from "react";
-import { Country, State } from "country-state-city";
+import type { ICountry } from "country-state-city";
 import { submitContactForm, type FormState } from "@/app/contact/actions";
 import { ContactFormSubmitButton } from "./contact-form-submit";
 import { SearchableSelect } from "./searchable-select";
@@ -15,36 +15,35 @@ import {
   validateContactFields,
 } from "@/lib/contact-validation";
 
-// Australia first, then the rest alphabetically — most leads are local.
-const ALL_COUNTRIES = Country.getAllCountries();
-const COUNTRY_OPTIONS = [
-  ...ALL_COUNTRIES.filter((c) => c.isoCode === "AU"),
-  ...ALL_COUNTRIES.filter((c) => c.isoCode !== "AU").sort((a, b) =>
-    a.name.localeCompare(b.name)
-  ),
-];
+// The country and state list is large, so it is loaded only when the form
+// mounts. A static import would put it in the Contact page bundle, which Next
+// prefetches from every page that links to Contact.
+type CountryStateCity = typeof import("@/lib/countries");
 
-// Phone extension options — Australia first, deduped by dial code, then alphabetical by country name.
-const PHONE_CODE_OPTIONS = (() => {
-  const seen = new Set<string>();
-  const withCode = ALL_COUNTRIES.filter((c) => c.phonecode && !seen.has(`${c.isoCode}`));
-  const au = withCode.find((c) => c.isoCode === "AU");
-  const rest = withCode
-    .filter((c) => c.isoCode !== "AU")
-    .sort((a, b) => a.name.localeCompare(b.name));
-  return au ? [au, ...rest] : rest;
-})();
+// Australia first, then the rest alphabetically. Most leads are local.
+function buildCountryLists(allCountries: ICountry[]) {
+  const countryOptions = [
+    ...allCountries.filter((c) => c.isoCode === "AU"),
+    ...allCountries
+      .filter((c) => c.isoCode !== "AU")
+      .sort((a, b) => a.name.localeCompare(b.name)),
+  ];
+  const phoneCodeOptions = countryOptions.filter((c) => c.phonecode);
+  return {
+    countryOptions,
+    phoneCodeOptions,
+    countryCombobox: countryOptions.map((c) => ({ value: c.isoCode, label: c.name })),
+    phoneCombobox: phoneCodeOptions.map((c) => ({
+      value: c.isoCode,
+      label: `${c.name} +${c.phonecode.replace(/\+/g, "")}`,
+    })),
+  };
+}
 
-// Combobox-ready option lists (full country name, searchable)
-const COUNTRY_COMBOBOX_OPTIONS = COUNTRY_OPTIONS.map((c) => ({
-  value: c.isoCode,
-  label: c.name,
-}));
-
-const PHONE_COMBOBOX_OPTIONS = PHONE_CODE_OPTIONS.map((c) => ({
-  value: c.isoCode,
-  label: `${c.name} +${c.phonecode.replace(/\+/g, "")}`,
-}));
+const LOADING_MESSAGE =
+  "The form is still loading. Please try again in a moment.";
+const LOAD_FAILED_MESSAGE =
+  "The country list could not be loaded. Please refresh the page and try again.";
 
 const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
@@ -124,10 +123,24 @@ export function ContactForm() {
   const [countryCode, setCountryCode] = useState("AU");
   const [phoneCountry, setPhoneCountry] = useState("AU");
   const [stateCode, setStateCode] = useState("");
+  const [geo, setGeo] = useState<CountryStateCity | null>(null);
+  const [geoFailed, setGeoFailed] = useState(false);
+
+  useEffect(() => {
+    import("@/lib/countries").then(setGeo, (e) => {
+      console.error("contact: country list failed to load", e);
+      setGeoFailed(true);
+    });
+  }, []);
+
+  const lists = useMemo(
+    () => (geo ? buildCountryLists(geo.Country.getAllCountries()) : null),
+    [geo]
+  );
 
   const stateOptions = useMemo(
-    () => State.getStatesOfCountry(countryCode),
-    [countryCode]
+    () => (geo ? geo.State.getStatesOfCountry(countryCode) : []),
+    [geo, countryCode]
   );
 
   const stateComboboxOptions = useMemo(
@@ -143,6 +156,11 @@ export function ContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!lists) {
+      // Without the list we cannot tell whether a state is required.
+      setState({ success: false, message: geoFailed ? LOAD_FAILED_MESSAGE : LOADING_MESSAGE });
+      return;
+    }
     setIsSubmitting(true);
     setState({});
 
@@ -155,7 +173,7 @@ export function ContactForm() {
     const company = (rawFormData.get("company") as string)?.trim() ?? "";
     const phoneNumber = (rawFormData.get("phone") as string)?.trim() ?? "";
     const phoneDialCode = (
-      PHONE_CODE_OPTIONS.find((c) => c.isoCode === phoneCountry)?.phonecode ?? ""
+      lists.phoneCodeOptions.find((c) => c.isoCode === phoneCountry)?.phonecode ?? ""
     ).replace(/\+/g, "");
     const phone = phoneNumber
       ? `+${phoneDialCode} ${phoneNumber}`
@@ -167,7 +185,7 @@ export function ContactForm() {
     const message = (rawFormData.get("message") as string)?.trim() ?? "";
     const industryLabel = getIndustryLabel(industryValue);
     const countryLabel =
-      COUNTRY_OPTIONS.find((c) => c.isoCode === countryValue)?.name ?? countryValue;
+      lists.countryOptions.find((c) => c.isoCode === countryValue)?.name ?? countryValue;
     const stateLabel =
       stateOptions.find((s) => s.isoCode === stateValue)?.name ?? stateValue;
     const name = [firstName, lastName].filter(Boolean).join(" ");
@@ -408,10 +426,11 @@ export function ContactForm() {
             <SearchableSelect
               id="contact-phone-code"
               name="phoneCountry"
-              options={PHONE_COMBOBOX_OPTIONS}
+              options={lists?.phoneCombobox ?? []}
               value={phoneCountry}
               onChange={(v) => setPhoneCountry(v)}
-              placeholder="Search country..."
+              placeholder={lists ? "Search country..." : "Loading..."}
+              disabled={!lists}
             />
           </div>
           <input
@@ -442,10 +461,11 @@ export function ContactForm() {
             <SearchableSelect
               id="contact-country"
               name="country"
-              options={COUNTRY_COMBOBOX_OPTIONS}
+              options={lists?.countryCombobox ?? []}
               value={countryCode}
               onChange={(v) => setCountryCode(v)}
-              placeholder="Search country..."
+              placeholder={lists ? "Search country..." : "Loading..."}
+              disabled={!lists}
               error={!!state?.errors?.country}
               errorId="country-error"
             />
@@ -472,9 +492,11 @@ export function ContactForm() {
               value={stateCode}
               onChange={(v) => setStateCode(v)}
               placeholder={
-                stateComboboxOptions.length
-                  ? "Search state / province..."
-                  : "No states available"
+                !lists
+                  ? "Loading..."
+                  : stateComboboxOptions.length
+                    ? "Search state / province..."
+                    : "No states available"
               }
               disabled={stateComboboxOptions.length === 0}
               error={!!state?.errors?.state}

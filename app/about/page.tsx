@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Australian Machine Vision. 20+ years of experience building custom machine vision and automated inspection systems for any industry, anywhere.",
+    "Learn about Australian Machine Vision. 25+ years of experience building custom machine vision and automated inspection systems for any industry, anywhere.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About | Australian Machine Vision",
@@ -216,7 +216,7 @@ export default function AboutPage() {
               >
                 <dt className="text-sm font-medium text-foreground-muted">{stat.label}</dt>
                 <dd className="font-display text-[1.6rem] font-extrabold leading-none text-accent-primary sm:text-5xl">
-                  {stat.value ?? <NumberTicker value={20} suffix="+" />}
+                  {stat.value ?? <NumberTicker value={25} suffix="+" />}
                 </dd>
               </div>
             ))}

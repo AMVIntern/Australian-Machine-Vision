@@ -115,7 +115,8 @@ export function Navbar() {
             width={180}
             height={97}
             className="h-11 w-auto object-contain"
-            priority
+            preload
+            fetchPriority="high"
           />
         </Link>
 

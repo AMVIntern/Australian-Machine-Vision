@@ -204,3 +204,29 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Hero entrance: opacity and transform only, so it stays on the compositor. */
+.hero-rise {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-fade {
+  animation: hero-fade 1.2s ease-out both;
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* The global rule shortens animations but keeps their delays; show the hero at once. */
+  .hero-rise,
+  .hero-fade {
+    animation: none;
+  }
+}
