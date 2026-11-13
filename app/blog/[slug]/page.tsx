@@ -5,19 +5,18 @@ import { ArrowLeft } from "lucide-react";
 import { Linkedin } from "lucide-react";
 import { BLOG_POSTS, getBlogPost, formatDate, type ContentBlock } from "@/lib/blog-data";
 
+type Props = { params: Promise<{ slug: string }> };
+
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const post = getBlogPost(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
   if (!post) return {};
   return {
-    title: `${post.title} | Australian Machine Vision`,
+    title: post.title,
     description: post.excerpt,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
@@ -25,6 +24,7 @@ export async function generateMetadata({
       description: post.excerpt,
       type: "article",
       publishedTime: post.publishedAt,
+      images: ["/opengraph-image"],
     },
   };
 }
@@ -88,12 +88,9 @@ function renderBlock(block: ContentBlock, index: number) {
   }
 }
 
-export default function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const post = getBlogPost(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
   if (!post) notFound();
 
   return (
