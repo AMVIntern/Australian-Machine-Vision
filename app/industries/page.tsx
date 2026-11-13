@@ -15,12 +15,12 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, SITE_URL } from "@/lib/utils";
 import { INDUSTRIES, KEY_APPLICATIONS } from "@/lib/industries-data";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = {
-  title: "Industries | Australian Machine Vision",
+  title: "Industries",
   description:
     "AMV builds custom machine vision and automated inspection systems for food processing, industrial manufacturing and general manufacturing environments.",
   alternates: { canonical: "/industries" },
@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     description:
       "Custom machine vision and automated inspection for food processing, industrial and general manufacturing. Any inspection challenge.",
     type: "website",
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
@@ -44,7 +45,7 @@ const pageJsonLd = {
   name: "Industries | Australian Machine Vision",
   description:
     "AMV builds custom machine vision and automated inspection systems for food processing, industrial manufacturing and general manufacturing environments.",
-  url: "https://www.australianmachinevision.com/industries",
+  url: `${SITE_URL}/industries`,
 };
 
 const APP_ICONS: LucideIcon[] = [

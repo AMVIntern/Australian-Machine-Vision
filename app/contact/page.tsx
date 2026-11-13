@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     description:
       "Get in touch with Australian Machine Vision. Request a demo or ask about AI vision for quality inspection.",
     type: "website",
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",

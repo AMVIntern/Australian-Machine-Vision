@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     description:
       "Customer stories and case studies from Australian Machine Vision are coming soon.",
     type: "website",
+    images: ["/opengraph-image"],
   },
 };
 

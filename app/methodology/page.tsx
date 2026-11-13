@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, SITE_URL } from "@/lib/utils";
 import { PipelineDiagram } from "@/components/methodology/pipeline-diagram";
 import { MethodsIndex } from "@/components/methodology/methods-index";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = {
-  title: "Methodology | Australian Machine Vision",
+  title: "Methodology",
   description:
     "How AMV builds machine vision and automated inspection systems. HALCON and custom deep learning combined, classical computer vision, and cloud-based Grafana diagnostics.",
   alternates: { canonical: "/methodology" },
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     description:
       "How AMV builds machine vision and automated inspection systems. HALCON, deep learning, classical vision and cloud diagnostics explained in plain language.",
     type: "website",
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
@@ -75,7 +76,7 @@ const pageJsonLd = {
   name: "Methodology | Australian Machine Vision",
   description:
     "How AMV builds machine vision and automated inspection systems. HALCON and custom deep learning combined, classical computer vision, and cloud-based Grafana diagnostics.",
-  url: "https://www.australianmachinevision.com/methodology",
+  url: `${SITE_URL}/methodology`,
 };
 
 export default function MethodologyPage() {

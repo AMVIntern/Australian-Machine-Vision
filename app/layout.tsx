@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AnalyticsPlaceholder } from "@/components/analytics-placeholder";
 import { SmoothScroll } from "@/components/layout/smooth-scroll";
+import { SITE_URL } from "@/lib/utils";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -20,8 +21,7 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.australianmachinevision.com";
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -125,9 +125,17 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd),
           }}
         />
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:font-semibold focus:text-foreground focus:shadow-soft-lg"
+        >
+          Skip to content
+        </a>
         <SmoothScroll>
           <Navbar />
-          <main className="w-full flex-1">{children}</main>
+          <main id="main" tabIndex={-1} className="w-full flex-1 focus:outline-none">
+            {children}
+          </main>
           <Footer />
         </SmoothScroll>
         <AnalyticsPlaceholder />

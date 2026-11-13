@@ -5,7 +5,7 @@ import { BLOG_POSTS, formatDate } from "@/lib/blog-data";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = {
-  title: "Blog | Australian Machine Vision",
+  title: "Blog",
   description:
     "Insights on machine vision, automated inspection and AI from the team at Australian Machine Vision.",
   alternates: { canonical: "/blog" },
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     description:
       "Insights on machine vision, automated inspection and AI from the team at Australian Machine Vision.",
     type: "website",
+    images: ["/opengraph-image"],
   },
 };
 
