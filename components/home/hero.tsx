@@ -36,7 +36,7 @@ export function Hero() {
         >
           <span className="hero-rise block" style={delay(0.15)}>
             <Initialled text="Our Vision" />
-          </span>
+          </span>{" "}
           <span className="hero-rise block" style={delay(0.28)}>
             <Initialled text="Is Your Solution" />
           </span>
