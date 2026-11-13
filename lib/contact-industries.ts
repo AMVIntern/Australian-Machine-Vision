@@ -7,7 +7,6 @@ export const CONTACT_INDUSTRY_OPTIONS = [
   { value: "pharmaceutical", label: "Pharmaceutical" },
   { value: "returnable-packaging", label: "Returnable Packaging" },
   { value: "transport-logistics", label: "Transport and Logistics" },
-  { value: "defence", label: "Defence" },
   { value: "building-products", label: "Building Products" },
   { value: "other", label: "Other" },
 ] as const;

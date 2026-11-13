@@ -10,7 +10,10 @@ import {
   CONTACT_INDUSTRY_OPTIONS,
   getIndustryLabel,
 } from "@/lib/contact-industries";
-import { validateContactFields } from "@/lib/contact-validation";
+import {
+  FIELD_MAX_LENGTH,
+  validateContactFields,
+} from "@/lib/contact-validation";
 
 // Australia first, then the rest alphabetically — most leads are local.
 const ALL_COUNTRIES = Country.getAllCountries();
@@ -176,9 +179,11 @@ export function ContactForm() {
       company,
       industryValue,
       message,
+      phone: phoneNumber,
       country: countryValue,
       state: stateValue,
       city,
+      stateRequired: stateOptions.length > 0,
     });
 
     if (Object.keys(errors).length > 0) {
@@ -210,10 +215,9 @@ export function ContactForm() {
             )
           )
         : Promise.resolve(false),
-      submitContactForm(null, storageFormData).then((result) => {
-        if (result.errors) return false;
-        return (result.channels?.db ?? false) || (result.channels?.sheet ?? false);
-      }),
+      submitContactForm(null, storageFormData).then(
+        (result) => result.success === true
+      ),
     ]);
 
     const emailOk =
@@ -227,18 +231,10 @@ export function ContactForm() {
       setState({ success: true, message: SUCCESS_MESSAGE });
       form.reset();
     } else {
-      console.error("contact: all channels failed — full submission payload", {
-        firstName,
-        lastName,
-        email,
-        company,
-        phone,
-        industry: industryLabel,
-        message,
-        channels: {
-          email: ACCESS_KEY ? emailOk : "not configured",
-          storage: storageOk,
-        },
+      // No personal details here: the browser console is not a recovery channel.
+      console.error("contact: all channels failed", {
+        email: ACCESS_KEY ? emailOk : "not configured",
+        storage: storageOk,
       });
       setState({ success: false, message: FAILURE_MESSAGE });
     }
@@ -289,6 +285,7 @@ export function ContactForm() {
           <input
             id="contact-firstName"
             name="firstName"
+            maxLength={FIELD_MAX_LENGTH.firstName}
             type="text"
             autoComplete="given-name"
             required
@@ -317,6 +314,7 @@ export function ContactForm() {
           <input
             id="contact-lastName"
             name="lastName"
+            maxLength={FIELD_MAX_LENGTH.lastName}
             type="text"
             autoComplete="family-name"
             required
@@ -347,6 +345,7 @@ export function ContactForm() {
         <input
           id="contact-email"
           name="email"
+          maxLength={FIELD_MAX_LENGTH.email}
           type="email"
           autoComplete="email"
           required
@@ -376,6 +375,7 @@ export function ContactForm() {
         <input
           id="contact-company"
           name="company"
+          maxLength={FIELD_MAX_LENGTH.company}
           type="text"
           autoComplete="organization"
           required
@@ -403,17 +403,14 @@ export function ContactForm() {
         >
           Phone Number
         </label>
-        <div className="mt-1 flex gap-2">
-          <div className="w-56 shrink-0">
+        <div className="mt-1 flex flex-col gap-2 sm:flex-row">
+          <div className="w-full shrink-0 sm:w-56">
             <SearchableSelect
               id="contact-phone-code"
               name="phoneCountry"
               options={PHONE_COMBOBOX_OPTIONS}
               value={phoneCountry}
-              onChange={(v) => {
-                setPhoneCountry(v);
-                setCountryCode(v);
-              }}
+              onChange={(v) => setPhoneCountry(v)}
               placeholder="Search country..."
             />
           </div>
@@ -422,6 +419,7 @@ export function ContactForm() {
             name="phone"
             type="tel"
             autoComplete="tel"
+            maxLength={40}
             className={cn(
               "w-full rounded-lg border border-border bg-white px-4 py-2.5 text-foreground",
               "placeholder:text-foreground-muted",
@@ -449,6 +447,7 @@ export function ContactForm() {
               onChange={(v) => setCountryCode(v)}
               placeholder="Search country..."
               error={!!state?.errors?.country}
+              errorId="country-error"
             />
           </div>
           {state?.errors?.country && (
@@ -462,7 +461,8 @@ export function ContactForm() {
             htmlFor="contact-state"
             className="block text-sm font-medium text-foreground"
           >
-            State / Province <span className="text-red-500">*</span>
+            State / Province{" "}
+            {stateComboboxOptions.length > 0 && <span className="text-red-500">*</span>}
           </label>
           <div className="mt-1">
             <SearchableSelect
@@ -478,6 +478,7 @@ export function ContactForm() {
               }
               disabled={stateComboboxOptions.length === 0}
               error={!!state?.errors?.state}
+              errorId="state-error"
             />
           </div>
           {state?.errors?.state && (
@@ -498,6 +499,7 @@ export function ContactForm() {
         <input
           id="contact-city"
           name="city"
+          maxLength={FIELD_MAX_LENGTH.city}
           type="text"
           autoComplete="address-level2"
           required
@@ -561,6 +563,7 @@ export function ContactForm() {
         <textarea
           id="contact-message"
           name="message"
+          maxLength={FIELD_MAX_LENGTH.message}
           rows={5}
           required
           className={cn(

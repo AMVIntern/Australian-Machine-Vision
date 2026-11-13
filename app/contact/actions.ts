@@ -1,6 +1,7 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
+import { Country, State } from "country-state-city";
 import { getIndustryLabel } from "@/lib/contact-industries";
 import { validateContactFields } from "@/lib/contact-validation";
 
@@ -8,11 +9,50 @@ export type FormState = {
   success?: boolean;
   message?: string;
   errors?: Record<string, string[]>;
-  channels?: {
-    db: boolean;
-    sheet: boolean;
-  };
 };
+
+const SUCCESS_MESSAGE =
+  "Thanks for getting in touch. We'll respond within 1 to 2 business days.";
+
+// Runs the schema statements once per server instance instead of on every submission.
+let schemaReady: Promise<void> | null = null;
+function ensureSchema(): Promise<void> {
+  schemaReady ??= (async () => {
+    await sql`
+      CREATE TABLE IF NOT EXISTS contact_submissions (
+        id SERIAL PRIMARY KEY,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        company TEXT NOT NULL,
+        phone TEXT,
+        industry TEXT NOT NULL,
+        message TEXT NOT NULL
+      )
+    `;
+    await sql`ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS country TEXT`;
+    await sql`ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS state TEXT`;
+    await sql`ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS city TEXT`;
+  })().catch((e) => {
+    schemaReady = null; // let the next submission retry
+    throw e;
+  });
+  return schemaReady;
+}
+
+// Google Sheets treats text starting with these as a formula; a leading
+// apostrophe stores it as plain text.
+function asSheetText(value: string): string {
+  return /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+}
+
+// The form sends the country name. Countries with no states in the dataset
+// cannot pick one, so State is only required where there is a list.
+function countryHasStates(countryName: string): boolean {
+  const country = Country.getAllCountries().find((c) => c.name === countryName);
+  return country ? State.getStatesOfCountry(country.isoCode).length > 0 : true;
+}
 
 async function storeSubmission(data: {
   firstName: string;
@@ -28,28 +68,7 @@ async function storeSubmission(data: {
 }): Promise<boolean> {
   if (!process.env.POSTGRES_URL) return false;
   try {
-    await sql`
-      CREATE TABLE IF NOT EXISTS contact_submissions (
-        id SERIAL PRIMARY KEY,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        company TEXT NOT NULL,
-        phone TEXT,
-        industry TEXT NOT NULL,
-        message TEXT NOT NULL
-      )
-    `;
-    await sql`
-      ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS country TEXT
-    `;
-    await sql`
-      ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS state TEXT
-    `;
-    await sql`
-      ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS city TEXT
-    `;
+    await ensureSchema();
     await sql`
       INSERT INTO contact_submissions
         (first_name, last_name, email, company, phone, industry, message, country, state, city)
@@ -84,15 +103,15 @@ async function appendToSheet(data: {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         submittedAt: new Date().toISOString(),
-        name: data.name,
-        email: data.email,
-        company: data.company,
-        phone: data.phone || "",
-        country: data.country,
-        state: data.state,
-        city: data.city,
-        industry: data.industry,
-        message: data.message,
+        name: asSheetText(data.name),
+        email: asSheetText(data.email),
+        company: asSheetText(data.company),
+        phone: asSheetText(data.phone || ""),
+        country: asSheetText(data.country),
+        state: asSheetText(data.state),
+        city: asSheetText(data.city),
+        industry: asSheetText(data.industry),
+        message: asSheetText(data.message),
       }),
     });
     if (!response.ok) {
@@ -148,6 +167,12 @@ export async function submitContactForm(
   const message = (formData.get("message") as string)?.trim() ?? "";
   const industry = getIndustryLabel(industryValue);
 
+  // Honeypot: real visitors never tick this hidden box. Report success so bots
+  // get no signal, but store nothing.
+  if (formData.get("botcheck")) {
+    return { success: true, message: SUCCESS_MESSAGE };
+  }
+
   const errors = validateContactFields({
     firstName,
     lastName,
@@ -155,9 +180,11 @@ export async function submitContactForm(
     company,
     industryValue,
     message,
+    phone,
     country,
     state,
     city,
+    stateRequired: countryHasStates(country),
   });
 
   if (Object.keys(errors).length > 0) {
@@ -189,9 +216,6 @@ export async function submitContactForm(
 
   return {
     success: dbOk || sheetOk,
-    channels: { db: dbOk, sheet: sheetOk },
-    message: dbOk || sheetOk
-      ? "Thanks for getting in touch. We'll respond within 1 to 2 business days."
-      : undefined,
+    message: dbOk || sheetOk ? SUCCESS_MESSAGE : undefined,
   };
 }

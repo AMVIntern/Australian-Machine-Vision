@@ -17,6 +17,7 @@ export function SearchableSelect({
   placeholder = "Search...",
   disabled = false,
   error,
+  errorId,
 }: {
   id: string;
   name: string;
@@ -26,6 +27,8 @@ export function SearchableSelect({
   placeholder?: string;
   disabled?: boolean;
   error?: boolean;
+  /** id of the visible error message, announced with the field */
+  errorId?: string;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -89,6 +92,11 @@ export function SearchableSelect({
         aria-expanded={open}
         aria-controls={`${id}-listbox`}
         aria-autocomplete="list"
+        aria-activedescendant={
+          open && filtered[highlighted] ? `${id}-option-${highlighted}` : undefined
+        }
+        aria-invalid={error || undefined}
+        aria-describedby={error ? errorId : undefined}
         autoComplete="off"
         disabled={disabled}
         value={open ? query : selectedLabel}
@@ -132,6 +140,7 @@ export function SearchableSelect({
           {filtered.map((opt, i) => (
             <li
               key={opt.value}
+              id={`${id}-option-${i}`}
               role="option"
               aria-selected={opt.value === value}
               onMouseDown={(e) => {
