@@ -18,7 +18,7 @@ interface RangeFigure {
 
 const scale: ScaleFigure[] = [
   { id: "years", figure: "20", suffix: "+", label: "Years delivering machine vision" },
-  { id: "products", figure: "1M", suffix: "+", label: "Products inspected every day" },
+  { id: "products", figure: "1M", suffix: "+", label: "Products inspected per year" },
   { id: "hours", figure: "24/7", label: "Operation on live production lines" },
 ];
 

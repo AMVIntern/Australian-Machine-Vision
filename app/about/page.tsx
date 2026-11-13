@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description:
       "Learn about Australian Machine Vision. Our mission, vision, and expertise in industrial machine vision for quality inspection.",
     type: "website",
+    images: ["/opengraph-image"],
   },
   twitter: {
     card: "summary_large_image",
@@ -50,7 +51,7 @@ const capabilities = [
 // they sit with the note that explains them.
 const stats: { value: string | null; label: string }[] = [
   { value: null, label: "Years of Experience" },
-  { value: "1M+", label: "Products Inspected Every Day" },
+  { value: "1M+", label: "Products Inspected Per Year" },
   { value: "24/7", label: "Operation on Live Production Lines" },
   { value: "4", label: "Countries with AMV Systems" },
 ];
